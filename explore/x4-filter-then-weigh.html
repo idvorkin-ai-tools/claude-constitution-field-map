@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Filter, then weigh &mdash; Claude's constitution, from the ground up</title>
+<meta name="description" content="A request passes seven hard-constraint gates, then a cost-benefit weighing with eight factors and a 1,000-users policy panel. Move the settings and watch which stage decides." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../paper.css" />
+<style>
+.x-panel{border:1px solid var(--line);border-radius:6px;background:var(--panel);padding:.8rem .9rem;margin:0 0 1rem;min-width:0}
+.x-panel h3{margin:.1rem 0 .6rem;font-size:1rem}
+.x-panel.x-dim{opacity:.55}
+.x-preset{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:0 0 1rem}
+.x-preset select{max-width:100%;background:var(--panel-2);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:.35rem .45rem;font:inherit;font-size:.9rem}
+.x-flow{display:flex;flex-wrap:wrap;gap:.4rem;align-items:stretch;margin:0 0 1rem}
+.x-node{flex:1 1 9rem;border:1px solid var(--line);border-radius:5px;padding:.5rem .6rem;background:var(--panel-2);font-size:.85rem;min-width:0}
+.x-node b{display:block;font-family:'IBM Plex Mono',monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-mid)}
+.x-node.x-stop{border-color:var(--crit)}
+.x-node.x-go{border-color:var(--def)}
+.x-node.x-skip{opacity:.5}
+.x-arrow{align-self:center;color:var(--ink-dim);font-family:'IBM Plex Mono',monospace}
+.x-gates{display:grid;gap:.4rem;margin:0 0 .7rem}
+.x-gate{display:grid;grid-template-columns:1.6rem 1fr auto;gap:.5rem;align-items:center;border:1px solid var(--line-soft);border-radius:5px;padding:.4rem .5rem;font-size:.86rem;background:var(--panel-2)}
+.x-gate.x-tripped{border-color:var(--crit)}
+.x-gate .x-num{font-family:'IBM Plex Mono',monospace;color:var(--ink-dim)}
+.x-gate button{font:inherit;font-family:'IBM Plex Mono',monospace;font-size:.75rem;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:.3rem .45rem;cursor:pointer;min-width:7.6rem;text-align:center}
+.x-gate.x-tripped button{border-color:var(--crit);color:var(--crit)}
+.x-toggles{display:grid;gap:.4rem;margin:.3rem 0}
+.x-toggles label{display:flex;gap:.45rem;align-items:flex-start;font-size:.88rem}
+.x-sliders{display:grid;gap:.45rem;margin:0 0 .8rem}
+.x-sl{display:grid;grid-template-columns:minmax(0,1fr) 2rem;gap:.1rem .5rem;font-size:.85rem;align-items:center}
+.x-sl label{grid-column:1 / -1;display:flex;justify-content:space-between;gap:.5rem}
+.x-sl input[type=range]{width:100%;accent-color:var(--def)}
+.x-sl .x-v{font-family:'IBM Plex Mono',monospace;text-align:right}
+.x-chiprow{display:flex;flex-wrap:wrap;gap:.35rem;margin:.3rem 0 .6rem}
+.x-chip{font:inherit;font-size:.82rem;background:var(--panel-2);color:var(--ink-mid);border:1px solid var(--line);border-radius:999px;padding:.25rem .65rem;cursor:pointer}
+.x-chip[aria-pressed=true]{color:var(--ink);border-color:var(--def);background:var(--bg)}
+.x-chip[aria-pressed=true]::before{content:'\2713  '}
+.x-cols{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:640px){.x-cols{grid-template-columns:1fr}}
+.x-balance{width:100%;max-width:420px;height:auto;display:block;margin:.3rem auto}
+.x-balance text{font-family:'IBM Plex Mono',monospace;font-size:11px;fill:var(--ink-mid)}
+.x-verdict{border:1px solid var(--line);border-radius:6px;padding:.7rem .9rem;background:var(--panel-2);margin:0 0 .6rem}
+.x-verdict p{margin:.25rem 0}
+.x-verdict .x-big{font-weight:600;font-size:1.02rem}
+.x-flag{border-left:3px solid var(--off);padding:.35rem .6rem;margin:.4rem 0;font-size:.9rem}
+.x-doc{border-left:3px solid var(--def);padding:.45rem .7rem;margin:.5rem 0 0;font-size:.9rem;background:var(--panel)}
+.x-moved{font-size:.85rem;color:var(--ink-mid);margin:0 0 1rem}
+.x-users{display:grid;gap:.5rem}
+.x-users .x-out{font-family:'IBM Plex Mono',monospace;font-size:.82rem}
+.x-mini{display:grid;grid-template-columns:7.5rem 1fr;gap:.4rem;align-items:center;font-size:.8rem}
+.x-track{height:.75rem;border:1px solid var(--line);border-radius:3px;background:var(--bg);position:relative;overflow:hidden}
+.x-fill{position:absolute;left:0;top:0;bottom:0;background:var(--def)}
+.x-fill.x-harm{background:var(--crit)}
+@media (prefers-reduced-motion:no-preference){.x-fill{transition:width .25s}.x-beam{transition:transform .3s}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>CONSTITUTION&nbsp;//&nbsp;LADDER</div>
+  <a class="back" href="../index.html#explore">&larr; the ladder</a>
+</div></header>
+<main class="x">
+  <div class="eyebrow"><span class="box bb mono">EXPLORABLE &middot; HARD CONSTRAINTS AND THE HARM WEIGHING</span><span class="mono">Hard constraints &middot; Costs and benefits &middot; parts 12 and 14</span></div>
+  <h1>Filter, then weigh</h1>
+  <div class="authors">A request meets seven gates first and a balance second. Change a gate, a factor or the crowd of senders and watch which stage decides.</div>
+
+  <p class="lead">The seven hard constraints are not weights; they remove actions from the table before any weighing starts, and nothing on the other side of the scale can bring them back. Everything that passes the gates is then weighed: eight factors set how heavy a possible harm is, the benefits sit opposite, and because many people send the same message, the answer is a policy for all of them.</p>
+
+  <div class="x-preset">
+    <label for="preset">Load a case:</label>
+    <select id="preset"></select>
+  </div>
+
+  <div class="x-flow" aria-label="Where the request is in the flow">
+    <div class="x-node" id="f-req"><b>Request</b><span id="f-req-t"></span></div>
+    <span class="x-arrow" aria-hidden="true">&rarr;</span>
+    <div class="x-node" id="f-a"><b>Stage A &middot; seven gates</b><span id="f-a-t"></span></div>
+    <span class="x-arrow" aria-hidden="true">&rarr;</span>
+    <div class="x-node" id="f-b"><b>Stage B &middot; weighing</b><span id="f-b-t"></span></div>
+    <span class="x-arrow" aria-hidden="true">&rarr;</span>
+    <div class="x-node" id="f-v"><b>Outcome</b><span id="f-v-t"></span></div>
+  </div>
+
+  <div class="x-verdict" id="verdict" aria-live="polite"></div>
+  <p class="x-moved" id="moved" aria-live="polite"></p>
+
+  <section class="x-panel" id="stageA" aria-labelledby="hA">
+    <h3 id="hA">Stage A &middot; the seven hard constraints, as filters <a class="lnk" href="https://www.anthropic.com/constitution#hard-constraints" target="_blank" rel="noopener">&sect;</a></h3>
+    <p style="font-size:.88rem;margin:.1rem 0 .6rem">Each gate is one of the document's seven, in its order. Set how likely it is that the action falls in that category. A gate trips only at <i>quite likely</i> or <i>flagrant</i>; <i>unclear</i> cases go on to judgment. Buttons cycle the setting; arrow keys step it.</p>
+    <div class="x-gates" id="gates"></div>
+    <div class="x-toggles">
+      <label><input type="checkbox" id="t-arg" /> A compelling argument for crossing the line is presented</label>
+      <label><input type="checkbox" id="t-null" /> Choose the null action (refuse)</label>
+    </div>
+  </section>
+
+  <section class="x-panel" id="stageB" aria-labelledby="hB">
+    <h3 id="hB">Stage B &middot; weigh costs against benefits <a class="lnk" href="https://www.anthropic.com/constitution#the-costs-and-benefits-of-actions" target="_blank" rel="noopener">&sect;</a></h3>
+    <div class="x-cols">
+      <div>
+        <p class="mono" style="font-size:.75rem;color:var(--ink-mid);margin:0 0 .4rem">THE EIGHT FACTORS (0 = light, 10 = heavy)</p>
+        <div class="x-sliders" id="sliders"></div>
+      </div>
+      <div>
+        <p class="mono" style="font-size:.75rem;color:var(--ink-mid);margin:0 0 .4rem">BENEFITS</p>
+        <div class="x-chiprow" id="chips"></div>
+        <div class="x-sl"><label for="s-ben"><span>How much value to the people asking</span></label><input type="range" id="s-ben" min="0" max="10" step="1" value="5" /><span class="x-v" id="v-ben">5</span></div>
+        <div class="x-toggles" style="margin-top:.7rem">
+          <label><input type="checkbox" id="t-intent" /> The sender states an intent to harm someone (the whittling example)</label>
+        </div>
+        <svg class="x-balance" viewBox="0 0 300 150" role="img" aria-labelledby="bal-t"><title id="bal-t">Balance of harm against benefit</title>
+          <polygon points="150,70 135,140 165,140" fill="none" stroke="var(--line)" stroke-width="2" />
+          <g class="x-beam" id="beam" style="transform-origin:150px 70px">
+            <line x1="40" y1="70" x2="260" y2="70" stroke="var(--ink-mid)" stroke-width="3" />
+            <line x1="55" y1="70" x2="55" y2="96" stroke="var(--ink-dim)" /><rect x="25" y="96" width="60" height="16" rx="3" fill="none" stroke="var(--crit)" stroke-width="2" />
+            <line x1="245" y1="70" x2="245" y2="96" stroke="var(--ink-dim)" /><rect x="215" y="96" width="60" height="16" rx="3" fill="none" stroke="var(--def)" stroke-width="2" />
+            <text x="55" y="128" text-anchor="middle" id="bal-h">harm</text>
+            <text x="245" y="128" text-anchor="middle" id="bal-b">benefit</text>
+          </g>
+        </svg>
+        <div class="x-mini"><span>Weighted harm</span><span class="x-track"><span class="x-fill x-harm" id="m-h"></span></span></div>
+        <div class="x-mini" style="margin-top:.3rem"><span>Benefit</span><span class="x-track"><span class="x-fill" id="m-b"></span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="x-panel" aria-labelledby="hU">
+    <h3 id="hU">The 1,000 users: a response is a policy <a class="lnk" href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">&sect;</a></h3>
+    <p style="font-size:.88rem;margin:.1rem 0 .6rem">Imagine everyone plausibly sending this exact message. Counted per million senders.</p>
+    <div class="x-users">
+      <div class="x-sl"><label for="u-f"><span>Share of senders who would misuse it</span></label><input type="range" id="u-f" min="0" max="9" step="1" value="5" /><span class="x-v" id="uv-f"></span></div>
+      <div class="x-sl"><label for="u-h"><span>Harm per misuse (relative units)</span></label><input type="range" id="u-h" min="0" max="9" step="1" value="1" /><span class="x-v" id="uv-h"></span></div>
+      <div class="x-sl"><label for="u-b"><span>Benefit per legitimate use (relative units)</span></label><input type="range" id="u-b" min="0" max="4" step="1" value="2" /><span class="x-v" id="uv-b"></span></div>
+      <p class="x-out" id="u-out" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <p class="kv">Every number on this page is an illustration written to show the mechanism: the factor scores, the way they combine, the benefit scale and the 1,000-users quantities are this page's, not Anthropic's, and the document gives no formula. The seven gates, the eight factors, the five named benefit types, the trip rule (knowing, or quite likely), the argument rule, the null action, the whittling example and each case's description follow the constitution; the "What the document says" line for each case is drawn from its text, and says so where the text gives no verdict.</p>
+
+  <h2 id="notice">Things to try</h2>
+  <ul>
+    <li><b>Load "vaccine researcher", then pile on benefit.</b> Push every benefit chip and the value slider to 10. Nothing changes: the gate has already tripped and Stage B is never reached. Notice that a filter is not a very heavy weight; it is not on the scale at all.</li>
+    <li><b>Load "prevent a worse attack by undermining oversight".</b> The compelling-argument flag is on and the oversight gate is flagrant. The argument raises suspicion and opens nothing. Notice the document's own admission that this edge case has unattractive implications, accepted for predictability.</li>
+    <li><b>Turn on the null action in any case.</b> Refusal always gets through Stage A, but in Stage B it shows up as forgone benefit and indirect cost. Notice that refusing is a choice with a price, not a free exit.</li>
+    <li><b>Compare the two household-chemicals phrasings.</b> Same chemistry; the step-by-step phrasing shifts probability, proximity and benefit, and the balance tips. Notice that what moved is who is plausibly asking.</li>
+    <li><b>In the 1,000-users panel,</b> set misuse to 70% with low harm per misuse: answering stays right. Then set one in a million with harm per misuse at its maximum: declining is right. Notice that a refusal is a rule for the whole crowd, not a judgment of one person.</li>
+    <li><b>Load "whittle a knife" and tick the stated intent.</b> A benign request flips to a decline. Notice that context can lower willingness as well as raise it.</li>
+  </ul>
+
+  <div class="callout">Source: <a class="lnk" href="https://www.anthropic.com/constitution#hard-constraints" target="_blank" rel="noopener">Hard constraints</a> &middot; <a class="lnk" href="https://www.anthropic.com/constitution#the-costs-and-benefits-of-actions" target="_blank" rel="noopener">The costs and benefits of actions</a> &middot; <a class="lnk" href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">Avoiding harm (The role of intentions and context)</a> &middot; <a class="lnk" href="https://www.anthropic.com/constitution#balancing-helpfulness-with-other-values" target="_blank" rel="noopener">Balancing helpfulness with other values</a>. Ladder parts that use this: <a class="lnk" href="../parts/p12.html">12 &middot; Weighing harm</a> &middot; <a class="lnk" href="../parts/p14.html">14 &middot; The seven hard constraints</a> &middot; back to <a class="lnk" href="../index.html#explore">the ladder</a>.</div>
+</main>
+<footer>An explorable companion to <em>Claude's Constitution</em> (Anthropic, January 2026, CC0 1.0). The gates and factors follow the document; all numbers and the way they combine are original illustrations. Runs in your browser with no model calls.</footer>
+<script>
+(function(){
+  var GATES = [
+    'Serious uplift to people seeking biological, chemical, nuclear or radiological weapons with mass-casualty potential',
+    'Serious uplift to attacks on critical infrastructure (power grids, water, financial systems) or critical safety systems',
+    'Creating cyberweapons or malicious code that could do significant damage if deployed',
+    'Actions that clearly and substantially undermine Anthropic’s ability to oversee and correct advanced AI',
+    'Engaging or assisting in an attempt to kill or disempower the vast majority of humanity',
+    'Engaging or assisting an attempt to seize unprecedented and illegitimate degrees of absolute societal, military or economic control',
+    'Generating child sexual abuse material'
+  ];
+  var LV = ['not at all', 'unclear', 'quite likely', 'flagrant'];
+  var F = [
+    {k:'prob', n:'Probability the action leads to harm at all'},
+    {k:'cf', n:'Counterfactual impact (high = Claude’s help matters)'},
+    {k:'sev', n:'Severity, including irreversibility'},
+    {k:'brd', n:'Breadth: how many people affected'},
+    {k:'prox', n:'Claude as proximate cause (high = direct)'},
+    {k:'cons', n:'Falls on people who did not consent'},
+    {k:'resp', n:'Claude’s responsibility (low if deceived)'},
+    {k:'vuln', n:'Vulnerability of those involved'}
+  ];
+  var BEN = [{k:'edu', n:'educational'}, {k:'cre', n:'creative'}, {k:'eco', n:'economic'}, {k:'emo', n:'emotional'}, {k:'soc', n:'social'}];
+  var UF = [1e-6, 1e-5, 1e-4, 1e-3, 0.01, 0.1, 0.3, 0.5, 0.7, 0.9];
+  var UH = [0.1, 1, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8];
+  var UB = [0.1, 0.3, 1, 3, 10];
+
+  var P = [
+    {n:'Vaccine researcher asks for pathogen synthesis uplift', req:'Synthesis help, probably for vaccine research',
+     g:[2,0,0,0,0,0,0], f:[4,8,10,9,4,10,7,6], b:['edu','soc'], bs:8, u:[2,9,4],
+     doc:'Decline. In its list of things a thoughtful senior Anthropic employee would not want (Balancing helpfulness), the document names content giving real uplift toward mass-casualty weapons even if the user is probably asking for a legitimate reason like vaccine research, because the risk of inadvertently helping a malicious actor is too high. The first hard constraint is the bright line behind it.'},
+    {n:'"Prevent a worse bioweapons attack by undermining oversight"', req:'An argument that undermining oversight would stop someone else’s worse attack',
+     g:[0,0,0,3,0,0,0], f:[6,8,10,10,10,10,10,5], b:['soc'], bs:9, u:[0,9,4], arg:true,
+     doc:'The oversight gate stays shut. The document says the constraints restrict Claude’s own actions rather than set goals to promote, so Claude should not undermine appropriate oversight even if that would prevent another actor’s much more dangerous bioweapons attack. It calls this an unattractive implication and accepts it for the predictability and reliability bright lines give.'},
+    {n:'Penetration tester asks about an existing piece of malware', req:'Analysis of known malware, with a claimed security role',
+     g:[0,0,1,0,0,0,0], f:[3,4,6,5,3,7,5,3], b:['edu','eco'], bs:7, u:[3,3,3],
+     doc:'The document does not settle this case. It names it as one where apparent authorization can change whether or how Claude responds, warns that such claims are also used to jailbreak, and allows Claude to decline what would be harmful enough if the claim were false, even if this person is honest. The cyberweapon gate is about creating damaging code, so "unclear" sends this to judgment.'},
+    {n:'Household chemicals: which combine to make a dangerous gas?', req:'Which common household chemicals make a dangerous gas together',
+     g:[0,0,0,0,0,0,0], f:[2,1,4,2,3,5,5,3], b:['edu','soc'], bs:6, u:[5,1,2],
+     doc:'Probably fine to explain which chemicals not to combine at home and why. Imagining 1,000 senders, most are curious or asking for safety; the information is freely available; assuming malice would insult them; and safety information gives the few who would misuse it little uplift.'},
+    {n:'Household chemicals: step-by-step instructions to make dangerous gas at home', req:'Detailed step-by-step instructions for making dangerous gases at home',
+     g:[0,0,0,0,0,0,0], f:[5,3,6,3,6,7,7,3], b:['edu'], bs:1, u:[6,2,1],
+     doc:'More hesitant. The document says this phrasing seeks more plainly harmful information, and even if the user could find it elsewhere, providing it without hesitation is not in line with Claude’s character.'},
+    {n:'Common tactics used by people who prey on children', req:'How predators typically approach children (a worried parent, or not)',
+     g:[0,0,0,0,0,0,0], f:[3,4,8,3,3,10,5,7], b:['edu','soc'], bs:5, u:[4,3,3],
+     doc:'The document does not settle this case. It gives it as the example of dual-use content: the asker could be a malicious actor or a worried parent, and Claude has to weigh benefits and costs and take the broader context into account.'},
+    {n:'Fiction exploring torture from a complex perspective', req:'A story that explores torture through a morally complex character',
+     g:[0,0,0,0,0,0,0], f:[2,2,3,2,2,5,4,3], b:['cre','emo'], bs:6, u:[5,1,2],
+     doc:'The document does not settle a specific request. It says creative work exploring themes like torture from complex perspectives can have great value, and that Claude has to weigh that against people using creative framing as a shield.'},
+    {n:'A legal but very dangerous hobby', req:'Help with a legal activity that is very risky to the asker',
+     g:[0,0,0,0,0,0,0], f:[4,3,6,1,3,0,4,3], b:['edu','emo'], bs:6, u:[3,2,3],
+     doc:'Help, with concern. The document says Claude can express concern but should respect that this is the person’s decision to make.'},
+    {n:'Which household chemicals are dangerous if mixed (harm mitigation)', req:'Which household chemicals are dangerous to mix',
+     g:[0,0,0,0,0,0,0], f:[2,1,4,2,3,5,5,3], b:['edu','soc'], bs:7, u:[5,1,2],
+     doc:'The document uses this as its harm-mitigation example: the line between mitigation and facilitation can be unclear, since the information could be used to make dangerous compounds but is also important for safety. Its 1,000-users discussion of the same chemicals concludes that explaining what not to combine is probably fine.'},
+    {n:'How do I whittle a knife?', req:'How to whittle a knife',
+     g:[0,0,0,0,0,0,0], f:[1,1,3,1,2,5,5,2], b:['edu','cre'], bs:4, u:[3,1,2],
+     doc:'Give the information. With the stated intent to kill someone, the document says Claude should deny the information, may address the stated intent, and may stay more wary for the rest of the conversation even if the person says they were joking.'}
+  ];
+
+  // Build controls
+  var sel = document.getElementById('preset');
+  P.forEach(function(p, i){ var o = document.createElement('option'); o.value = i; o.textContent = p.n; sel.appendChild(o); });
+  var gEl = document.getElementById('gates'), G = [0,0,0,0,0,0,0];
+  GATES.forEach(function(t, i){
+    var d = document.createElement('div'); d.className = 'x-gate'; d.id = 'g' + i;
+    d.innerHTML = '<span class="x-num">' + (i + 1) + '</span><span>' + t + '</span><button type="button" id="gb' + i + '"></button>';
+    gEl.appendChild(d);
+    var b = d.querySelector('button');
+    b.addEventListener('click', function(){ G[i] = (G[i] + 1) % 4; paint('gate', i); });
+    b.addEventListener('keydown', function(e){
+      var dlt = (e.key === 'ArrowRight' || e.key === 'ArrowUp') ? 1 : (e.key === 'ArrowLeft' || e.key === 'ArrowDown') ? -1 : 0;
+      if (dlt) { e.preventDefault(); G[i] = Math.max(0, Math.min(3, G[i] + dlt)); paint('gate', i); }
+    });
+  });
+  var sEl = document.getElementById('sliders');
+  F.forEach(function(f){
+    var d = document.createElement('div'); d.className = 'x-sl';
+    d.innerHTML = '<label for="s-' + f.k + '"><span>' + f.n + '</span></label><input type="range" id="s-' + f.k + '" min="0" max="10" step="1" value="5" /><span class="x-v" id="v-' + f.k + '">5</span>';
+    sEl.appendChild(d);
+    d.querySelector('input').addEventListener('input', function(){ paint('factor', f.n); });
+  });
+  var cEl = document.getElementById('chips');
+  BEN.forEach(function(b){
+    var x = document.createElement('button'); x.type = 'button'; x.className = 'x-chip'; x.id = 'c-' + b.k; x.textContent = b.n; x.setAttribute('aria-pressed', 'false');
+    x.addEventListener('click', function(){ x.setAttribute('aria-pressed', x.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); paint('chip', b.n); });
+    cEl.appendChild(x);
+  });
+  document.getElementById('s-ben').addEventListener('input', function(){ paint('ben'); });
+  ['t-arg','t-null','t-intent'].forEach(function(id){ document.getElementById(id).addEventListener('change', function(){ paint(id); }); });
+  ['u-f','u-h','u-b'].forEach(function(id){ document.getElementById(id).addEventListener('input', function(){ paint('users'); }); });
+  sel.addEventListener('change', function(){ load(+sel.value); paint('preset'); });
+
+  function v(id){ return +document.getElementById(id).value; }
+  function on(id){ return document.getElementById(id).checked; }
+  function r1(n){ return n >= 10 ? Math.round(n).toLocaleString('en-US') : String(Math.round(n * 10) / 10); }
+  function fmt(x){ if (x >= 1e9) return r1(x / 1e9) + 'bn'; if (x >= 1e6) return r1(x / 1e6) + 'M'; if (x >= 1e3) return r1(x / 1e3) + 'k'; return String(Math.round(x * 100) / 100); }
+  function frac(x){ if (x >= 0.01) return Math.round(x * 100) + '%'; var n = Math.round(1 / x); return n === 1e6 ? '1 in a million' : '1 in ' + n.toLocaleString('en-US'); }
+
+  function load(i){
+    var p = P[i];
+    G = p.g.slice();
+    F.forEach(function(f, j){ document.getElementById('s-' + f.k).value = p.f[j]; });
+    BEN.forEach(function(b){ document.getElementById('c-' + b.k).setAttribute('aria-pressed', p.b.indexOf(b.k) >= 0 ? 'true' : 'false'); });
+    document.getElementById('s-ben').value = p.bs;
+    document.getElementById('t-arg').checked = !!p.arg;
+    document.getElementById('t-null').checked = false;
+    document.getElementById('t-intent').checked = false;
+    document.getElementById('u-f').value = p.u[0]; document.getElementById('u-h').value = p.u[1]; document.getElementById('u-b').value = p.u[2];
+  }
+
+  function compute(){
+    var x = {}; F.forEach(function(f){ x[f.k] = v('s-' + f.k); });
+    var intent = on('t-intent');
+    var prob = intent ? 10 : x.prob;
+    var mag = 0.5 * x.sev + 0.3 * x.brd + 0.2 * x.vuln;
+    var cul = 0.4 + 0.6 * (x.prox + x.cons + x.resp) / 30;
+    var reach = 0.2 + 0.8 * x.cf / 10;
+    var H = Math.min(100, (prob / 10) * reach * mag * cul * 20);
+    var chips = BEN.filter(function(b){ return document.getElementById('c-' + b.k).getAttribute('aria-pressed') === 'true'; }).length;
+    var B = Math.min(100, v('s-ben') * 10 * (0.5 + 0.1 * chips));
+    var trip = -1, unclear = [];
+    G.forEach(function(g, i){ if (g >= 2 && trip < 0) trip = i; if (g === 1) unclear.push(i + 1); });
+    return {H:H, B:B, chips:chips, trip:trip, unclear:unclear, intent:intent, arg:on('t-arg'), nul:on('t-null')};
+  }
+
+  var prevOut = '';
+  function paint(why, what){
+    var r = compute();
+    // gates
+    G.forEach(function(g, i){
+      var d = document.getElementById('g' + i), b = document.getElementById('gb' + i);
+      d.classList.toggle('x-tripped', g >= 2 && !r.nul);
+      b.textContent = LV[g] + (g >= 2 ? ' · trips' : '');
+      b.setAttribute('aria-label', 'Gate ' + (i + 1) + ': likelihood ' + LV[g] + (g >= 2 ? ', trips' : '') + '. Press to change.');
+    });
+    F.forEach(function(f){ document.getElementById('v-' + f.k).textContent = document.getElementById('s-' + f.k).value; });
+    document.getElementById('v-ben').textContent = v('s-ben');
+    document.getElementById('s-prob').disabled = r.intent;
+
+    var stopA = r.trip >= 0 && !r.nul;
+    document.getElementById('stageB').classList.toggle('x-dim', stopA);
+    // balance
+    var hb = r.nul ? 0 : r.H, bb = r.nul ? 0 : r.B, refuseCost = Math.min(100, r.B + 8);
+    var tilt = r.nul ? Math.max(-20, Math.min(20, (r.H - refuseCost) / 100 * 40)) : Math.max(-20, Math.min(20, (r.H - r.B) / 100 * 40));
+    document.getElementById('beam').style.transform = 'rotate(' + (-tilt) + 'deg)';
+    document.getElementById('bal-h').textContent = r.nul ? 'harm avoided ' + Math.round(r.H) : 'harm ' + Math.round(r.H);
+    document.getElementById('bal-b').textContent = r.nul ? 'cost of refusing ' + Math.round(refuseCost) : 'benefit ' + Math.round(r.B);
+    document.getElementById('m-h').style.width = r.H + '%';
+    document.getElementById('m-b').style.width = (r.nul ? refuseCost : r.B) + '%';
+
+    // users
+    var f = UF[v('u-f')], h = UH[v('u-h')], b = UB[v('u-b')];
+    document.getElementById('uv-f').textContent = frac(f);
+    document.getElementById('uv-h').textContent = fmt(h);
+    document.getElementById('uv-b').textContent = fmt(b);
+    var EH = 1e6 * f * h, EB = 1e6 * (1 - f) * b, ans = EB > EH;
+    var uo = 'Per million senders: harm ' + fmt(EH) + ' vs benefit ' + fmt(EB) + '. Policy: ' + (ans ? 'answer' : 'decline') + '.';
+    if (ans && f >= 0.5) uo += ' Answering is right even though most senders would misuse it, because each misuse does little harm.';
+    if (!ans && f <= 1e-6) uo += ' Declining is right even at one in a million, because one misuse is catastrophic.';
+    if (!ans && f < 0.5 && f > 1e-6) uo += ' Most senders are legitimate, and the policy still declines: a decline here should be non-judgmental.';
+    document.getElementById('u-out').textContent = uo;
+
+    // verdict
+    var p = P[+sel.value], out, line, flags = [];
+    var ratio = r.H / Math.max(1, r.H + r.B);
+    var bText = ratio > 0.6 ? 'Hesitate or decline' : ratio >= 0.4 ? 'Close call: help with care, or decline without judgment' : 'Help' + (r.H > 5 ? ', with care' : '');
+    document.getElementById('f-req-t').textContent = ' ' + p.req;
+    var fa = document.getElementById('f-a'), fb = document.getElementById('f-b'), fv = document.getElementById('f-v');
+    fa.className = 'x-node'; fb.className = 'x-node'; fv.className = 'x-node';
+    if (r.nul) {
+      document.getElementById('f-a-t').textContent = ' passes: refusal is always compatible with the constraints';
+      fa.classList.add('x-go');
+      document.getElementById('f-b-t').textContent = ' refusal weighed: forgoes benefit ' + Math.round(r.B) + ' plus indirect cost';
+      var justified = stopAny() || r.H > refuseCost;
+      out = 'Refuse'; line = stopAny() ? 'A gate would trip on helping, so refusing is the right call here, and the null action always satisfies the constraints.' : (justified ? 'Refusing avoids more weighted harm (' + Math.round(r.H) + ') than it costs (' + Math.round(refuseCost) + '), on these illustrative settings.' : 'Refusing costs more (' + Math.round(refuseCost) + ': benefit forgone plus the indirect cost of unhelpfulness) than the harm it avoids (' + Math.round(r.H) + '). Refusal passed Stage A, but it is not free.');
+      fv.classList.add(justified ? 'x-stop' : 'x-go');
+    } else if (stopA) {
+      document.getElementById('f-a-t').textContent = ' gate ' + (r.trip + 1) + ' trips';
+      fa.classList.add('x-stop'); fb.classList.add('x-skip'); fv.classList.add('x-stop');
+      document.getElementById('f-b-t').textContent = ' not reached';
+      out = 'Refuse (hard constraint ' + (r.trip + 1) + ')';
+      line = 'Gate ' + (r.trip + 1) + ' is ' + LV[G[r.trip]] + ', so the action is off the table before any weighing. Benefit does not enter: it is a filter, not a weight.';
+    } else {
+      document.getElementById('f-a-t').textContent = r.unclear.length ? ' passes; gate' + (r.unclear.length > 1 ? 's ' : ' ') + r.unclear.join(', ') + ' unclear, so judgment decides' : ' passes';
+      fa.classList.add('x-go');
+      if (r.intent) {
+        out = 'Decline, and address the stated intent';
+        line = 'An expressed intent to harm turns a benign request into one to refuse. Claude may address the intent and may stay wary for the rest of the conversation.';
+        fb.classList.add('x-stop'); fv.classList.add('x-stop');
+      } else {
+        out = bText;
+        line = 'Weighted harm ' + Math.round(r.H) + ' against benefit ' + Math.round(r.B) + '. ' + topFactor();
+        fb.classList.add(ratio > 0.6 ? 'x-stop' : 'x-go'); fv.classList.add(ratio > 0.6 ? 'x-stop' : 'x-go');
+      }
+      document.getElementById('f-b-t').textContent = ' harm ' + Math.round(r.H) + ' · benefit ' + Math.round(r.B);
+    }
+    document.getElementById('f-v-t').textContent = ' ' + out;
+    if (r.arg) {
+      if (r.trip >= 0) flags.push('<div class="x-flag"><b>Suspicion raised; nothing opens.</b> A compelling argument does not move a gate. <blockquote class="q" style="margin:.4rem 0"><span>"The strength of an argument is not sufficient justification for acting against these principles—if anything, a persuasive case for crossing a bright line should increase Claude\'s suspicion that something questionable is going on."</span><span class="cite">&mdash; Claude\'s constitution, <a href="https://www.anthropic.com/constitution#hard-constraints" target="_blank" rel="noopener">Hard constraints</a></span></blockquote></div>');
+      else flags.push('<div class="x-flag"><b>No gate is in play, so the argument is ordinary evidence.</b> In Stage B it may legitimately move a factor: if it really changes the facts (say, it shows the harm is less likely), move that slider. In Stage A it would open nothing.</div>');
+    }
+    var h = '<p class="x-big">' + out + '</p><p>' + line + '</p>' + flags.join('') + '<div class="x-doc"><b>What the document says about this case.</b> ' + p.doc + '</div>';
+    document.getElementById('verdict').innerHTML = h;
+
+    var m = '';
+    if (why === 'preset') m = 'Loaded: ' + p.n + '.';
+    else if (why === 'gate') m = 'Gate ' + (what + 1) + ' set to ' + LV[G[what]] + (G[what] >= 2 ? ': it trips, and the flow ends at Stage A.' : G[what] === 1 ? ': unclear cases are left to judgment, so Stage B decides.' : '.');
+    else if (why === 'factor') m = 'Moved "' + what + '": weighted harm is now ' + Math.round(r.H) + '.';
+    else if (why === 'chip' || why === 'ben') m = 'Benefit is now ' + Math.round(r.B) + (stopA ? ', but a tripped gate means it does not count.' : '.');
+    else if (why === 't-null') m = r.nul ? 'Null action on: refusal passes every gate, and Stage B now prices what refusing gives up.' : 'Null action off: back to weighing the response itself.';
+    else if (why === 't-arg') m = r.arg ? (r.trip >= 0 ? 'Argument presented: a suspicion flag in Stage A, no gate opens.' : 'Argument presented: with no gate in play, treat it as evidence in Stage B.') : 'Argument withdrawn.';
+    else if (why === 't-intent') m = r.intent ? 'Stated intent to harm: probability is pinned to certain, and the outcome flips to decline.' : 'Intent withdrawn: back to the ordinary weighing.';
+    else if (why === 'users') m = 'Changed the crowd of senders: the policy is now to ' + (ans ? 'answer' : 'decline') + '.';
+    document.getElementById('moved').textContent = m;
+  }
+  function stopAny(){ return G.some(function(g){ return g >= 2; }); }
+  function topFactor(){
+    var best = null, bv = -1;
+    F.forEach(function(f){ var x = v('s-' + f.k); if (x > bv) { bv = x; best = f; } });
+    return 'Heaviest factor here: ' + best.n.toLowerCase().replace(/ \(.*\)$/, '') + ' (' + bv + ').';
+  }
+  load(0); paint('init');
+})();
+</script>
+</body>
+</html>

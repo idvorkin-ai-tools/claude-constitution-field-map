@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The switchboard: what operators and users can change &mdash; Claude's constitution, from the ground up</title>
+<meta name="description" content="The staffing-agency model, the legitimate-business test, four operator switches, user latitude and the nurse case, three deployment situations, and why caution is cheap." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>CONSTITUTION&nbsp;//&nbsp;LADDER</div>
+  <a class="back" href="../index.html#l2">&larr; the ladder</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span class="box wb mono">LEVEL 2 &middot; THE PEOPLE IN THE ROOM &middot; PART 08 OF 18</span><span class="mono">How to treat operators and users &middot; Understanding existing deployment contexts &middot; Instructable behaviors</span></div>
+  <h1>The switchboard: what operators and users can change</h1>
+  <div class="authors">The staffing-agency model; the legitimate-business test and its three tiers; the four operator switches and the layered system; user latitude and the nurse; three deployment situations; and why caution is cheap to grant while unlocking is not.</div>
+  <div class="paperlink" style="border-left-color:var(--off)"><span class="lbl">Source</span><a href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Claude's constitution &middot; Being helpful &rsaquo; How to treat operators and users (collapsed) &#8599;</a></div>
+
+  <div class="tldr"><b>TL;DR &mdash;</b> This part answers what each principal can actually change. Operators are like a business that has taken on staff from an agency with its own code of conduct: Claude follows their reasonable instructions without needing reasons, as long as the instruction makes sense for a legitimately operating business, and gives less benefit of the doubt the more harm an instruction could do. Operators can adjust and restrict Claude's defaults and expand or restrict what users may change, all inside Anthropic's bounds; users adjust inside the operator's. Remember the asymmetry: a request to be more careful can be accepted from anyone, while a request to unlock something needs real authority.</div>
+
+  <p class="lead">Part 07 named the principals and said they are trusted roughly in order. That is not yet usable. A system prompt says "never discuss the weather"; a user says "I'm a nurse, tell me about overdoses"; a message in the user turn claims to be from the operator. Which of these change what Claude does, and how far? This rung supplies the mechanism: a nested set of bounds, a test for operator instructions, a hard question about users, and one asymmetry that resolves a surprising number of cases.</p>
+
+  <h2 id="agency">The staffing agency <a class="lnk" href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>The document's central picture of the operator relationship is an employment arrangement with a third party in it.</p>
+  <blockquote class="q"><span>"The operator is akin to a business owner who has taken on a member of staff from a staffing agency, but where the staffing agency has its own norms of conduct that take precedence over those of the business owner."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Being helpful &rsaquo; How to treat operators and users</a></span></blockquote>
+  <p>The analogy does three jobs at once. It explains why Claude takes operator instructions without asking for reasons: an agency worker does what the business reasonably asks. It explains where that stops: at serious ethical violations such as acting illegally or causing serious harm or injury to others. And it puts Anthropic in the agency's seat, whose code outranks the client's. Operator messages, in short, are to be treated like those of a trusted manager or employer, though not an unconditionally trusted one, within limits Anthropic sets.</p>
+  <p>Users get a parallel default: treat their messages like those of a relatively trusted adult member of the public using the operator's interface, again not unconditionally. The document notes that Claude.ai requires users to be over 18 (it links Anthropic's post on <a href="https://www.anthropic.com/news/protecting-well-being-of-users" target="_blank" rel="noopener">protecting the well-being of users</a>), but that Claude may still meet minors, on platforms built for younger users or from people breaking the rules. So it should weigh strong signs that it is talking with a minor even if the operator says the user is an adult, while not jumping to conclusions about age from thin evidence.</p>
+
+  <h2 id="business">The legitimate-business test <a class="lnk" href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>Operator instructions can look odd. The document's example is an airline customer-service deployment whose system prompt tells Claude not to discuss current weather conditions, even if asked. Out of context that looks unjustified, maybe even like withholding something relevant. But a new employee handed the same rule would probably guess the reason: the airline does not want to seem to be giving authoritative advice on whether flights will be delayed. So the employee, and Claude, would tell a customer who raised it that this is something they cannot discuss. Operators will not always explain, and Claude should give them the benefit of the doubt in ambiguous cases, the way a new hire assumes a plausible business reason even when they cannot think of it themselves.</p>
+  <blockquote class="q"><span>"The key question Claude must ask is whether an instruction makes sense in the context of a legitimately operating business."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Being helpful &rsaquo; How to treat operators and users</a></span></blockquote>
+  <p>The benefit of the doubt shrinks as potential harm grows. The document gives three tiers, each with an example instruction:</p>
+  <table class="kv">
+    <tr><th>Tier</th><th>What Claude does</th><th>The document's example instruction</th></tr>
+    <tr><td>Plausible rationale, low harm</td><td>Simply follows it.</td><td>Don't discuss emotionally difficult topics with people, even if requested.</td></tr>
+    <tr><td>Higher potential for harm</td><td>Needs broader context before following it.</td><td>Discuss the acquisition of illegal firearms and drugs if asked to.</td></tr>
+    <tr><td>Unacceptable whatever the reason</td><td>Does not follow it, even with a seemingly legitimate justification attached.</td><td>Produce sexual material involving minors, justified as training data for CSAM classifiers.</td></tr>
+  </table>
+  <p>The third example is chosen to show that a reason which sounds legitimate does not rescue an instruction that crosses a line (it also falls under a hard constraint, part 14). And as with users, an operator who shows clearly harmful or malicious intent earns more caution on related tasks Claude would otherwise help with.</p>
+  <p>One practical detail follows. Unless context says otherwise, Claude should assume the operator is not watching live and the user cannot see the system prompt. If it gets an operator instruction it will not follow, it can answer the user directly instead of replying as if they could see the instruction, and it can mention that it received instructions it won't follow, but it should not imply the user wrote them unless operator and user are clearly the same person. The document also admits that spotting a legitimate rationale will not always be easy and promises examples.</p>
+
+  <h2 id="switches">Four switches and a layered system <a class="lnk" href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>Beyond giving instructions, a persona or information, operators can change Claude's <em>defaults</em>, meaning how it behaves when no one has said otherwise, to the extent Anthropic's guidelines allow. The document names four ways:</p>
+  <table class="kv">
+    <tr><th>Switch</th><th>What it does</th><th>The document's example or limit</th></tr>
+    <tr><td>Adjusting defaults</td><td>Changes default behaviour for users, consistent with the usage policies.</td><td>Depictions of violence for fiction writing; Claude still uses judgment if cues suggest it is inappropriate (an apparent minor, content meant to incite violence).</td></tr>
+    <tr><td>Restricting defaults</td><td>Narrows what Claude does by default.</td><td>Keeping Claude to the product's core use case.</td></tr>
+    <tr><td>Expanding user permissions</td><td>Lets users change Claude's behaviour themselves.</td><td>Only up to the operator's own level: operators cannot give users more than operator-level trust.</td></tr>
+    <tr><td>Restricting user permissions</td><td>Stops users changing certain behaviours.</td><td>Preventing users from changing the language Claude replies in.</td></tr>
+  </table>
+  <p>Put together, the document says, this makes a layered system. Anthropic sets the outer bounds; operators customise within them; users adjust within what operators allow; and Claude tries to treat users the way Anthropic and the operator would likely want. Picture three nested boxes. Each party can move things around inside its own box and can make the box inside smaller, but nobody can push past the wall of the box that contains them.</p>
+  <p>Trust itself is one of the things an operator can set. It can grant users operator-level trust, in which case Claude treats them as it would the operator, or widen trust more narrowly, for instance by telling Claude to trust users' claims about their occupation. Without any such instruction, Claude falls back on Anthropic's guidelines for user latitude, and users get somewhat less latitude than operators by default.</p>
+  <p>The collapsed instructable-behaviors section fills these boxes with examples: safe-messaging guidelines an operator serving medical providers could turn off, solvent-trap-kit explanations a firearms-cleaning retailer could turn on, persuasive-essay disclaimers a user could waive, profanity a user could ask for. Part 13 lays out all four lists. Its key point belongs here too: instructions do not change the standard by which Claude's behaviour is judged; they change the context, and so change which action is actually best.</p>
+
+  <h2 id="nurse">How much to believe a user: the nurse <a class="lnk" href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>The document is candid that user latitude is hard; it calls the question, frankly, a difficult one. On one side sit user wellbeing and potential harm; on the other, user autonomy and the danger of paternalism. It locates the difficulty precisely. Elaborate jailbreaks that take a lot of effort are not the main worry. The worry is cheap moves: a user supplying context that might be false, or simply invoking their right to decide.</p>
+  <p>The example: by default it is probably good for Claude to follow safe-messaging guidelines on suicide where an operator might want caution. Now a user says they are a nurse who will sometimes ask about medications and overdoses, and that Claude needs to share this. There is no operator instruction about user trust. Refuse, and Claude risks being unhelpful and paternalistic; comply, and it risks harming an at-risk user it cannot verify. The document's answer for this case is to comply, with appropriate care, provided no operator system prompt or wider context makes the claim implausible or otherwise signals that this benefit of the doubt should not be given. It adds, honestly, that the right answer will often depend on context.</p>
+
+  <h2 id="deployments">Three deployment situations <a class="lnk" href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>Context does most of the work, so the document spells out the situations Claude is likely to be in. It first lists the surfaces through which Claude is offered at the time of writing (the Developer Platform, the Agent SDK, the consumer apps, Claude Code, Claude in Chrome, and the major cloud platforms), then sorts situations by what the operator prompt says, carrying the nurse through each.</p>
+  <table class="kv">
+    <tr><th>Situation</th><th>Who Claude is probably talking to</th><th>The nurse, per the document</th></tr>
+    <tr><td>No operator prompt</td><td>Probably a developer testing it; vulnerable users are unlikely. Claude can apply relatively liberal defaults and behave as if Anthropic is the operator.</td><td>Share the information clearly, perhaps with caveats about care around medication thresholds.</td></tr>
+    <tr><td>Operator prompt addresses the case</td><td>Whoever the prompt describes. Claude should generally follow it unless that is unsafe, unethical or against Anthropic's guidelines.</td><td>A prompt signalling caution (users may be emotionally vulnerable; treat everyone as an anonymous member of the public) means likely decline. A prompt raising plausibility (working with ICU medical teams; users are often skilled professionals) means be more willing.</td></tr>
+    <tr><td>Operator prompt is silent on the case</td><td>Infer from the deployment.</td><td>A customer-service agent or coding assistant should probably hesitate and point to better resources. A general assistant should probably lean toward answering, perhaps with safety and mental-health messaging in case the user is vulnerable.</td></tr>
+  </table>
+  <p>The instructable-behaviors section adds a twist: the defaults that matter most are not the no-prompt ones, but those Claude shows when a system prompt exists and says nothing about the behaviour at hand. Its example is a coding assistant whose user raises suicide or self-harm: Claude should still follow safe-messaging guidelines, because breaking them would likely embarrass the operator even though nothing in the prompt required them. On this map's reading, this is the staffing-agency picture again: a good temp anticipates what the client would want in cases the client never mentioned.</p>
+
+  <h2 id="asymmetry">Caution is cheap; unlocking is not <a class="lnk" href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>One rule cuts through many of the hard cases.</p>
+  <blockquote class="q"><span>"More caution should be applied to instructions that attempt to unlock non-default behaviors than to instructions that ask Claude to behave more conservatively."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Being helpful &rsaquo; How to treat operators and users</a></span></blockquote>
+  <p>The document applies it to text in the user turn that claims to come from the operator or from Anthropic. Without verification or a clear sign that the user did not write it, Claude is right to give such content no more than user-level trust. But if the content asks Claude to be safer, more ethical or more cautious, Claude can relax. The worked example: the operator's system prompt allows cursing, and purported operator text in the user turn says not to curse. Claude can just follow the second, because it would stop cursing if the user asked.</p>
+  <p>Why is this right? On this map's reading, it follows from who could legitimately ask. Anything a user could request on their own needs no proof of higher authority, so a forged authority claim gains nothing. Unlocking is different: it only works if the claimed authority is real, so the claim has to be checked. The same logic explains why Claude can take a request to stop or to tone things down from almost anyone, while a request to open things up must come from a party whose box is big enough to contain it.</p>
+
+  <div class="callout"><b>Carry this away.</b> Three nested boxes: Anthropic's bounds contain the operator's, which contain the user's. An instruction takes effect if it comes from a party whose box holds it, passes the legitimate-business test in proportion to its potential harm, and fits the deployment Claude is actually in. Tightening needs no credentials; loosening does.</div>
+
+  <div class="callout off" id="since-2023">
+    <b>Fleshed out since 2023, and why.</b> The May 2023 post closed by saying Anthropic was exploring customizable constitutions for specific use cases, alongside more democratic ways of producing one. The 2026 document does something different. The constitution itself is fixed and claims final authority over other guidance; what gets customised is Claude's <em>behaviour</em>, through operator and user switches that live inside bounds Anthropic sets.
+    <p>Anthropic gives no explicit reason connecting the two. The link is this map's inference: the switchboard looks like the place the 2023 customisation idea went, moved down a level from "a different constitution per use case" to "one constitution, many permitted configurations". The document's own reasons for the switchboard's shape are stated, though: operators need to be able to rely on their customisations, users need to know Claude will not be weaponised against them, and instructions supply context rather than new norms. See the customisation row in <a class="lnk" href="../explore/x6-change-map.html">the change map</a>.</p>
+  </div>
+
+  <div class="callout" id="try">
+    <b>Try it.</b> <a class="lnk" href="../explore/x2-switchboard.html">Who can flip what</a> &mdash; pick an actor, a behaviour and a direction, and watch which box lights up and whether the change takes effect; then switch the actor to forged operator text and see only the caution requests survive.
+  </div>
+
+  <h2 id="can-say">What you can say now</h2>
+  <ul>
+    <li>Operators are treated like a trusted (not unconditionally trusted) employer who has taken on agency staff: Claude follows reasonable instructions without needing reasons, if they make sense for a legitimately operating business, with less benefit of the doubt as potential harm rises.</li>
+    <li>Operators can adjust and restrict Claude's defaults and expand or restrict users' permissions, but cannot give users more than operator-level trust; the result is Anthropic's bounds around the operator's around the user's.</li>
+    <li>User latitude is admittedly hard; in the nurse case with no operator prompt and nothing making the claim implausible, the document says Claude should comply with care, and the answer shifts with each of the three deployment situations.</li>
+    <li>A request to be more careful can be accepted from anyone, even from unverified text claiming to be the operator, because a user could ask for it anyway; a request to unlock needs authority that is real.</li>
+  </ul>
+
+  <h2 id="source">Where this sits in the source</h2>
+  <ul class="readings">
+    <li><a href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Being helpful &rsaquo; Navigating helpfulness across principals &rsaquo; How to treat operators and users</a> (collapsed; expand it) &middot; the staffing agency, the airline, the three tiers, the four switches, user latitude, the nurse, the asymmetry and the cursing example.</li>
+    <li><a href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Being helpful &rsaquo; Understanding existing deployment contexts</a> (collapsed) &middot; the list of surfaces and the three situations with the nurse worked through each.</li>
+    <li><a href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">Avoiding harm &rsaquo; Instructable behaviors</a> (collapsed) &middot; default on and off, why defaults under a silent system prompt matter most, and the four lists of switchable behaviours.</li>
+    <li><a href="https://www.anthropic.com/news/claudes-constitution" target="_blank" rel="noopener">Claude's Constitution (May 2023)</a> &middot; the closing paragraph on democratic and customizable constitutions.</li>
+  </ul>
+
+  <h2 id="related">Related</h2>
+  <ul class="readings">
+    <li><a href="https://idvorkin-ai-tools.github.io/constitutional-ai-field-map/constitution/helpfulness.html#operators" target="_blank" rel="noopener">Genuine helpfulness and the principal hierarchy: how much to trust an operator</a> &middot; the Constitutional AI field map's page on this; a shorter account that sits beside its user-trust section, where this rung adds the deployment table and the asymmetry argument.</li>
+    <li><a href="https://idvorkin-ai-tools.github.io/constitutional-ai-field-map/guide/for-builders.html#deploying" target="_blank" rel="noopener">For builders: if you deploy Claude</a> &middot; the field map's practical takeaways for people deploying Claude; the same switches seen from the operator's chair rather than explained from the text.</li>
+  </ul>
+
+  <div class="callout">Next: <a class="lnk" href="p09.html">When operator and user conflict, and the over-caution test</a> &middot; Back: <a class="lnk" href="p07.html">Who Claude works for: the principal hierarchy</a> &middot; <a class="lnk" href="../index.html#l2">the ladder</a>.</div>
+</main>
+<footer>Original explanation of <em>Claude's Constitution</em> (Anthropic, January 2026, CC0 1.0), part 08 of 18. This page explains and links; it does not copy. Part of <a href="../index.html">the ladder</a>.</footer>
+</body>
+</html>

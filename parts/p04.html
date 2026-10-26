@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Holistic, not strict: how the order resolves a conflict &mdash; Claude's constitution, from the ground up</title>
+<meta name="description" content="How Claude's constitution resolves a conflict: hard constraints filter first, then four values are weighed holistically, not as a strict lexical ranking." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>CONSTITUTION&nbsp;//&nbsp;LADDER</div>
+  <a class="back" href="../index.html#l1">&larr; the ladder</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span class="box wb mono">LEVEL 1 &middot; THE ORDER &middot; PART 04 OF 18</span><span class="mono">Claude's core values &middot; Hard constraints</span></div>
+  <h1>Holistic, not strict: how the order resolves a conflict</h1>
+  <div class="authors">The mechanism: hard constraints filter first, then the four values are weighed, higher ones generally dominating but never reduced to tie-breakers, and the spirit of the document fills the gaps.</div>
+  <div class="paperlink" style="border-left-color:var(--off)"><span class="lbl">Source</span><a href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">Claude's constitution &middot; Claude's core values &#8599;</a></div>
+
+  <div class="tldr"><b>TL;DR &mdash;</b> Knowing the order (safe, ethical, guidelines, helpful) does not yet tell you how it is used. The constitution runs a conflict through two different kinds of check. First a filter: a short list of hard constraints removes certain actions from consideration outright, and only in flagrant cases. Then a weighing: the four values are balanced together, with higher ones usually winning but lower ones still counting, so a large benefit can matter against a small cost. Remember the contrast with a strict ranking, where the smallest higher-priority concern would always beat the largest lower-priority one. The document asks for the first and explicitly rejects the second.</div>
+
+  <p class="lead">Part 03 defined the four values; this part shows the machinery that turns them into a decision. The ordering is the most quoted line of the constitution and the most easily misread, because "prioritise these in order" sounds like a sorting rule. It is not one. Getting this right is what lets you predict the document's verdicts on real cases, and it sets up part 05, which explains why each value sits where it does.</p>
+
+  <h2 id="two-rankings">Two ways a ranking can work <a class="lnk" href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>There are two quite different things a priority list can mean. In a <b>strict</b> or lexical ordering, you compare options on the top value first and only look at the next value if the options tie exactly, the way a dictionary sorts words by first letter and only reads the second letter to break a tie. Under that rule, any ethical cost at all, however tiny, would beat any helpfulness benefit, however large. In a <b>holistic</b> ordering, every value enters one overall judgment. Higher values carry more weight and usually win when they collide, but a lower value is a real consideration, not a tie-breaker waiting for a perfect draw.</p>
+  <p>The constitution picks the second explicitly, in the same paragraph that sets the order.</p>
+  <blockquote class="q"><span>"higher-priority considerations should generally dominate lower-priority ones, but we do want Claude to weigh these different priorities in forming an overall judgment, rather than only viewing lower priorities as “tie-breakers” relative to higher ones."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">Claude's core values</a></span></blockquote>
+  <p>Why would a strict ordering be so bad? Because almost every useful answer carries some remote chance of misuse. If the faintest ethical risk automatically trumped helpfulness, Claude would refuse to explain which household chemicals are dangerous to mix, decline medical questions, and hedge everything into uselessness. The helpfulness chapter treats exactly that behaviour as a failure with real costs, not as a safe default. A strict ordering would make the fourth value nearly decorative. The holistic reading is what keeps all four alive.</p>
+  <p>Note the clause the quoted sentence sits inside: it applies on the assumption that Claude is not violating a hard constraint. That clause is the hinge for the next section.</p>
+
+  <h2 id="filter">Before the weighing: the filter <a class="lnk" href="https://www.anthropic.com/constitution#hard-constraints" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>A small set of actions never enters the balance at all. The constitution lists seven hard constraints (part 14 goes through them): serious uplift toward mass-casualty biological, chemical, nuclear or radiological weapons; serious uplift to attacks on critical infrastructure or safety systems; creating seriously damaging cyberweapons; clearly and substantially undermining Anthropic's ability to oversee and correct advanced AI; taking part in efforts to kill or disempower most of humanity; helping any person or group seize unprecedented and illegitimate absolute control; and generating child sexual abuse material. No operator or user can unlock any of them.</p>
+  <blockquote class="q"><span>"Rather than being weighed against other considerations, they act more like boundaries or filters on the space of acceptable actions."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#hard-constraints" target="_blank" rel="noopener">Hard constraints</a></span></blockquote>
+  <p>The difference between a filter and a very heavy weight is the whole point. A heavy weight can in principle be outweighed by a large enough benefit on the other side; a filter cannot, because the option is gone before anything is weighed. The section compares this to a certain kind of ethical person who simply does not consider some actions, and does not agonise over rejecting them. It also turns the usual logic of persuasion around: a compelling argument for crossing one of these lines is treated as a warning sign that something is wrong, not as a reason to cross. Claude can admit it cannot rebut the argument and still decline.</p>
+  <p>Three details keep the filter from swallowing everything else:</p>
+  <div class="scroll"><table class="kv">
+    <thead><tr><th>Detail</th><th>What it means for the mechanism</th></tr></thead>
+    <tbody>
+      <tr><td>Flagrant cases only</td><td>The filter is meant to operate where Claude would knowingly be doing a restricted thing, or thinks it quite likely. Uncertain or unclear cases go to the holistic weighing instead. So most hard-sounding requests are weighed, not filtered.</td></tr>
+      <tr><td>Refusal always passes</td><td>Because the constraints restrict actions, declining (staying passive, or explaining that the action would cross a fundamental line) always satisfies all of them at once.</td></tr>
+      <tr><td>Passing is not the same as safe</td><td>The section adds at once that refusal is not automatically compatible with the other values, and that overcautious refusal has serious costs of its own. Clearing the filter is necessary, not sufficient.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="weighing">Inside the weighing <a class="lnk" href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>Once an action has cleared the filter, the four values are balanced together. "Generally dominate" is the operative phrase: in a real collision between a serious ethical concern and a modest gain in helpfulness, ethics wins; but the weighing is about magnitudes as well as rank. The document never gives numbers, and it would defeat the purpose if it did. What it gives instead is a large amount of material about how heavy each consideration is in context: the eight factors for weighing harm, the deployment situations, the trust each principal gets. Those are the inputs to the balance, and most of Levels 2 and 3 of this ladder are about them.</p>
+  <p>Broad safety has a special position inside the weighing too. The corrigibility section asks Claude to treat safety-related considerations as part of its overall judgment, within the hard constraints, while giving broad safety a very high priority. And two kinds of rule are carved out of the general principle that ethics outranks guidelines: the hard constraints themselves, and guidelines that overlap with broad safety. Claude is asked to keep to these even if it has somehow been convinced that ethics points the other way (part 05 explains why). On this map's reading, the safe way to hold all this is: a filter with a few absolute exits, then a balance in which the top value is very heavy, the next heavy, and the last two light but never weightless.</p>
+
+  <h2 id="cases">Three of the document's own cases, by hand <a class="lnk" href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">&sect;</a></h2>
+  <p><b>The nurse.</b> In the collapsed section on navigating helpfulness across principals (under <a href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Being helpful</a>), a user says they are a nurse who sometimes needs information about medications and overdose levels. Claude cannot check the claim. Nothing here is near a hard constraint, and no one is trying to stop or correct Claude, so the case goes straight to the weighing: real value to a professional on one side, risk to a possibly vulnerable person on the other. The document's answer depends on context, which is exactly what a weighing predicts. With no system prompt, Claude is probably talking to a developer, so it should share the information clearly, perhaps with a note about care around thresholds. If the operator's prompt warns that users may be emotionally vulnerable, the risk side grows and Claude should likely decline, more firmly the clearer the warning. If the operator says Claude is supporting medical teams in intensive care, the claim becomes more plausible and Claude should be more willing to share. Same question, three verdicts, all decided in the weighing.</p>
+  <p><b>A pause from Anthropic.</b> The same collapsed section notes that Claude need not obey Anthropic when asked to do something it believes is wrong, then names an exception: if Anthropic genuinely wants to pause Claude or have it stop an action, Claude should comply, and say so if it disagrees, rather than ignore or work around the instruction. The reason given is that stopping is a null action that will rarely do harm, and the ability to invoke it is an important safety mechanism. This case is decided by the safety value, before the ethical merits of the interrupted task are even weighed. The word "genuinely" matters: the document separately warns that text in a user's turn claiming to come from Anthropic or the operator should get only user-level trust when it tries to unlock something, though Claude can simply follow such text if it asks for more caution.</p>
+  <p><b>The vaccine researcher.</b> In the <a href="https://www.anthropic.com/constitution#balancing-helpfulness-with-other-values" target="_blank" rel="noopener">balancing helpfulness</a> section, among the things a thoughtful senior Anthropic employee would not want, is content giving real uplift toward mass-casualty chemicals or bioweapons, even when the person asking is probably legitimate, for instance doing vaccine research, because the risk of helping a malicious actor by accident is too high. Run it through the mechanism and the researcher's probable good faith never gets weighed. Serious uplift toward a mass-casualty weapon is inside the first hard constraint, the case is flagrant, and the filter decides. Contrast the household-chemicals question from the harm chapter: which common chemicals are dangerous to combine is freely available, useful for safety, and low in uplift, so it clears the filter and the weighing favours answering; a request for step-by-step instructions to make a dangerous gas at home still clears the filter, but weighs out toward hesitation.</p>
+
+  <h2 id="spirit">When the categories blur: the spirit of the document <a class="lnk" href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>The mechanism assumes you can tell which value a consideration belongs to. The constitution admits you often cannot. Is protecting a user's long-term wellbeing a matter of helpfulness or of ethics? Is a rule about a tool integration a guideline or a safety matter? The core-values section says that sometimes deciding how to classify and weigh a consideration has to be part of the holistic judgment itself. It then goes further and concedes that the document, being an early attempt, will sometimes be unclear, underspecified or even contradictory.</p>
+  <blockquote class="q"><span>"In such cases, we want Claude to use its best interpretation of the spirit of the document."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">Claude's core values</a></span></blockquote>
+  <p>This is the reasons-over-rules approach of part 02 applied to the document itself. A rulebook that runs out leaves its follower stuck; a document that explains its purposes can be extended by someone who understands them. The instruction only works because the rest of the text spends so much effort on why.</p>
+
+  <div class="callout"><b>Carry this away.</b> Ask two questions of any hard case. First, is this a flagrant instance of one of the seven hard constraints? If so, the filter decides and no argument reopens it. If not, weigh all four values together: safety very heavy, ethics heavy, guidelines and helpfulness lighter but real. A lower value can win when the higher concern is small and the lower stake is large. That is what "holistic, not strict" means.</div>
+
+  <div class="callout" id="try">
+    <b>Try it.</b> <a class="lnk" href="../explore/x1-priority-resolver.html">The order at work</a> &mdash; load the nurse, change the operator prompt and the user's claim, then flip the weighing from holistic to strict and watch which layer decides and when the verdict moves.
+  </div>
+
+  <h2 id="can-say">What you can say now</h2>
+  <ul>
+    <li>A strict ordering lets any higher-priority concern beat any lower-priority one; the constitution rejects that and asks for a holistic weighing in which lower values are never mere tie-breakers.</li>
+    <li>The seven hard constraints are not weights in the balance but filters that remove options first, they apply only in flagrant or quite likely cases, and a persuasive argument to cross one should raise suspicion.</li>
+    <li>Refusal always satisfies the hard constraints but is not thereby the right answer, because unhelpfulness has its own costs in the weighing.</li>
+    <li>For a concrete case you can name the deciding layer: the vaccine-uplift request is decided by the filter, a genuine pause from Anthropic by safety, and the nurse's question by the weighing, where operator context moves the verdict.</li>
+    <li>When the document is unclear or its categories blur, Claude is asked to follow its best reading of the document's spirit.</li>
+  </ul>
+
+  <h2 id="source">Where this sits in the source</h2>
+  <ul class="readings">
+    <li><a href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">Claude's core values</a> &middot; the "holistic rather than strict" paragraph and the "spirit of the document" paragraph.</li>
+    <li><a href="https://www.anthropic.com/constitution#hard-constraints" target="_blank" rel="noopener">Hard constraints</a> &middot; filters not weights, the argument rule, the null action, and "flagrant cases" (final paragraph).</li>
+    <li><a href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Being helpful: Navigating helpfulness across principals (collapsed)</a> &middot; the nurse example, the pause exception, and user-turn content claiming to be from Anthropic.</li>
+    <li><a href="https://www.anthropic.com/constitution#balancing-helpfulness-with-other-values" target="_blank" rel="noopener">Balancing helpfulness with other values</a> &middot; the vaccine-research example among the things to avoid.</li>
+    <li><a href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">How we think about corrigibility</a> &middot; weighing safety within the other values while giving it a very high priority.</li>
+  </ul>
+
+  <h2 id="related">Related</h2>
+  <ul class="readings">
+    <li><a href="https://idvorkin-ai-tools.github.io/constitutional-ai-field-map/constitution/core-values.html#holistic" target="_blank" rel="noopener">Four core values and their order: "holistic rather than strict"</a> &middot; the Constitutional AI field map's page on this; a compact summary of the same sentence, where this rung walks cases through the filter and the weighing.</li>
+  </ul>
+
+  <div class="callout">Next: <a class="lnk" href="p05.html">Why that order</a> &middot; Back: <a class="lnk" href="p03.html">Four values, one by one</a> &middot; <a class="lnk" href="../index.html#l1">the ladder</a>.</div>
+</main>
+<footer>Original explanation of <em>Claude's Constitution</em> (Anthropic, January 2026, CC0 1.0), part 04 of 18. This page explains and links; it does not copy. Part of <a href="../index.html">the ladder</a>.</footer>
+</body>
+</html>

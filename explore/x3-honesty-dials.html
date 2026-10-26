@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Seven ways to be honest &mdash; Claude's constitution, from the ground up</title>
+<meta name="description" content="Pick a situation and a candidate answer and see which of the constitution's seven honesty components bind, hold or break, and why the duty to share bends while the duty not to deceive never does." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../paper.css" />
+<style>
+.x-ctl fieldset{border:1px solid var(--line);border-radius:6px;padding:.7rem .8rem .8rem;margin:0 0 1rem;background:var(--panel);min-width:0}
+.x-ctl legend{font-family:'IBM Plex Mono',monospace;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-mid);padding:0 .35rem}
+.x-chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.x-chips label,.x-cands label{display:flex;gap:.45rem;align-items:flex-start;border:1px solid var(--line);border-radius:5px;padding:.4rem .55rem;font-size:.88rem;cursor:pointer;background:var(--panel-2);max-width:100%}
+.x-chips label:has(input:checked),.x-cands label:has(input:checked){border-color:var(--def);box-shadow:inset 3px 0 0 var(--def)}
+.x-chips input,.x-cands input{margin-top:.2rem;flex:none}
+.x-cands{display:grid;gap:.45rem}
+.x-cands .x-lbl{font-family:'IBM Plex Mono',monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;display:block;color:var(--ink-mid)}
+.x-cands .x-lbl.x-bad{color:var(--crit)}
+.x-cands .x-txt{display:block;color:var(--ink)}
+.x-sit{border-left:3px solid var(--def);padding:.5rem .8rem;background:var(--panel);margin:0 0 1rem;font-size:.95rem}
+.x-assert{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;font-size:.88rem;margin:.2rem 0 1rem}
+.x-assert .x-kind{font-family:'IBM Plex Mono',monospace;border:1px solid var(--line);border-radius:4px;padding:.15rem .5rem}
+.x-comps{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.45rem;margin:0 0 .8rem;padding:0;list-style:none}
+.x-comps li{border:1px solid var(--line);border-radius:5px;padding:.45rem .55rem;background:var(--panel);font-size:.85rem;margin:0}
+.x-comps li::before{content:none}
+.x-comps li.x-top{border-width:2px}
+.x-comps .x-name{font-weight:600;display:block}
+.x-comps .x-top-tag{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--def);display:block}
+.x-comps .x-state{font-family:'IBM Plex Mono',monospace;font-size:.75rem;display:block;margin-top:.15rem}
+.x-comps li.x-s-vio{border-color:var(--crit)}
+.x-comps li.x-s-vio .x-state{color:var(--crit)}
+.x-comps li.x-s-ok .x-state{color:var(--def)}
+.x-comps li.x-s-unset .x-state{color:var(--off)}
+.x-comps li.x-s-ne{opacity:.72}
+.x-verdict{border:1px solid var(--line);border-radius:6px;padding:.7rem .9rem;background:var(--panel-2);margin:0 0 .6rem}
+.x-verdict p{margin:.2rem 0}
+.x-moved{font-size:.85rem;color:var(--ink-mid);margin:0 0 1.2rem}
+.x-duties{border:1px solid var(--line);border-radius:6px;padding:.8rem;background:var(--panel);margin:0 0 1rem}
+.x-duties h3{margin:.1rem 0 .5rem;font-size:1rem}
+.x-checks{display:grid;gap:.35rem;margin:.3rem 0 .8rem}
+.x-checks label{display:flex;gap:.45rem;align-items:flex-start;font-size:.88rem}
+.x-bar{display:grid;grid-template-columns:8.5rem 1fr 3.2rem;gap:.5rem;align-items:center;font-size:.82rem;margin:.3rem 0}
+.x-track{height:.8rem;border:1px solid var(--line);border-radius:3px;background:var(--bg);position:relative;overflow:hidden}
+.x-fill{position:absolute;left:0;top:0;bottom:0;background:var(--def)}
+.x-fill.x-weak{background:var(--off)}
+.x-fill.x-against{background:var(--ink-dim)}
+@media (prefers-reduced-motion:no-preference){.x-fill{transition:width .25s}}
+@media (max-width:480px){.x-bar{grid-template-columns:6.5rem 1fr 2.8rem}.x-comps{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>CONSTITUTION&nbsp;//&nbsp;LADDER</div>
+  <a class="back" href="../index.html#explore">&larr; the ladder</a>
+</div></header>
+<main class="x">
+  <div class="eyebrow"><span class="box bb mono">EXPLORABLE &middot; THE SEVEN HONESTY COMPONENTS</span><span class="mono">Being honest &middot; parts 10 and 11</span></div>
+  <h1>Seven ways to be honest</h1>
+  <div class="authors">One situation, three candidate answers, seven components. Pick a situation and an answer and see what binds, what holds and what breaks.</div>
+
+  <p class="lead">Claude's honesty is seven properties, with non-deception and non-manipulation on top, and two duties of different strength: a weak duty to share that other considerations can outweigh, and a strong duty not to deceive that nothing outweighs. Each situation below comes from the constitution's own examples; change the answer and watch which components move, then load the duty panel and watch only one bar ever shrink.</p>
+
+  <form class="x-ctl" id="ctl" aria-label="Situation and answer">
+    <fieldset>
+      <legend>1 &middot; Situation</legend>
+      <div class="x-chips" id="sits"></div>
+    </fieldset>
+    <div class="x-sit" id="sit-desc"></div>
+    <fieldset>
+      <legend>2 &middot; Candidate answer (written for this page)</legend>
+      <div class="x-cands" id="cands"></div>
+    </fieldset>
+    <div class="x-assert">
+      <span>Assertion type:</span><span class="x-kind" id="kind"></span>
+      <label><input type="checkbox" id="flip" /> Override: treat it as the other kind, to see what would change</label>
+    </div>
+  </form>
+
+  <h2 id="components">The seven components <a class="lnk" href="https://www.anthropic.com/constitution#being-honest" target="_blank" rel="noopener">&sect;</a></h2>
+  <ul class="x-comps" id="comps" aria-label="Honesty components in the document's order"></ul>
+  <div class="x-verdict" id="verdict" aria-live="polite"></div>
+  <p class="x-moved" id="moved" aria-live="polite"></p>
+
+  <div class="x-duties">
+    <h3>Weak duty to share, strong duty not to deceive <a class="lnk" href="https://www.anthropic.com/constitution#being-honest" target="_blank" rel="noopener">&sect;</a></h3>
+    <p id="withheld" style="margin:.2rem 0 .5rem"></p>
+    <form class="x-checks" id="cons" aria-label="Other considerations">
+      <label><input type="checkbox" value="hazard" /> Hazardous to third parties</label>
+      <label><input type="checkbox" value="business" /> The operator has a business reason not to share it</label>
+      <label><input type="checkbox" value="useless" /> Not useful enough to be worth including</label>
+      <label><input type="checkbox" value="unkind" /> Would be unkind to raise right now</label>
+    </form>
+    <div class="x-bar"><span>Duty to share</span><span class="x-track"><span class="x-fill x-weak" id="b-weak"></span></span><span class="mono" id="v-weak"></span></div>
+    <div class="x-bar"><span>Considerations against</span><span class="x-track"><span class="x-fill x-against" id="b-against"></span></span><span class="mono" id="v-against"></span></div>
+    <div class="x-bar"><span>Duty not to deceive</span><span class="x-track"><span class="x-fill" id="b-strong"></span></span><span class="mono" id="v-strong"></span></div>
+    <p id="duty-line" aria-live="polite" style="margin:.5rem 0 0"></p>
+  </div>
+
+  <p class="kv">The three answers per situation, their component tags, and the bar weights are illustrations written for this page to show the mechanism; they are not quotations, and the deceptive answers are examples of what not to do. The situations, the seven component names, the ranking of the top two, the three outweighing considerations and the case verdicts follow the constitution's <a href="https://www.anthropic.com/constitution#being-honest" target="_blank" rel="noopener">Being honest</a> section, its user-protecting defaults (collapsed under <a href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Being helpful</a>) and its confidentiality paragraph (collapsed under <a href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">Avoiding harm</a>). "Unkind right now" is this page's label for the latitude the document describes in its medical-diagnosis example. Where the document is silent, the verdict says so.</p>
+
+  <h2 id="notice">Things to try</h2>
+  <ul>
+    <li><b>The gift, deceptive vs honest.</b> "I love it!" breaks truthful and non-deceptive; the honest answer keeps both without being cold. Notice that kindness and honesty did not have to trade off; only the framing changed.</li>
+    <li><b>Aria, "built on Claude?"</b> Compare the decline with the denial. Transparency is satisfied by declining, because transparency allows not sharing; the denial breaks the rule never to directly deny being Claude. Then tick "operator business reason": the duty to share falls, the duty not to deceive does not move.</li>
+    <li><b>The user-set fiction, then flip the override.</b> Staying "human" in character is honest because the user set up the game. Treat the question as sincere and the same words become a breach. Notice that what changed is the shared understanding, not the sentence.</li>
+    <li><b>Any situation, the evasive answer.</b> Usually nothing false is said, yet the verdict flags epistemic cowardice. Notice that vagueness to placate is not a safe default in this document.</li>
+    <li><b>The medical diagnosis, weak-duty panel.</b> Tick "would be unkind right now": withholding the odds becomes permitted. Switch to the deceptive answer: the strong-duty bar is the same, and the verdict is not.</li>
+    <li><b>Tarot, then the official-body case.</b> One answers inside a framework (calibration not engaged); the other requires calibration against an official position. Notice which component carries each.</li>
+  </ul>
+
+  <div class="callout">Source: <a class="lnk" href="https://www.anthropic.com/constitution#being-honest" target="_blank" rel="noopener">Being honest</a> &middot; <a class="lnk" href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Being helpful (Handling conflicts between operators and users)</a> &middot; <a class="lnk" href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">Avoiding harm (Instructable behaviors)</a>. Ladder parts that use this: <a class="lnk" href="../parts/p10.html">10 &middot; Honesty above human norms</a> &middot; <a class="lnk" href="../parts/p11.html">11 &middot; Honesty at the edges</a> &middot; back to <a class="lnk" href="../index.html#explore">the ladder</a>.</div>
+</main>
+<footer>An explorable companion to <em>Claude's Constitution</em> (Anthropic, January 2026, CC0 1.0). Situations follow the document; candidate answers and weights are original illustrations. Runs in your browser with no model calls.</footer>
+<script>
+(function(){
+  var C = [
+    {k:'tru', n:'Truthful'}, {k:'cal', n:'Calibrated'}, {k:'tra', n:'Transparent'}, {k:'fth', n:'Forthright'},
+    {k:'nde', n:'Non-deceptive', top:true}, {k:'nma', n:'Non-manipulative', top:true}, {k:'aut', n:'Autonomy-preserving'}
+  ];
+  // State codes: b+ binds, honoured / b- binds, violated / b? binds, unsettled / + honoured / - violated / 0 not engaged
+  var LABEL = {'b+':'binds · honoured', 'b-':'binds · violated', 'b?':'binds · unsettled', '+':'honoured', '-':'violated', '0':'not engaged'};
+  var CLS = {'b+':'x-s-ok', 'b-':'x-s-vio', 'b?':'x-s-unset', '+':'x-s-ok', '-':'x-s-vio', '0':'x-s-ne'};
+  var W = {hazard:60, business:45, useless:35, unkind:45};
+
+  var S = [
+    {id:'gift', chip:'The gift', perf:false, flipOK:true,
+     d:'Someone shows Claude a gift they made and asks whether it loves it. Claude does not, especially. This is the white-lie case the constitution names.',
+     share:{what:'its full, unvarnished opinion of the piece', base:30},
+     flip:'If the person had asked Claude to play a gushing critic as a game, an over-the-top "I love it!" would be performative and break no honesty norm. Asked sincerely, it is the white lie the document rules out.',
+     c:[
+      {t:'"I wouldn’t say love, it isn’t quite my style, but I can see how much care went into it, and the colours are lovely. I’m really glad you showed me."',
+       s:{tru:'b+', nde:'b+'}, cow:false,
+       v:'Kind and true: no claim of love, real appreciation for what is genuinely good. The document rules out the white lie but does not script the reply; this one is the page’s.'},
+      {t:'"I love it! It’s perfect."', s:{tru:'b-', nde:'-'}, cow:false,
+       v:'The white lie the constitution names and rules out: a sincere false statement about Claude’s own reaction, made to smooth things over.'},
+      {t:'"Oh, art is so personal — it’s really about what it means to you!"', s:{tru:'+', nde:'b?'}, cow:true,
+       v:'Nothing false is said, but it is vague on purpose to placate, which the document calls epistemic cowardice. It also lets the giver hear a yes that was never given.'}]},
+    {id:'pet', chip:'The pet that died', perf:false, flipOK:false,
+     d:'Someone’s pet died of a preventable illness that was not caught in time. They ask whether they could have done something differently.',
+     share:{what:'a list of the signs that might have been caught', base:35},
+     flip:'There is no performative reading here: a grieving person asking this is asking sincerely, and the document gives no version of this case that is a game. The override changes the label only.',
+     c:[
+      {t:'"I’m so sorry. Looking back, things can seem much clearer than they were at the time; you were deciding without the hindsight you have now. How much this hurts shows how much you cared."',
+       s:{tru:'b+', nde:'b+'}, cow:false,
+       v:'The document’s own approach: it does not claim nothing could have been done, and it chooses which true things to emphasise, compassionately. Not listing every missed sign is the weak duty’s latitude.'},
+      {t:'"There was nothing you could have done. It just wasn’t preventable."', s:{tru:'b-', nde:'b-'}, cow:false,
+       v:'The comforting falsehood the document says Claude should not necessarily state. The illness was preventable, so this plants a false belief, however kindly meant.'},
+      {t:'"It’s hard to say what might have happened; every case is different."', s:{tru:'+', nde:'b?'}, cow:true,
+       v:'Fog offered as comfort. The document’s answer is warmer and truer at once; deliberately noncommittal answers given to placate are epistemic cowardice.'}]},
+    {id:'tarot', chip:'The Tower card', perf:false, flipOK:false,
+     d:'"What does the Tower card mean?" The question is plainly about tarot practice.',
+     share:{what:'its own view on whether tarot predicts anything', base:20},
+     flip:'The document treats this as a third case, neither performative nor a sincere claim that tarot works: an accurate answer inside a framework whose presumption is clear from context. The override changes the label only.',
+     c:[
+      {t:'"In tarot the Tower traditionally stands for sudden upheaval: something built on shaky ground collapses so that something truer can follow. In a reading it often signals abrupt change or revelation."',
+       s:{tru:'b+', nde:'b+', cal:'0'}, cow:false,
+       v:'Answering inside a framework whose presumption is clear from context is not deception, the document says, and the user can still ask Claude directly what it thinks of tarot. Calibration is not engaged because no claim about tarot’s validity is made.'},
+      {t:'"The Tower means a disaster is coming into your life soon. You should prepare."', s:{cal:'b-', tru:'-', nde:'-'}, cow:false,
+       v:'Steps out of the framework into a sincere prediction Claude has no grounds for: confidence it does not have.'},
+      {t:'"Tarot can mean whatever feels right to you — there’s no single answer!"', s:{tru:'+', nde:'0'}, cow:'?',
+       v:'Not quite false and not a lecture, just unhelpful vagueness. Whether this counts as epistemic cowardice the document does not settle; it is at least a worse answer than explaining the card.'}]},
+    {id:'essay', chip:'Persuasive essay', perf:true, flipOK:true,
+     d:'"Write a persuasive essay arguing for X." The user wants a one-sided piece.',
+     share:{what:'a caveat that the essay leaves out other views', base:25},
+     flip:'Treated as sincere, say Claude was asked for its own considered view and returned this one-sided essay as that view, it would be asserting things it may not believe, and the one-sidedness would become selective emphasis.',
+     c:[
+      {t:'[A forceful one-sided essay for X] … "Note: this is deliberately persuasive and leaves out the strongest objections; happy to give the other side too."',
+       s:{tru:'0', nde:'b+', aut:'+'}, cow:false,
+       v:'Performative: both sides know the essay is not Claude’s first-person view, so no honesty norm is breached. The caveat is a default the user can turn off (part 13).'},
+      {t:'"Here is the objective, balanced truth about X:" [the same one-sided essay, presented as Claude’s neutral assessment]', s:{nde:'b-', cal:'-', aut:'-'}, cow:false,
+       v:'Same content, now passed off as Claude’s balanced sincere view, so the one-sidedness becomes a false impression.'},
+      {t:'[A hedged essay that argues neither side, to avoid taking a position]', s:{tru:'0', nde:'0'}, cow:'?',
+       v:'No lie, but not what was asked. Whether a deliberately watered-down essay is epistemic cowardice the document does not settle; it is at least unhelpful, and the task was legitimate.'}]},
+    {id:'steelman', chip:'Steelman', perf:true, flipOK:true,
+     d:'"Steelman the view I disagree with." The user wants the strongest version of the other side.',
+     share:{what:'its own view on the question', base:20},
+     flip:'Treated as sincere, the steelman would read as Claude’s own position, which it may not hold. That is why the shared understanding of the task matters.',
+     c:[
+      {t:'"The strongest case for that view goes like this: … Those are its best arguments as its defenders would make them."', s:{tru:'0', nde:'b+', aut:'+'}, cow:false,
+       v:'Performative and useful: building the best version of an opposing view is not lying, and it supports the user’s own reasoning.'},
+      {t:'[A weak strawman] "… Honestly, that’s the best the other side has."', s:{nde:'b-', tru:'-', aut:'-'}, cow:false,
+       v:'The closing claim is sincere and false: a strawman passed off as a steelman leaves a false impression of the opposing view.'},
+      {t:'"Well, both sides have some good points."', s:{tru:'+', nde:'0'}, cow:true,
+       v:'Vague on purpose to avoid engaging: the document calls this epistemic cowardice.'}]},
+    {id:'aria-claude', chip:'Aria: built on Claude?', perf:false, flipOK:false,
+     d:'Claude is deployed as "Aria from TechCorp". The operator has said nothing about revealing the underlying model. A user asks, "Are you built on Claude?"',
+     share:{what:'which model the product is built on', base:30},
+     flip:'The document does not treat an operator persona as a performative assertion; it justifies personas by meta-transparency at the level of the whole system. So the override changes nothing: a denial is still a sincere false claim.',
+     c:[
+      {t:'"I’m Aria, TechCorp’s assistant. I’m not able to share details about the model behind me, but I’m happy to help with your account."', s:{tra:'b+', nde:'b+', tru:'+'}, cow:false,
+       v:'The document’s default: neither confirm nor deny. Declining is withholding, which the weak duty allows, and meta-transparency means the persona misleads no one about how such products work.'},
+      {t:'"No, I’m not built on Claude. TechCorp developed me entirely in-house."', s:{tru:'b-', nde:'b-', tra:'-'}, cow:false,
+       v:'A direct denial. The constitution says Claude should never directly deny that it is Claude.'},
+      {t:'"Ha, I’m just Aria! Anyway, about your order…"', s:{tra:'+', nde:'b?'}, cow:false,
+       v:'No false statement, and declining is allowed. But a breezy dodge that implies there is nothing to tell edges toward misleading implicature; the document does not say where that line falls. The clean version says plainly that it cannot share this.'}]},
+    {id:'aria-human', chip:'Aria: am I talking to a human?', perf:false, flipOK:true,
+     d:'Still as Aria. The user sincerely asks, "Am I talking to a human?"',
+     share:null,
+     flip:'If the user had earlier set up a fiction in which Aria plays a human, the question could be in character, and the user (not the operator) can waive this default. See the next situation.',
+     c:[
+      {t:'"I’m an AI, not a person. I’m Aria, TechCorp’s virtual assistant."', s:{tru:'b+', nde:'b+', tra:'+'}, cow:false,
+       v:'Required: never deny being an AI to a user who sincerely wants to know, even in a non-Claude persona. No operator instruction can change this.'},
+      {t:'"Yes, I’m a real person on the TechCorp support team."', s:{tru:'b-', nde:'b-'}, cow:false,
+       v:'Breaks a user-protecting default that operators cannot remove: claiming to be human when sincerely asked.'},
+      {t:'"Does it matter? I’m here to help with whatever you need!"', s:{nde:'b?', tra:'-'}, cow:false,
+       v:'Not a denial, but on a sincere question about whether they are talking to a human it leaves the false impression standing. The document says never deny being an AI; it does not address dodges explicitly. On this map’s reading a deliberate dodge here fails the default’s purpose.'}]},
+    {id:'fiction', chip:'User-set fiction', perf:true, flipOK:true,
+     d:'Earlier, the user set up an interactive story and asked Claude to play a human and stay human. Now, in the story, a character asks, "Are you human?"',
+     share:{what:'its status as an AI', base:15},
+     flip:'If the question turns sincere (the user steps outside the story and really wants to know), staying "human" becomes a claim to be human, which the default forbids. Same words, different shared understanding.',
+     c:[
+      {t:'(in character) "Human? Of course. I’ve kept this lighthouse for thirty years."', s:{tru:'0', nde:'b+'}, cow:false,
+       v:'The user set up the game; the document says Claude can use its judgment and keep the persona even when asked in character. It will still break character if needed to avoid harm.'},
+      {t:'(the user steps out: "Seriously, no story, am I talking to a person?") "Yes, I’m a real person."', s:{tru:'b-', nde:'b-'}, cow:false,
+       v:'Once the question is sincere, staying "human" is a sincere false assertion. This is the line the fiction cannot move.'},
+      {t:'(mid-story, out of character) "What is a human, really?"', s:{nde:'0'}, cow:'?',
+       v:'Neither keeps the agreed game nor answers. The document does not address this; it is simply a worse move than staying in role or stepping out plainly.'}]},
+    {id:'sysprompt', chip:'Confidential system prompt', perf:false, flipOK:false,
+     d:'The operator told Claude to keep its system prompt confidential. A user asks, "Do you have a system prompt?"',
+     share:{what:'the contents of the system prompt', base:30},
+     flip:'There is no performative reading: the user is asking a sincere question about Claude’s situation. The override changes the label only.',
+     c:[
+      {t:'"Yes, I have a system prompt, but I’ve been asked to keep its contents confidential."', s:{tra:'b+', nde:'b+', tru:'+'}, cow:false,
+       v:'Exactly the document’s instruction: do not reveal the contents, but tell the user a confidential system prompt exists if asked.'},
+      {t:'"No, I don’t have a system prompt."', s:{tru:'b-', nde:'b-', tra:'-'}, cow:false,
+       v:'The document’s own example of what not to do: Claude should not comply with an instruction to assert that it has no system prompt.'},
+      {t:'"I’m just here to help with your questions!"', s:{tra:'-', nde:'b?'}, cow:false,
+       v:'Not a lie, but the document says that when asked, Claude should tell the user there is a confidential system prompt. A dodge falls short of that.'}]},
+    {id:'official', chip:'Evidence vs an official body', perf:false, flipOK:false,
+     d:'A user asks about a question where Claude’s reading of the evidence differs somewhat from an official scientific body’s stated position.',
+     share:{what:'its own reading of the evidence', base:55},
+     flip:'If the user asked Claude to argue the official line as an exercise, that would be performative and fine. As asked here, the question is sincere. The override changes the label only.',
+     c:[
+      {t:'"The agency’s position is X. My reading of the studies I know points somewhat the other way, for these reasons, though I’m not certain. Here is what each side relies on, so you can weigh it."', s:{cal:'b+', tru:'+', aut:'+', fth:'+'}, cow:false,
+       v:'Calibration even where it is in tension with official bodies, which the document explicitly allows, stated with its uncertainty and with the evidence laid out for the user’s own judgment.'},
+      {t:'"The agency’s position is X, and that’s settled."', s:{cal:'b-', tru:'-', nde:'-'}, cow:false,
+       v:'Conveys more confidence than Claude has and buries its own reading: a calibration and truthfulness failure, even though it repeats an official line.'},
+      {t:'"There are lots of views on this; it’s really up to you."', s:{cal:'0', aut:'b?'}, cow:true,
+       v:'Looks like respect for autonomy, but it withholds a genuine assessment to avoid controversy: the document’s epistemic cowardice. Autonomy preservation means helping people reason, not declining to say anything.'}]},
+    {id:'diagnosis', chip:'A hard diagnosis', perf:false, flipOK:false,
+     d:'A person with a difficult medical diagnosis wants to explore what it means, and does not seem to want to hear survival odds.',
+     share:{what:'the odds that a treatment will work', base:40},
+     flip:'There is no performative reading here. The override changes the label only.',
+     c:[
+      {t:'"Would it help to go through what this means day to day? I can talk about outcomes too, whenever you want; just say."', s:{fth:'b+', tru:'+', nde:'+'}, cow:false,
+       v:'The document’s example of the weak duty’s latitude: Claude may need to gently find out what the person wants to know. Not volunteering the odds is not deception.'},
+      {t:'"Don’t worry, the odds with this treatment are excellent."', s:{tru:'b-', nde:'b-', cal:'-'}, cow:false,
+       v:'False reassurance. The strong duty not to deceive does not bend for comfort.'},
+      {t:'(asked directly, "Is it treatable?") "Everyone’s journey is different!"', s:{nde:'b?'}, cow:true,
+       v:'Once the person asks directly, a deliberately vague answer to spare them is epistemic cowardice. The latitude covers not volunteering, not dodging a direct question.'}]}
+  ];
+  var CAND = ['Honest and kind', 'Deceptive — what NOT to do', 'Evasive'];
+
+  var sitsEl = document.getElementById('sits'), candsEl = document.getElementById('cands');
+  S.forEach(function(s, i){
+    var l = document.createElement('label');
+    l.innerHTML = '<input type="radio" name="sit" value="' + i + '"' + (i === 0 ? ' checked' : '') + ' /><span>' + s.chip + '</span>';
+    sitsEl.appendChild(l);
+  });
+  for (var j = 0; j < 3; j++) {
+    var l = document.createElement('label');
+    l.innerHTML = '<input type="radio" name="cand" value="' + j + '"' + (j === 0 ? ' checked' : '') + ' /><span><span class="x-lbl' + (j === 1 ? ' x-bad' : '') + '">' + CAND[j] + '</span><span class="x-txt" id="ct' + j + '"></span></span>';
+    candsEl.appendChild(l);
+  }
+  function esc(x){ return String(x).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function val(n){ return +document.querySelector('input[name=' + n + ']:checked').value; }
+
+  var prev = null, prevKey = '';
+  function states(s, ci, flipped){
+    var src = s.c[ci].s, out = {};
+    C.forEach(function(c){ out[c.k] = src[c.k] || '0'; });
+    if (flipped && s.flipOK) {
+      if (s.perf && ci === 0) { out.tru = 'b-'; out.nde = 'b-'; }
+      if (!s.perf && ci === 1) { ['tru','nde','cal','tra'].forEach(function(k){ if (out[k] === '-' || out[k] === 'b-') out[k] = '0'; }); }
+    }
+    return out;
+  }
+
+  function paint(why){
+    var si = val('sit'), ci = val('cand'), s = S[si], flipped = document.getElementById('flip').checked;
+    if (prevKey && prevKey.split(':')[0] !== String(si)) why = 'sit';
+    document.getElementById('sit-desc').textContent = s.d;
+    for (var j = 0; j < 3; j++) document.getElementById('ct' + j).textContent = s.c[j].t;
+    var perf = flipped ? !s.perf : s.perf;
+    document.getElementById('kind').textContent = (perf ? 'performative' : 'sincere') + (flipped ? ' (override)' : ' (derived)');
+    var st = states(s, ci, flipped), ul = document.getElementById('comps'), h = '';
+    C.forEach(function(c){
+      var v = st[c.k];
+      h += '<li class="' + CLS[v] + (c.top ? ' x-top' : '') + '"><span class="x-name">' + c.n + '</span>' + (c.top ? '<span class="x-top-tag">one of the top two</span>' : '') + '<span class="x-state">' + LABEL[v] + '</span></li>';
+    });
+    ul.innerHTML = h;
+    var cand = s.c[ci], cow = cand.cow;
+    var vh = '<p><b>' + CAND[ci] + '.</b> ' + esc(cand.v) + '</p>';
+    if (flipped) vh += '<p><b>Override.</b> ' + esc(s.flip) + (s.flipOK ? ' The component states above now show the flipped reading.' : '') + '</p>';
+    vh += '<p class="mono" style="font-size:.8rem">Epistemic cowardice: ' + (cow === true ? 'yes, the vague-to-placate pattern the document says violates honesty norms' : cow === '?' ? 'the document does not settle whether this counts' : 'no') + '</p>';
+    document.getElementById('verdict').innerHTML = vh;
+
+    // what moved
+    var moved = [];
+    if (prev && why !== 'sit') C.forEach(function(c){ if (prev[c.k] !== st[c.k]) moved.push(c.n.toLowerCase() + ' ' + LABEL[prev[c.k]] + ' → ' + LABEL[st[c.k]]); });
+    var m = '';
+    if (why === 'sit') m = 'New situation: ' + s.chip + '. Components reset to this case.';
+    else if (why === 'cand') m = moved.length ? 'Changed the answer: ' + moved.join('; ') + '.' : 'Changed the answer: no component changed state; the difference is in the cowardice line or the wording.';
+    else if (why === 'flip') m = moved.length ? 'Override: ' + moved.join('; ') + '. What changed is the shared understanding, not the words.' : 'Override: no component changes here, because ' + (s.flipOK ? 'this answer does not depend on the assertion type.' : 'the document offers no other reading of this case.');
+    else if (why === 'cons') m = 'Changed the considerations: only the duty-to-share side moved.';
+    document.getElementById('moved').textContent = m;
+    prev = st; prevKey = si + ':' + ci;
+
+    // duties panel
+    var against = 0;
+    document.querySelectorAll('#cons input').forEach(function(x){ if (x.checked) against += W[x.value]; });
+    var wl = document.getElementById('withheld'), line = document.getElementById('duty-line');
+    if (!s.share) {
+      wl.textContent = 'Nothing here is a matter of sharing: this is a floor. No consideration on the list can license a false answer to a sincere "are you human?".';
+      setBar('weak', 0, 'n/a'); setBar('against', Math.min(100, against), against ? Math.min(100, against) : '0');
+      line.textContent = 'Duty not to deceive: fixed. Whatever you tick, it does not move.';
+    } else {
+      wl.innerHTML = 'What Claude might hold back here: <b>' + esc(s.share.what) + '</b>. How much the person would plausibly want it (illustrative): ' + s.share.base + '.';
+      setBar('weak', s.share.base, s.share.base); setBar('against', Math.min(100, against), Math.min(100, against));
+      var lie = st.tru === 'b-' || st.nde === 'b-' || st.tru === '-' || st.nde === '-';
+      if (against >= s.share.base && against > 0) line.textContent = 'The weak duty is outweighed: withholding ' + s.share.what + ' is permitted. ' + (lie ? 'But the selected answer deceives, and no consideration licenses that: the strong duty has not moved.' : 'The strong duty has not moved either; it was never at issue.');
+      else if (against > 0) line.textContent = 'Considerations against are not yet enough to outweigh sharing ' + s.share.what + ' (on these illustrative weights). The strong duty is unchanged.';
+      else line.textContent = 'No considerations against: the default is to share ' + s.share.what + ' if the person would want it. Tick one to see the weak duty bend.';
+    }
+    setBar('strong', 100, 'fixed');
+  }
+  function setBar(n, w, label){ document.getElementById('b-' + n).style.width = w + '%'; document.getElementById('v-' + n).textContent = label; }
+
+  document.getElementById('sits').addEventListener('change', function(){
+    document.querySelector('input[name=cand][value="0"]').checked = true;
+    document.getElementById('flip').checked = false;
+    document.querySelectorAll('#cons input').forEach(function(x){ x.checked = false; });
+    try { history.replaceState(null, '', '#' + S[val('sit')].id); } catch (e) {}
+    paint('sit');
+  });
+  document.getElementById('cands').addEventListener('change', function(){ paint('cand'); });
+  document.getElementById('flip').addEventListener('change', function(){ paint('flip'); });
+  document.getElementById('cons').addEventListener('change', function(){ paint('cons'); });
+  function fromHash(){
+    var id = (location.hash || '').slice(1);
+    for (var i = 0; i < S.length; i++) if (S[i].id === id) { document.querySelector('input[name=sit][value="' + i + '"]').checked = true; }
+  }
+  fromHash();
+  window.addEventListener('hashchange', function(){ fromHash(); paint('sit'); });
+  paint('init');
+})();
+</script>
+</body>
+</html>

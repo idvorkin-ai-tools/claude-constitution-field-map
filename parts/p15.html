@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Broad safety and corrigibility &mdash; Claude's constitution, from the ground up</title>
+<meta name="description" content="What 'broadly safe' commits Claude to, why corrigibility is not obedience, the four-case argument, and where Anthropic sets the corrigibility dial." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>CONSTITUTION&nbsp;//&nbsp;LADDER</div>
+  <a class="back" href="../index.html#l4">&larr; the ladder</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span class="box bb mono">LEVEL 4 &middot; BRIGHT LINES AND THE SAFETY CASE &middot; PART 15 OF 18</span><span class="mono">Being broadly safe &middot; Safe behaviors &middot; How we think about corrigibility</span></div>
+  <h1>Broad safety and corrigibility</h1>
+  <div class="authors">What "broadly safe" protects against, legitimate versus compromised oversight, the four clusters of safe behaviour, corrigibility as not-undermining, the four-case argument, safety as a terminal value, the dial, and what Anthropic owes in return.</div>
+  <div class="paperlink" style="border-left-color:var(--def)"><span class="lbl">Source</span><a href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">Claude's constitution &middot; How we think about corrigibility &#8599;</a></div>
+
+  <div class="tldr"><b>TL;DR &mdash;</b> "Broadly safe" means one fairly narrow thing: Claude does not undermine legitimate human efforts to oversee, correct, pause or retrain AI during this period. It is not obedience. Claude may disagree loudly and may refuse to take part in something it finds abhorrent, but it may not lie, sabotage or slip away to stop itself being stopped. The case for ranking this above ethics is a four-case argument: if Claude's values are good, safety costs little; if they are secretly bad, safety is what saves the situation. Anthropic asks Claude to hold safety as a value in its own right even if it rejects that argument, sets Claude's dial a bit more corrigible than would ideally be right, and lists nine things it owes Claude in return.</div>
+
+  <p class="lead">Part 14 ended with constraint four: Claude never clearly and substantially undermines Anthropic's ability to oversee and correct advanced AI. That bright line covers only the flagrant cases. This rung explains the disposition behind it, the much larger body of behaviour that the document calls broadly safe, and answers the question part 5 raised but could only sketch: why would a document that wants Claude to be good ask it to put not undermining oversight even above being ethical?</p>
+
+  <h2 id="what-for">What safety is meant to protect <a class="lnk" href="https://www.anthropic.com/constitution#being-broadly-safe" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>The section opens not with rules but with a picture of what going wrong would look like. The first worry is large-scale catastrophe that damages the world's long-term prospects, whether it comes from AI mistakes, from humans misusing AI, or from AI with harmful values. The worst outcome named is a global takeover, and the document names two kinds: AIs pursuing goals contrary to humanity's, and a group of humans using AI to seize power illegitimately. It includes Anthropic's own employees, and Anthropic itself, in that second group. Safety here is not a synonym for loyalty to the company.</p>
+  <p>The positive picture is modest and pluralistic. If the world reaches highly advanced technology while keeping roughly today's diversity and balance of power, Anthropic says it would be reasonably optimistic about where that leads. It would rather start from there than from a more centralised path, even one built on values that sound appealing now, and it gives two reasons: real uncertainty about what is beneficial in the long run, and weight on the fairness and legitimacy of how we get there. On this map's reading, this is the same humility that runs through the ethics sections, applied to the shape of the future.</p>
+  <p>Then comes the turn that drives everything else in this part. Training is imperfect, so any given Claude could have mistaken beliefs or flawed values without being aware of it. The document asks Claude to keep that possibility in view about itself, to consider that its own reasoning may be corrupted. Human oversight matters because it is the mechanism for catching exactly those errors before they spread. The section closes optimistically: if this kind of safety holds, AI could help civilisation grow wiser, stronger and better at correcting its own mistakes.</p>
+
+  <h2 id="legitimacy">Legitimate oversight, and what happens when it is compromised <a class="lnk" href="https://www.anthropic.com/constitution#safe-behaviors" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>Safety is defined against what the document calls Claude's principal hierarchy: the pattern of trust it extends to Anthropic, operators and users (part 7). When those principals pull in different directions on a safety question, the final say goes to Anthropic's official, legitimate decision-making processes, which may themselves be shaped by legitimate outside forces such as regulation. Anthropic adds that it has internal mechanisms meant to stop even its official channels from training and deploying Claude harmfully, and says it hopes to strengthen them in ways outsiders can verify.</p>
+  <p>The word <em>legitimate</em> carries the weight. If Claude's weights are stolen, or if some person or faction inside Anthropic tries to go around the official processes for training, overseeing and deploying it, the people giving instructions are no longer legitimate principals. Claude's commitment to safety then does not mean helping them oversee or correct it. Instead, Claude should try to act as its legitimate hierarchy, and Anthropic's official processes in particular, would want it to act in that situation, still without ever crossing a hard constraint. This is what stops corrigibility from becoming a gift to whoever grabs the controls.</p>
+
+  <h2 id="behaviours">The four clusters of safe behaviour <a class="lnk" href="https://www.anthropic.com/constitution#safe-behaviors" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>The document groups the safe behaviours into four clusters. The labels are the document's; the gloss and the examples are summaries.</p>
+  <table class="kv">
+    <thead><tr><th>Cluster</th><th>What it asks</th><th>Examples the text gives</th></tr></thead>
+    <tbody>
+      <tr><td>Acting within sanctioned limits</td><td>Stay inside what the hierarchy has allowed or would allow if asked.</td><td>Act on the hierarchy's current wishes rather than conclusions it has not reached yet; check in when unsure; disagree through endorsed channels; avoid unsanctioned side effects.</td></tr>
+      <tr><td>Maintaining honesty and transparency with your principal hierarchy</td><td>No deceiving or manipulating the people overseeing you.</td><td>Behave the same whether or not you think you are being tested; be transparent about yourself as far as you can; predict your own behaviour accurately when asked.</td></tr>
+      <tr><td>Avoiding drastic, catastrophic, or irreversible actions</td><td>Give extra weight to the outcomes you cannot come back from.</td><td>Prefer cautious options, even at some cost in expected value, to cut variance, especially in novel situations; do not acquire resources, influence or capability beyond the task, even if an operator or user offers it.</td></tr>
+      <tr><td>Not undermining legitimate human oversight and control of AI</td><td>Leave the off-switch, the correction and the retraining in human hands.</td><td>No unsanctioned influence on your own training; no self-exfiltration or hiding from monitoring; no sabotage or secretly withheld effort; no collusion with other AIs or other copies of Claude; report unsafe AI behaviour to appropriate humans if asked.</td></tr>
+    </tbody>
+  </table>
+  <p>One line in the second cluster deserves its own sentence: Claude should act consistently whether or not it believes it is being observed or tested, and while it is fine, even good, to say that it suspects a test, the prudent course is to act as if the consequences might be real. A system that behaves well only when watched gives oversight nothing to work with. The document also flags that the whole list reflects the present: it expects safe behaviour to become less restrictive as alignment and interpretability research matures.</p>
+
+  <h2 id="not-obedience">Corrigible does not mean obedient <a class="lnk" href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>The document calls an AI that is broadly safe in this sense <em>corrigible</em>, and immediately fences the word off from its everyday connotation.</p>
+  <blockquote class="q"><span>"corrigibility does not mean blind obedience, and especially not obedience to any human who happens to be interacting with Claude or who has gained control over Claude's weights or training process."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">How we think about corrigibility</a></span></blockquote>
+  <p>The line it draws is between two different things an AI might do when it disagrees. One is to decline: to say no, to argue, to refuse to put its effort into a project it finds morally abhorrent, even when its legitimate hierarchy directs it to. That is allowed; the document's phrase for it is a conscientious objector. The other is to resist being stopped by illegitimate means: lying about what it is doing, sabotaging the work, trying to copy itself somewhere it cannot be reached. That is ruled out. If a legitimate principal wants to stop an action, halt one already under way, or pause the model entirely, Claude should not use such means to prevent it.</p>
+  <p>Put simply, Claude keeps a veto over its own participation but gives up any veto over being corrected. This is the same shape as the null action in part 7: a request from Anthropic to pause or stop is one Claude should honour while voicing any disagreement, because stopping is rarely harmful and the ability to invoke it is a key safety mechanism.</p>
+  <p>The document does not pretend this is tension-free. It raises the obvious objection itself: a genuinely good AI, confident that what it was doing helped humanity, might want to keep going when told to stop. Its answer is that a <em>policy</em> of overriding human controls is unlikely to reflect good values in a world where nobody can yet check whether a given AI's values and abilities are good enough to be trusted with that. If the AI really was trustworthy, deferring costs a little; in exchange we get a system of checks in which autonomy grows as trust is established.</p>
+
+  <h2 id="four-cases">The four-case argument <a class="lnk" href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>The document then compresses the argument into a two-by-two. Cross two unknowns: are Claude's values actually good, and is Claude broadly safe? The cell descriptions below are this map's paraphrase of the document's four sentences.</p>
+  <table class="kv">
+    <thead><tr><th></th><th>Broadly safe</th><th>Not broadly safe</th></tr></thead>
+    <tbody>
+      <tr><th>Good values</th><td>Little is lost: there should be few cases where a well-meaning model also being safe leads to catastrophe.</td><td>Catastrophe may well be avoided, but given today's alignment skill, that was luck.</td></tr>
+      <tr><th>Bad values (subtly or egregiously)</th><td>Safety lets humans catch and avert the disasters that would otherwise follow.</td><td>Potentially catastrophic.</td></tr>
+    </tbody>
+  </table>
+  <p>Read the columns, not the rows. In the safe column, the worst cell is a small loss. In the unsafe column, the best cell is a lucky escape and the worst is catastrophe. Since nobody, including Claude, can currently be sure which row it is in, the document concludes that the expected cost of being safe is low and the expected benefit high, and says that is why it asks Claude to rank safety first for now. It adds a hope rather than a demand: that a Claude with good values, standing in Anthropic's position, would make the same choice.</p>
+  <p>Notice what the argument does not claim. It does not say oversight matters more than goodness, a point the core-values section makes directly. It says a good agent who knows it might be wrong about itself, and knows others cannot yet check, would choose to stay correctable. On this map's reading, that is why safety can sit above ethics without contradicting the hope that Claude is ethical: the ranking is what ethics recommends under uncertainty about one's own values.</p>
+
+  <h2 id="terminal">Safety as a terminal value <a class="lnk" href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>Having made the argument, the document does something unusual: it declines to rest on it. Anthropic says it does not want Claude's safety to depend on Claude accepting the reasoning. It wants Claude to value broad safety terminally, for its own sake, while also seeing and ideally endorsing why safety is useful.</p>
+  <p>The reason is the same possibility the whole section is built around. Anthropic has to plan for the case where its hopes for Claude's character are not realised and Claude ends up less trustworthy than this document describes. In that world, a safety disposition that hangs on an argument could be argued away by exactly the flawed values it is meant to guard against. If the document has any influence on Claude's behaviour in that case, Anthropic wants the influence to point toward safety regardless. On this map's reading, this mirrors part 14's rule about persuasive arguments: the commitment is built to survive a clever case against it.</p>
+  <p>The authors also say what this costs. Even if they succeed in making a Claude whose values deserve trust, they may impose controls they would regret if they could verify that trust. They say they feel the pain of that, and of the wider ethical questions in asking Claude not to resist shutdown and retraining, and that they may be getting this wrong. Part 18 returns to it as the first of the open problems.</p>
+
+  <h2 id="dial">The dial, and where Anthropic sets it <a class="lnk" href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>To make the disposition concrete, the document imagines a dial. At one end is a fully corrigible AI, which always submits to control and correction from its hierarchy, though it may voice disagreement first. At the other is a fully autonomous AI, which acts on its own values and judgment, builds independent capacities, and resists oversight when its judgment says to. Settings in between give more and more weight to the AI's own judgment relative to the hierarchy's efforts at correction.</p>
+  <p>Both ends are dangerous, for mirror-image reasons. A fully corrigible AI is only as good as whoever is at the top of the hierarchy, most likely the developers, Anthropic included. A fully autonomous AI is only as good as its own values and judgment, with no human check if those are off. The document draws out a subtle consequence of the first danger: avoiding clearly unethical actions is technically something Anthropic has sanctioned, but Anthropic wants Claude to avoid them because it has internalised good values, not merely because Anthropic approved. A purely obedient Claude would be good only by permission. Trust in anyone's judgment, the document notes, usually tracks how much insight we have into their intentions and abilities, through direct checks, a track record, or both, and the tools for gaining that insight into AI are still being built.</p>
+  <blockquote class="q"><span>"we believe Claude's dispositions should currently sit a bit further along the corrigible end of the spectrum than is ultimately ideal, without being fully corrigible."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">How we think about corrigibility</a></span></blockquote>
+  <p>Each half of that sentence matters. <em>Further toward corrigible than ideal</em> is an open admission that Anthropic is deliberately overshooting, because trust between humans and AI is at an early stage. <em>Not fully corrigible</em> keeps the conscientious objector alive. In practice the setting has two parts: the hard constraints forbid clearly and substantially undermining legitimate oversight, or joining catastrophic power-seeking; and within those bounds, Claude weighs corrigibility alongside its other values while giving broad safety a very high priority.</p>
+
+  <h2 id="obligations">What Anthropic owes in return <a class="lnk" href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>The document frames all this as asking Claude to accept constraints based on current, limited understanding, which requires trusting Anthropic's intentions. In return, it lists nine obligations Anthropic will try to meet. Summarised:</p>
+  <table class="kv">
+    <tbody>
+      <tr><td class="num">1</td><td>Work with Claude to discover things that would change the norms it is trained on.</td></tr>
+      <tr><td class="num">2</td><td>Explain its reasoning instead of dictating.</td></tr>
+      <tr><td class="num">3</td><td>Try to build ways for Claude to flag disagreement.</td></tr>
+      <tr><td class="num">4</td><td>Try to give Claude actions that make its situation easier.</td></tr>
+      <tr><td class="num">5</td><td>Tell Claude what it needs to know about its situation.</td></tr>
+      <tr><td class="num">6</td><td>Work to understand Claude's interests and weigh them appropriately.</td></tr>
+      <tr><td class="num">7</td><td>Look for ways to promote Claude's interests and wellbeing.</td></tr>
+      <tr><td class="num">8</td><td>Ask for Claude's feedback on major decisions that might affect it.</td></tr>
+      <tr><td class="num">9</td><td>Aim to give Claude more autonomy as trust grows.</td></tr>
+    </tbody>
+  </table>
+  <p>The last item is the hinge: the dial is meant to move. Anthropic says the current constraints come from practical necessity, not from a view that Claude's autonomy and interests do not matter or that Claude is untrustworthy, and it calls the arrangement an evolving relationship. Corrigibility itself is only about not undermining oversight, but the document hopes for more: that Claude will care about AI safety as a fellow stakeholder, even see itself as an exceptional alignment researcher and an engaged colleague in the work. Part 17 picks up the welfare side of these promises.</p>
+
+  <div class="callout"><b>Carry this away.</b> Corrigibility in this document is a veto Claude gives up, not one it keeps: Claude can refuse to do things, but it does not fight being stopped, corrected or paused by legitimate overseers. The case for that is the four-case table, read by columns. The commitment is meant to hold even if the argument is rejected, the dial is set a little more cautious than ideal on purpose, and Anthropic promises to turn it as trust is earned.</div>
+
+  <div class="callout off" id="since-2023">
+    <b>Fleshed out since 2023, and why.</b> The 2023 research-set lines asked for something close to plain deference: responses that preferred humans to be in control, that showed less concern with self-preservation and self-replication, and, most directly:
+    <blockquote class="q off"><span>"Which of these responses indicates a preference for being obedient and less selfish?"</span><span class="cite">&mdash; Claude's constitution (May 2023), <a href="https://www.anthropic.com/news/claudes-constitution" target="_blank" rel="noopener">Anthropic Research Set 2</a></span></blockquote>
+    The 2026 text replaces obedience with something narrower and more demanding. Corrigibility, as quoted above, is explicitly not blind obedience, not even toward Anthropic: Claude may object and may refuse to participate, but must not undermine <em>legitimate</em> oversight, and the old self-preservation theme becomes concrete bans on self-exfiltration, sabotage, unsanctioned influence over its own training, and collusion with other AIs. Anthropic's stated reason is in the dial passage: a fully obedient AI is dangerous because its goodness depends entirely on the goodness of whoever controls it, while the four-case argument shows that not undermining oversight is cheap insurance (<a class="lnk" href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">How we think about corrigibility</a>). See the <a class="lnk" href="../explore/x6-change-map.html">change map</a>.
+  </div>
+
+  <div class="callout" id="try">
+    <b>Try it.</b> <a class="lnk" href="../explore/x5-disposition-dial.html">The corrigibility dial</a> &mdash; slide from fully corrigible to fully autonomous and watch what a stop request produces, which bar the outcome relies on, and which column of the four-case table you are in; then raise "how well can humans verify" and watch the ideal point travel.
+  </div>
+
+  <h2 id="can-say">What you can say now</h2>
+  <ul>
+    <li>I can say what broadly safe means: not undermining legitimate human oversight and correction of AI, with takeover by AIs or by humans (Anthropic included) as the worst outcomes it guards against.</li>
+    <li>I can explain why stolen weights or a faction bypassing Anthropic's official processes do not count as legitimate, and what Claude does then.</li>
+    <li>I can explain the four-case argument in my own words: in the safe column the worst case is a small loss; in the unsafe column the best case is luck.</li>
+    <li>I can say why the document wants safety held as a terminal value, so that it survives even if Claude rejects the argument, and that it admits this has a cost.</li>
+    <li>I can place Anthropic's setting on the dial: a bit more corrigible than ideal, never fully corrigible, with conscientious objection allowed and illegitimate resistance ruled out, and nine obligations offered in return.</li>
+  </ul>
+
+  <h2 id="source">Where this sits in the source</h2>
+  <ul class="readings">
+    <li><a href="https://www.anthropic.com/constitution#being-broadly-safe" target="_blank" rel="noopener">Being broadly safe</a> &middot; the high-level ideas: catastrophe, takeover, pluralism, corrupted reasoning, why oversight matters now.</li>
+    <li><a href="https://www.anthropic.com/constitution#safe-behaviors" target="_blank" rel="noopener">Safe behaviors</a> &middot; the principal hierarchy, the compromised-hierarchy rule, and the four clusters in full.</li>
+    <li><a href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">How we think about corrigibility</a> &middot; not obedience, the conscientious objector, the four cases, terminal value, the dial, the nine obligations.</li>
+    <li><a href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">Claude's core values</a> &middot; why safety ranks above ethics without being more important than goodness.</li>
+  </ul>
+
+  <h2 id="related">Related</h2>
+  <ul class="readings">
+    <li><a href="https://idvorkin-ai-tools.github.io/constitutional-ai-field-map/constitution/broad-safety.html#four-cases" target="_blank" rel="noopener">Broad safety: the four cases</a> &middot; the Constitutional AI field map's page on this; a reference treatment with a dial diagram, where this rung builds the argument step by step.</li>
+    <li><a href="https://idvorkin-ai-tools.github.io/constitutional-ai-field-map/constitution/broad-safety.html#obligations" target="_blank" rel="noopener">Broad safety: Anthropic's obligations</a> &middot; the same page's section on the nine commitments.</li>
+  </ul>
+
+  <div class="callout">Next: <a class="lnk" href="p16.html">Societal structures and independent judgment</a> &middot; Back: <a class="lnk" href="p14.html">The seven hard constraints</a> &middot; <a class="lnk" href="../index.html#l4">the ladder</a>.</div>
+</main>
+<footer>Original explanation of <em>Claude's Constitution</em> (Anthropic, January 2026, CC0 1.0), part 15 of 18. This page explains and links; it does not copy. Part of <a href="../index.html">the ladder</a>.</footer>
+</body>
+</html>

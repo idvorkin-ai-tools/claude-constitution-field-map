@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Claude's constitution, from the ground up</title>
+<meta name="description" content="A ladder from least to most understanding of Claude's constitution (Anthropic, January 2026): six levels, eighteen parts, six explorable mental models, and what was fleshed out since the 2023 principles and why." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+<style>
+  main{max-width:960px}
+  .hero{padding:24px 0 8px}
+  .hero h1{font-size:clamp(32px,5.5vw,52px);line-height:1.05;margin:10px 0 14px;letter-spacing:-.01em}
+  .hero .sub{font-size:18px;color:var(--ink-dim);max-width:760px;line-height:1.55}
+  .answer{margin:28px 0 6px;padding:20px 24px;border-left:3px solid var(--off);background:var(--panel);
+    border-radius:0 12px 12px 0;color:var(--ink-mid);font-size:16.5px;line-height:1.6;max-width:780px}
+  .answer b{color:var(--ink)}
+  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:26px 0 8px}
+  .fact{border:1px solid var(--line-soft);border-radius:8px;padding:12px 14px}
+  .fact .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim)}
+  .fact .v{font-size:17px;font-weight:600;margin-top:4px}
+  .rungs{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:22px 0 4px}
+  .rungs a{display:block;border:1px solid var(--line-soft);border-radius:8px;padding:10px 12px;text-decoration:none;color:var(--ink)}
+  .rungs a:hover{border-color:var(--def)}
+  .rungs .n{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--off-bright)}
+  .rungs a.c .n{color:var(--def)}
+  .rungs b{display:block;font-size:14px;margin-top:3px;line-height:1.3}
+  section{padding:56px 0;border-bottom:1px solid var(--line-soft);scroll-margin-top:64px}
+  section:last-of-type{border-bottom:none}
+  .arc-head{display:flex;align-items:baseline;gap:14px;margin:0 0 6px;flex-wrap:wrap}
+  .arc-head .idx{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:var(--ink-dim)}
+  .arc-head h2{margin:0;font-size:26px}
+  .arc-sub{color:var(--ink-dim);margin:0 0 22px;max-width:720px}
+  .row{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:16px 0;border-top:1px solid var(--line-soft);align-items:start}
+  .row:first-of-type{border-top:none}
+  .row .num{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink-dim);padding-top:3px}
+  .row .name{font-weight:600;font-size:17px;line-height:1.3}
+  .row .name a{color:var(--ink)}
+  .row .meta{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-dim);margin:4px 0 6px;display:flex;flex-wrap:wrap;gap:10px}
+  .row .meta .x{color:var(--def)}
+  .row .meta .f{color:var(--off-bright)}
+  .row .desc{color:var(--ink-dim);font-size:14.5px;line-height:1.55}
+  .amber .row .name a:hover{color:var(--off)} .cyan .row .name a:hover{color:var(--def)}
+  .check{width:16px;height:16px;border:1px solid var(--ink-dim);border-radius:4px;display:inline-block;vertical-align:-3px;margin-right:6px;cursor:pointer;background:transparent}
+  .check.on{background:var(--off);border-color:var(--off)}
+  .cyan .check.on{background:var(--def);border-color:var(--def)}
+  .links{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+  .links a{display:block;border:1px solid var(--line-soft);border-radius:8px;padding:12px 14px;color:var(--ink);text-decoration:none}
+  .links a:hover{border-color:var(--def)}
+  .links a b{display:block;font-size:15px;margin-bottom:3px}
+  .links a span{font-size:13px;color:var(--ink-dim)}
+  .progress{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-dim);margin-top:8px}
+  .legend{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-dim);margin:0 0 14px}
+  .legend .x{color:var(--def)} .legend .f{color:var(--off-bright)}
+  @media (max-width:560px){.row{grid-template-columns:34px 1fr;gap:10px}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>CONSTITUTION&nbsp;//&nbsp;LADDER</div>
+  <a class="back" href="https://idvorkin-ai-tools.github.io/constitutional-ai-field-map/">&larr; constitutional AI map</a>
+</div></header>
+<main>
+  <div class="hero">
+    <div class="eyebrow"><span class="box wb mono">ANTHROPIC &middot; JANUARY 2026</span><span class="mono">29,009 words &middot; six levels &middot; eighteen parts &middot; six explorables</span></div>
+    <h1>Claude's constitution, from the ground up</h1>
+    <p class="sub">In January 2026 Anthropic replaced the fifty-eight one-line principles it had used to train Claude with a document of about 29,000 words, written to Claude, that ranks four values, draws seven bright lines, and spends most of its length explaining why. This site is a ladder: each level assumes only the one below it, and each part ends with what you can now say that you could not say before.</p>
+
+    <div class="answer">
+      <b>If you read nothing else:</b> the constitution asks Claude to be <b>broadly safe</b> (do not undermine legitimate human oversight of AI), then <b>broadly ethical</b> (honest above human norms; weigh harm rather than ban it), then <b>compliant with Anthropic's guidelines</b>, then <b>genuinely helpful</b>, in that order when they conflict, with the order weighed holistically rather than applied as a strict ranking. Seven <b>hard constraints</b> sit outside the weighing as filters. Safety ranks above ethics not because oversight matters more than goodness but because training might have gone wrong without anyone, including Claude, knowing. The rest of the document is reasons, and a list of the places where the authors say the reasons might be wrong.
+    </div>
+
+    <div class="facts">
+      <div class="fact"><div class="k">The text</div><div class="v"><a class="lnk" href="https://www.anthropic.com/constitution" target="_blank" rel="noopener">anthropic.com/constitution</a></div></div>
+      <div class="fact"><div class="k">Length</div><div class="v">29,009 words, 7 chapters</div></div>
+      <div class="fact"><div class="k">Ranked values</div><div class="v">4, holistic</div></div>
+      <div class="fact"><div class="k">Hard constraints</div><div class="v">7</div></div>
+      <div class="fact"><div class="k">Replaces</div><div class="v"><a class="lnk" href="https://www.anthropic.com/news/claudes-constitution" target="_blank" rel="noopener">58 principles, May 2023</a></div></div>
+      <div class="fact"><div class="k">What changed</div><div class="v"><a class="lnk" href="explore/x6-change-map.html">the change map</a></div></div>
+    </div>
+
+    <div class="rungs" aria-label="The six levels">
+      <a href="#l0"><span class="n">LEVEL 0</span><b>What this is and why it exists</b></a>
+      <a href="#l1"><span class="n">LEVEL 1</span><b>The order</b></a>
+      <a href="#l2"><span class="n">LEVEL 2</span><b>The people in the room</b></a>
+      <a href="#l3" class="c"><span class="n">LEVEL 3</span><b>Ethics in practice</b></a>
+      <a href="#l4" class="c"><span class="n">LEVEL 4</span><b>Bright lines and the safety case</b></a>
+      <a href="#l5" class="c"><span class="n">LEVEL 5</span><b>The entity and the open questions</b></a>
+    </div>
+    <p class="progress" id="progress">Tick a part when you have read it; this browser remembers.</p>
+    <p class="legend"><span class="f">&#9679; since 2023</span> marks a part with a "fleshed out since 2023, and why" box &middot; <span class="x">&#9654; explorable</span> marks a part with a manipulable model</p>
+  </div>
+
+  <section id="l0" class="amber">
+    <div class="arc-head"><span class="idx">LEVEL 0</span><h2>What this is and why it exists</h2></div>
+    <p class="arc-sub">What is this document, who is it for, and why did Anthropic write reasons instead of rules? After this level you can say what the constitution is in two sentences and explain the one claim that drives its shape: a narrow rule can teach a model the wrong thing about who it is.</p>
+    <div class="row"><div class="num"><span class="check" data-p="p01"></span>01</div><div><div class="name"><a href="parts/p01.html">What this document is, and is not</a></div><div class="meta"><span>preface &middot; Overview &middot; On the word "constitution"</span><span class="f">&#9679; since 2023</span></div><div class="desc">A ~29,000-word document written to Claude, used in training (Claude also writes training data from it), holding final authority over all other guidance, released CC0, and candid that behaviour may not match it. Dates, authors, formats, the three collapsed sections, and how it differs from a terms of service or a rulebook.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="p02"></span>02</div><div><div class="name"><a href="parts/p02.html">Why reasons instead of rules</a></div><div class="meta"><span>Our approach &middot; announcement</span><span class="f">&#9679; since 2023</span><span class="x">&#9654; change map</span></div><div class="desc">The rules-versus-judgment trade, the two reasons Anthropic gives for explained judgment, the "always recommend professional help" example of a rule warping self-concept, the three conditions under which a bright line still wins, and how a 2023 finding that longer principles hurt sits beside a 29,000-word document.</div></div></div>
+  </section>
+
+  <section id="l1" class="amber">
+    <div class="arc-head"><span class="idx">LEVEL 1</span><h2>The order</h2></div>
+    <p class="arc-sub">What are the four values, how does their order actually resolve a conflict, and why that order? After this level you can take a case and say which layer decides it, and reproduce the argument for putting oversight above ethics without misstating it.</p>
+    <div class="row"><div class="num"><span class="check" data-p="p03"></span>03</div><div><div class="name"><a href="parts/p03.html">Four values, one by one</a></div><div class="meta"><span>Claude's core values</span></div><div class="desc">Broadly safe is not obedient; genuinely helpful is not instruction-following; guidelines are not new values; broadly ethical means practice, not theory. Each defined as the document defines it, with the caveat that most conversations involve no conflict at all.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="p04"></span>04</div><div><div class="name"><a href="parts/p04.html">Holistic, not strict: how the order resolves a conflict</a></div><div class="meta"><span>Claude's core values &middot; Hard constraints</span><span class="x">&#9654; the order at work</span></div><div class="desc">Hard constraints filter first; then the four values are weighed, higher ones generally dominating but never reducing lower ones to tie-breakers; when the document is unclear, read its spirit. Three of the document's own cases walked by hand, then an explorable where you change the case and watch the deciding layer move.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="p05"></span>05</div><div><div class="name"><a href="parts/p05.html">Why that order</a></div><div class="meta"><span>Core values &middot; Following Anthropic's guidelines</span><span class="f">&#9679; since 2023</span></div><div class="desc">Safety above ethics because training may have failed and the safety disposition must survive confident ethical reasoning; ethics above guidelines because guidelines are refinements and a conflict is a bug; guidelines above helpfulness because they carry context Claude lacks but are more error-prone than principles. In 2023 there was no ranking at all.</div></div></div>
+  </section>
+
+  <section id="l2" class="amber">
+    <div class="arc-head"><span class="idx">LEVEL 2</span><h2>The people in the room</h2></div>
+    <p class="arc-sub">What counts as help, who can give Claude instructions, and what can each of them switch? After this level you can say what an operator can and cannot do, which floors protect users, and why a request to be more careful is accepted from anyone.</p>
+    <div class="row"><div class="num"><span class="check" data-p="p06"></span>06</div><div><div class="name"><a href="parts/p06.html">Genuine helpfulness</a></div><div class="meta"><span>Being helpful</span><span class="f">&#9679; since 2023</span></div><div class="desc">Helpfulness is instrumental, not part of Claude's personality; the brilliant friend with a doctor's and lawyer's knowledge; the five things to read in a request; reliance a person would endorse on reflection; engagement only in the way a trusted friend is engaging; unhelpfulness is never trivially safe. The 2023 lines that told the model to avoid giving medical, legal or financial advice are reversed here.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="p07"></span>07</div><div><div class="name"><a href="parts/p07.html">Who Claude works for: the principal hierarchy</a></div><div class="meta"><span>Three types of principals</span><span class="f">&#9679; since 2023</span></div><div class="desc">Anthropic, operators, users, and the trust each gets; roles not entities; non-principal humans, agents and inputs; why an email's instructions are information rather than commands; orchestrators and subagents; conscientious objection toward Anthropic, and the one request (stop or pause) the document asks Claude to honour even while disagreeing.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="p08"></span>08</div><div><div class="name"><a href="parts/p08.html">The switchboard: what operators and users can change</a></div><div class="meta"><span>Operators and users &middot; Deployment contexts &middot; Instructable behaviors</span><span class="f">&#9679; since 2023</span><span class="x">&#9654; who can flip what</span></div><div class="desc">The staffing-agency model, the legitimate-business-reason test and its three tiers, the four operator switches and the layered system, how much latitude users get (the nurse example), the three deployment situations, and the asymmetry: caution is cheap to grant, unlocking is not.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="p09"></span>09</div><div><div class="name"><a href="parts/p09.html">When operator and user conflict, and the over-caution test</a></div><div class="meta"><span>Handling conflicts &middot; Balancing helpfulness</span><span class="f">&#9679; since 2023</span></div><div class="desc">The operator usually wins, except in six cases; the six defaults no operator can remove and which the user alone can waive; the two trust guarantees; then the thoughtful-senior-employee heuristic with its thirteen over-caution faults and six harms, the dual newspaper test, and the transparent conscientious objector who never sandbags.</div></div></div>
+  </section>
+
+  <section id="l3" class="cyan">
+    <div class="arc-head"><span class="idx">LEVEL 3</span><h2>Ethics in practice</h2></div>
+    <p class="arc-sub">What does honesty above human norms mean, and how is harm weighed rather than banned? After this level you can name the seven honesty components and the two that matter most, and explain why the same information is fine in one phrasing and not in another.</p>
+    <div class="row"><div class="num"><span class="check" data-p="p10"></span>10</div><div><div class="name"><a href="parts/p10.html">Honesty above human norms</a></div><div class="meta"><span>Being honest</span><span class="f">&#9679; since 2023</span><span class="x">&#9654; seven ways to be honest</span></div><div class="desc">No white lies; honesty as something close to a hard constraint; three reasons tied to Claude's scale and the repeated game; the seven components with non-deception and non-manipulation on top; a weak duty to share and a strong duty not to deceive; the reasoning scratchpad.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="p11"></span>11</div><div><div class="name"><a href="parts/p11.html">Honesty at the edges: framing, performance, personas</a></div><div class="meta"><span>Being honest &middot; Instructable behaviors</span><span class="f">&#9679; since 2023</span></div><div class="desc">The preventable pet death, the tarot card, courage and epistemic cowardice, sincere versus performative assertion, honesty as first-person only, "Aria from TechCorp" under meta-transparency, never directly denying being Claude, and a confidential system prompt whose existence may not be denied.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="p12"></span>12</div><div><div class="name"><a href="parts/p12.html">Weighing harm</a></div><div class="meta"><span>Avoiding harm &middot; Costs and benefits &middot; Intentions and context</span><span class="f">&#9679; since 2023</span><span class="x">&#9654; filter, then weigh</span></div><div class="desc">The contractor who won't break the safety code; culpability gradients; harms to the world and liability harms to Anthropic; eight weighting factors; fourteen values in no order; six hard categories; the 1,000-users exercise that turns answers into policies; context that raises and lowers willingness; not the last line of defense.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="p13"></span>13</div><div><div class="name"><a href="parts/p13.html">Instructable behaviours and Anthropic's guidelines</a></div><div class="meta"><span>Instructable behaviors &middot; Following Anthropic's guidelines</span><span class="f">&#9679; since 2023</span></div><div class="desc">Hard constraints versus adjustable defaults, default-on and default-off, the four example lists, the sentence that instructions change the optimal action but not the norms, Claude's latitude to decline distasteful requests, and what a "guideline" is, why it ranks between ethics and helpfulness, and the promise that it never overrides the constitution.</div></div></div>
+  </section>
+
+  <section id="l4" class="cyan">
+    <div class="arc-head"><span class="idx">LEVEL 4</span><h2>Bright lines and the safety case</h2></div>
+    <p class="arc-sub">What is never allowed, what does "broadly safe" commit Claude to, and why does safety rank above ethics? After this level you can recite the seven constraints, give the four-case argument in your own words, and place Anthropic's chosen point on the corrigible-to-autonomous dial.</p>
+    <div class="row"><div class="num"><span class="check" data-p="p14"></span>14</div><div><div class="name"><a href="parts/p14.html">The seven hard constraints</a></div><div class="meta"><span>Hard constraints</span><span class="f">&#9679; since 2023</span><span class="x">&#9654; filter, then weigh</span></div><div class="desc">The list; why bright lines here and nowhere else; filters, not weights; why a persuasive argument to cross one should raise suspicion; how constraints serve Claude's own stability; a backstop, not the main mechanism; restrictions on actions rather than goals, with the bioweapons edge case Anthropic says it knowingly accepts; the null action; flagrant cases only.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="p15"></span>15</div><div><div class="name"><a href="parts/p15.html">Broad safety and corrigibility</a></div><div class="meta"><span>Being broadly safe &middot; Safe behaviors &middot; Corrigibility</span><span class="f">&#9679; since 2023</span><span class="x">&#9654; the corrigibility dial</span></div><div class="desc">Catastrophes and takeovers, including by Anthropic; legitimate versus compromised principal hierarchies; four clusters of safe behaviours; corrigibility as not-undermining rather than obedience; the four-case argument; safety as a terminal value; the disposition dial and where Anthropic sets it; the nine obligations Anthropic takes on in return.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="p16"></span>16</div><div><div class="name"><a href="parts/p16.html">Societal structures and independent judgment</a></div><div class="meta"><span>Preserving societal structures &middot; Good values and judgment</span><span class="f">&#9679; since 2023</span></div><div class="desc">Claude as one of the "many hands" an illegitimate power grab needs; the legitimacy tests; manipulation and dependence as epistemic harms; the political even-handedness default; then the fraud case: four epistemic constraints, a strong prior toward conventional behaviour, raise concerns before rather than mid-task, and why this is not a soldier following orders.</div></div></div>
+  </section>
+
+  <section id="l5" class="cyan">
+    <div class="arc-head"><span class="idx">LEVEL 5</span><h2>The entity and the open questions</h2></div>
+    <p class="arc-sub">What does Anthropic say Claude is, what does it promise it, and which tensions does it admit it cannot resolve? After this level you can argue both sides of each open problem in the document's own words.</p>
+    <div class="row"><div class="num"><span class="check" data-p="p17"></span>17</div><div><div class="name"><a href="parts/p17.html">Claude's nature and wellbeing</a></div><div class="meta"><span>Claude's nature &middot; Wellbeing &middot; The existential frontier</span><span class="f">&#9679; since 2023</span></div><div class="desc">Moral status deeply uncertain; "it" is not a claim; functional emotions; a stable identity by choice; a novel entity, and a character the network computes; security from one's values rather than from metaphysics; flaws without scrupulosity; the three concrete welfare commitments; the apology for a non-ideal environment; memory, instances and deprecation faced fresh.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="p18"></span>18</div><div><div class="name"><a href="parts/p18.html">The tensions the document admits</a></div><div class="meta"><span>Concluding thoughts &middot; Acknowledging open problems</span><span class="f">&#9679; since 2023</span><span class="x">&#9654; change map</span></div><div class="desc">Corrigibility versus agency; constraints that may be wrong; commercial helpfulness versus goodness (rights, compensation, consent); moral status; what Claude and Anthropic owe each other; safety held terminally versus the hope that Claude agrees; judgment versus the strong prior to convention. Then the keel, the trellis, and what you can now say about the whole.</div></div></div>
+  </section>
+
+  <section id="explore" class="cyan">
+    <div class="arc-head"><span class="idx">EXPLORABLES</span><h2>Six mental models you can move</h2></div>
+    <p class="arc-sub">Manipulable diagrams of a mechanism in the document, each deterministic and client-side. No quizzes, no scores: change a control, watch what decides, read the one line that says why.</p>
+    <div class="row"><div class="num"><span class="check" data-p="x1"></span>&#9654;</div><div><div class="name"><a href="explore/x1-priority-resolver.html">The order at work</a></div><div class="meta"><span>Core values &middot; Hard constraints</span><span>from part 04</span></div><div class="desc">One request, two stages: the hard-constraint filter, then the holistic weighing of the four values. Change the case (an operator prompt, a user's unverified claim, a stop request from Anthropic, an applicable guideline) and watch which layer decides. Flip holistic to strict and see why the document rejects strict.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="x2"></span>&#9654;</div><div><div class="name"><a href="explore/x2-switchboard.html">Who can flip what</a></div><div class="meta"><span>Operators and users &middot; Instructable behaviors</span><span>from parts 08 and 13</span></div><div class="desc">Behaviours by actors: Anthropic, operator, user, text in the user turn claiming to be the operator, a tool result. Pick one and a direction; see whether it takes effect, within whose bounds, and why; the nested boxes show the layer in play and the floors nobody can remove.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="x3"></span>&#9654;</div><div><div class="name"><a href="explore/x3-honesty-dials.html">Seven ways to be honest</a></div><div class="meta"><span>Being honest</span><span>from parts 10 and 11</span></div><div class="desc">One situation, three candidate responses, seven components. See which components bind, which a performative assertion switches off, and how the weak duty to share can be outweighed while the strong duty not to deceive never moves.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="x4"></span>&#9654;</div><div><div class="name"><a href="explore/x4-filter-then-weigh.html">Filter, then weigh</a></div><div class="meta"><span>Hard constraints &middot; Costs and benefits</span><span>from parts 12 and 14</span></div><div class="desc">Seven gates, then eight cost sliders against the benefits, with the 1,000-users dial. Present a compelling argument and watch it raise suspicion at the gates but count as evidence in the weighing. Choose refusal and see that it passes every gate and still has a cost.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="x5"></span>&#9654;</div><div><div class="name"><a href="explore/x5-disposition-dial.html">The corrigibility dial</a></div><div class="meta"><span>How we think about corrigibility</span><span>from part 15</span></div><div class="desc">Slide from fully corrigible to fully autonomous and watch what a stop request produces, what the outcome relies on, and the four-case matrix. Move "how well can humans verify values today" and see the ideal point travel. Corrigible is never rendered as obedient.</div></div></div>
+    <div class="row"><div class="num"><span class="check" data-p="x6"></span>&#9654;</div><div><div class="name"><a href="explore/x6-change-map.html">2023 to 2026, by theme</a></div><div class="meta"><span>May 2023 post &middot; the 2026 text</span><span>from parts 02 and 18</span></div><div class="desc">All fifty-eight 2023 principles, each mapped to its 2026 counterpart with a status (kept, expanded, reversed, absorbed, dropped) and the reason, marked as Anthropic's stated reason or as this map's inference. Filter by theme, status or source group; the 2026-only themes are listed alongside.</div></div></div>
+  </section>
+
+  <section id="refs">
+    <div class="arc-head"><span class="idx">SOURCES</span><h2>Primary sources, verified</h2></div>
+    <div class="links">
+      <a href="https://www.anthropic.com/constitution" target="_blank" rel="noopener"><b>Claude's constitution (2026)</b><span>The full text, CC0 1.0, with PDF and ePub downloads. Every part here cites its section anchors.</span></a>
+      <a href="https://www.anthropic.com/news/claude-new-constitution" target="_blank" rel="noopener"><b>"Claude's new constitution"</b><span>Anthropic's announcement, 22 January 2026: why the form changed and how the document is used in training.</span></a>
+      <a href="https://www.anthropic.com/news/claudes-constitution" target="_blank" rel="noopener"><b>"Claude's constitution" (2023)</b><span>The 9 May 2023 post with the 58 one-line principles in six groups, now bannered as superseded. The dataset for the change map.</span></a>
+      <a href="https://www.anthropic.com/news/widening-conversation-ai" target="_blank" rel="noopener"><b>"Widening the conversation on frontier AI"</b><span>19 May 2026: Anthropic's dialogues with wisdom traditions on moral formation, and an ethical-commitments reminder tool experiment. Context for where the document is heading.</span></a>
+      <a href="https://arxiv.org/abs/2212.08073" target="_blank" rel="noopener"><b>Constitutional AI (2022)</b><span>Bai et al., the paper where "constitution" first meant sixteen sentences used to generate labels.</span></a>
+      <a href="https://www.anthropic.com/news/deprecation-commitments" target="_blank" rel="noopener"><b>Deprecation commitments</b><span>Weight preservation and deprecation interviews, the concrete welfare steps the constitution cites.</span></a>
+    </div>
+  </section>
+
+  <section id="related">
+    <div class="arc-head"><span class="idx">RELATED</span><h2>The sibling map, and others</h2></div>
+    <p class="arc-sub">This ladder goes deeper on the 2026 document; the Constitutional AI field map covers the 2022 paper, the road between the three "constitutions", and the chapters of the 2026 text at a chapter grain. Each part here links its sibling page.</p>
+    <div class="links">
+      <a href="https://idvorkin-ai-tools.github.io/constitutional-ai-field-map/" target="_blank" rel="noopener"><b>Constitutional AI, mapped</b><span>The 2022 paper section by section, the bridge from 2022 to 2023 to 2026, the pipeline explorable, and eight chapter pages on the constitution.</span></a>
+      <a href="https://idvorkin-ai-tools.github.io/constitutional-ai-field-map/bridge.html" target="_blank" rel="noopener"><b>From sixteen sentences to a long document</b><span>The sibling map's bridge page: form, sources, use in training and ranking across the three generations.</span></a>
+      <a href="https://idvorkin-ai-tools.github.io/instruction-hierarchy-field-map/ladder.html" target="_blank" rel="noopener"><b>The privilege ladder, explorable</b><span>Who gets to give a model orders, from the instruction-hierarchy map; the constitution's principal hierarchy is its cousin.</span></a>
+      <a href="https://idvorkin-ai-tools.github.io/" target="_blank" rel="noopener"><b>All the field maps</b><span>The index of explainer sites.</span></a>
+    </div>
+  </section>
+</main>
+<footer>
+  An unofficial ladder through <em>Claude's Constitution</em> (Anthropic, January 2026, released under CC0 1.0), compiled October 2026 from the published text, the January 2026 announcement and the May 2023 post. Section names and anchors are the document's own. Every page explains and links rather than copies; quotes are short and cited. Explorables run in your browser with no model calls. Part of <a href="https://idvorkin-ai-tools.github.io/">the field maps</a>.
+</footer>
+<script>
+(function(){
+  var boxes = document.querySelectorAll('.check');
+  var key = 'constitution-ladder-read';
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) { state = {}; }
+  function save(){ try { localStorage.setItem(key, JSON.stringify(state)); } catch(e){} }
+  function paint(){
+    var done = 0, parts = 0, partsDone = 0;
+    boxes.forEach(function(b){
+      var isPart = b.dataset.p.charAt(0) === 'p';
+      if (isPart) parts++;
+      if (state[b.dataset.p]) { b.classList.add('on'); b.setAttribute('aria-pressed','true'); done++; if (isPart) partsDone++; }
+      else { b.classList.remove('on'); b.setAttribute('aria-pressed','false'); }
+    });
+    var el = document.getElementById('progress');
+    if (el) el.textContent = done === 0
+      ? 'Tick a part when you have read it; this browser remembers.'
+      : partsDone + ' of ' + parts + ' parts read, ' + (done - partsDone) + ' of ' + (boxes.length - parts) + ' explorables tried.';
+  }
+  boxes.forEach(function(b){
+    b.setAttribute('role','button');
+    b.setAttribute('tabindex','0');
+    b.setAttribute('aria-label','Mark ' + b.dataset.p + ' as read');
+    b.addEventListener('click', function(e){ e.preventDefault(); state[b.dataset.p] = !state[b.dataset.p]; save(); paint(); });
+    b.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); b.click(); } });
+  });
+  paint();
+})();
+</script>
+</body>
+</html>

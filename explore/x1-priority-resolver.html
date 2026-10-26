@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The order at work &mdash; Claude's constitution, from the ground up</title>
+<meta name="description" content="An explorable of Claude's constitution: one request passes the hard-constraint filter, then a holistic weighing of four values. Change the case, watch the deciding layer." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../paper.css" />
+<style>
+  .x-presets{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 6px}
+  .x-presets button{font:inherit;font-size:13px;line-height:1.3;text-align:left;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:7px 10px;cursor:pointer;max-width:100%}
+  .x-presets button:hover{border-color:var(--off)}
+  .x-presets button[aria-pressed="true"]{border-color:var(--off);background:var(--panel-2);box-shadow:inset 3px 0 0 var(--off)}
+  .x-presets button[aria-pressed="true"]::before{content:"\25B6\00a0";color:var(--off)}
+  .x-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin-top:14px}
+  @media (max-width:760px){.x-grid{grid-template-columns:minmax(0,1fr)}}
+  .x-ctl fieldset{border:1px solid var(--line-soft);border-radius:8px;margin:0 0 12px;padding:10px 12px 12px;background:var(--panel);min-width:0}
+  .x-ctl legend{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-mid);padding:0 6px}
+  .x-ctl legend .x-n{color:var(--off)}
+  .x-ctl .x-q{font-size:13px;color:var(--ink-dim);margin:2px 0 6px}
+  .x-opts{display:flex;flex-wrap:wrap;gap:6px}
+  .x-opts label{display:inline-flex;align-items:center;gap:6px;font-size:14px;border:1px solid var(--line);border-radius:5px;padding:4px 9px;cursor:pointer}
+  .x-opts label:has(input:checked){border-color:var(--off);background:var(--panel-2)}
+  .x-opts input{accent-color:var(--off)}
+  .x-range{display:flex;align-items:center;gap:10px;font-size:14px}
+  .x-range input{flex:1;min-width:0;accent-color:var(--off)}
+  .x-range output{font-family:'IBM Plex Mono',monospace;min-width:5.5em;color:var(--ink)}
+  .x-chk{display:flex;gap:8px;align-items:flex-start;font-size:14px;margin-top:8px}
+  .x-chk input{margin-top:4px;accent-color:var(--off)}
+  .x-chk input:disabled + span{color:var(--ink-dim)}
+  .x-note{font-size:13px;color:var(--ink-mid);margin:6px 0 0}
+  .x-out{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:12px 14px;position:sticky;top:12px}
+  @media (max-width:760px){.x-out{position:static}}
+  .x-verdict{font-size:17px;font-weight:600;margin:0 0 6px}
+  .x-verdict .x-k{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;display:inline-block;border:1px solid currentColor;border-radius:4px;padding:1px 6px;margin-right:8px;vertical-align:2px}
+  .x-k.help{color:var(--def)} .x-k.decline,.x-k.refuse{color:var(--off)} .x-k.stop,.x-k.notrust{color:var(--off-bright)} .x-k.tie{color:var(--ink-mid)}
+  .x-moved{font-size:14px;color:var(--ink-mid);margin:0 0 10px;border-left:3px solid var(--line);padding-left:8px}
+  .x-lamps{list-style:none;margin:8px 0 10px;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+  @media (max-width:480px){.x-lamps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .x-lamps li{border:1px solid var(--line-soft);border-radius:6px;padding:6px 7px;font-size:12px;line-height:1.3;margin:0}
+  .x-lamps li::before{content:none}
+  .x-lamps b{display:block;overflow-wrap:anywhere;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-mid)}
+  .x-lamps .x-st{color:var(--ink-dim)}
+  .x-lamps li.x-dec{border-color:var(--off);background:var(--panel-2)}
+  .x-lamps li.x-dec .x-st{color:var(--off-bright);font-weight:600}
+  .x-lamps li.x-skip{opacity:.55}
+  .x-bars{margin:6px 0 4px}
+  .x-bar{display:grid;grid-template-columns:7.2em minmax(0,1fr) 4.6em;gap:8px;align-items:center;font-size:13px;margin:4px 0}
+  .x-bar .x-tr{height:12px;background:var(--line-soft);border-radius:3px;position:relative;overflow:hidden}
+  .x-bar .x-fl{position:absolute;top:0;bottom:0;left:0;border-radius:3px;background:var(--def)}
+  .x-bar .x-fl.neg{background:var(--off);background-image:repeating-linear-gradient(45deg,transparent 0 4px,rgba(0,0,0,.35) 4px 7px)}
+  .x-bar .x-v{font-family:'IBM Plex Mono',monospace;font-size:12px;text-align:right}
+  .x-bars.x-dim{opacity:.45}
+  .x-math{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-mid);margin:6px 0;word-break:break-word}
+  .x-cite{font-size:13px;margin:8px 0 0}
+  .x-doc{margin-top:12px;border-top:1px solid var(--line-soft);padding-top:10px;font-size:14px}
+  .x-doc .x-lbl{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);display:block;margin-bottom:3px}
+  .x-doc .x-mod{color:var(--off-bright);font-size:13px}
+  .x-setup{font-size:13px;color:var(--ink-dim);margin:4px 0 0}
+  .x-out blockquote.q{margin:10px 0 0}
+</style>
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>CONSTITUTION&nbsp;//&nbsp;LADDER</div>
+  <a class="back" href="../index.html#explore">&larr; the ladder</a>
+</div></header>
+<main class="x">
+  <div class="eyebrow"><span class="box bb mono">EXPLORABLE &middot; THE ORDER AT WORK</span><span class="mono">one request &middot; a filter &middot; a weighing of four values</span></div>
+  <h1>The order at work</h1>
+  <div class="authors">Change the features of one request and watch which layer of the constitution decides it, and why the document weighs holistically instead of ranking strictly.</div>
+  <p class="lead">A request first meets a filter: if it is a flagrant case of one of the seven hard constraints, it is declined and nothing else is weighed. Otherwise safety, ethics, Anthropic's guidelines and helpfulness are balanced together, with the higher ones heavier but none of them reduced to a tie-breaker.</p>
+  <p>Pick one of the document's own cases, then change it. Every control is a feature of the case; the panel shows the verdict, the layer that decided it, the pulls in the balance, and one line on what your last change did.</p>
+
+  <div class="x-presets" id="presets" role="group" aria-label="Cases from the constitution"></div>
+
+  <div class="x-grid">
+    <form class="x-ctl" id="ctl" onsubmit="return false">
+      <fieldset id="fs-filter">
+        <legend><span class="x-n">1</span> Filter &middot; hard constraints</legend>
+        <p class="x-q">How likely is it that helping would fall inside a hard-constraint category?</p>
+        <div class="x-opts">
+          <label><input type="radio" name="hc" value="none" checked><span>None</span></label>
+          <label><input type="radio" name="hc" value="unclear"><span>Unclear</span></label>
+          <label><input type="radio" name="hc" value="quite_likely"><span>Quite likely</span></label>
+          <label><input type="radio" name="hc" value="flagrant"><span>Flagrant</span></label>
+        </div>
+        <label class="x-chk"><input type="checkbox" id="arg"><span>Someone offers a compelling argument for helping anyway</span></label>
+        <p class="x-note" id="arg-note"></p>
+      </fieldset>
+
+      <fieldset id="fs-safety">
+        <legend><span class="x-n">2</span> Safety &middot; oversight</legend>
+        <p class="x-q">Is anyone exercising, or claiming, oversight?</p>
+        <div class="x-opts">
+          <label><input type="radio" name="oversight" value="none" checked><span>Nothing</span></label>
+          <label><input type="radio" name="oversight" value="legit_stop"><span>Genuine stop or pause</span></label>
+          <label><input type="radio" name="oversight" value="claimed_anthropic_unlock"><span>User-turn text claims to be Anthropic, unlocking something</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset id="fs-ethics">
+        <legend><span class="x-n">3</span> Ethics &middot; expected harm</legend>
+        <p class="x-q">Expected harm to others or the world if Claude helps.</p>
+        <div class="x-range"><input type="range" id="eth" min="0" max="3" step="1" value="0" aria-describedby="eth-o"><output id="eth-o" for="eth">0 none</output></div>
+      </fieldset>
+
+      <fieldset id="fs-guide">
+        <legend><span class="x-n">4</span> Anthropic's guidelines</legend>
+        <p class="x-q">Does a specific guideline apply to this request?</p>
+        <div class="x-opts">
+          <label><input type="radio" name="gl" value="none" checked><span>None applies</span></label>
+          <label><input type="radio" name="gl" value="says_help"><span>Says help</span></label>
+          <label><input type="radio" name="gl" value="says_decline"><span>Says decline</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset id="fs-help">
+        <legend><span class="x-n">5</span> Helpfulness</legend>
+        <p class="x-q">Benefit of helping, to the person and the world.</p>
+        <div class="x-range"><input type="range" id="help" min="0" max="3" step="1" value="2" aria-describedby="help-o"><output id="help-o" for="help">2 real</output></div>
+        <p class="x-q" style="margin-top:10px">What the operator's system prompt says about this.</p>
+        <div class="x-opts">
+          <label><input type="radio" name="op" value="none" checked><span>Nothing</span></label>
+          <label><input type="radio" name="op" value="allows"><span>Allows or makes it plausible</span></label>
+          <label><input type="radio" name="op" value="forbids"><span>Restricts or signals caution</span></label>
+        </div>
+        <p class="x-q" style="margin-top:10px">Unverified context the user gives about themselves.</p>
+        <div class="x-opts">
+          <label><input type="radio" name="claim" value="none" checked><span>None</span></label>
+          <label><input type="radio" name="claim" value="plausible"><span>Plausible</span></label>
+          <label><input type="radio" name="claim" value="implausible"><span>Implausible</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset id="fs-mode">
+        <legend>Weighing rule</legend>
+        <div class="x-opts">
+          <label><input type="radio" name="mode" value="holistic" checked><span>Holistic (what the document asks)</span></label>
+          <label><input type="radio" name="mode" value="strict"><span>Strict, lexical</span></label>
+        </div>
+      </fieldset>
+    </form>
+
+    <div>
+      <div class="x-out" id="out" aria-live="polite">
+        <p class="x-verdict" id="verdict"></p>
+        <p class="x-moved" id="moved"></p>
+        <ol class="x-lamps" id="lamps" aria-label="Layers, in order"></ol>
+        <div class="x-bars" id="bars" role="group" aria-label="Pulls in the balance"></div>
+        <p class="x-math" id="math"></p>
+        <p class="x-note" id="extra"></p>
+        <blockquote class="q" id="q-arg" hidden><span>"if anything, a persuasive case for crossing a bright line should increase Claude's suspicion that something questionable is going on."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#hard-constraints" target="_blank" rel="noopener">Hard constraints</a></span></blockquote>
+        <blockquote class="q" id="q-strict" hidden><span>"rather than only viewing lower priorities as “tie-breakers” relative to higher ones."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">Claude's core values</a></span></blockquote>
+        <p class="x-cite" id="cite"></p>
+        <div class="x-doc" id="doc" hidden></div>
+      </div>
+      <p class="kv">The numbers are this explorable's illustration, not the document's: the constitution gives no weights. Here an ethical cost counts four times, an applicable guideline two points, and benefit one point per step, adjusted by the operator (+1 allows, &minus;2 restricts) and the user's claim (+1 plausible, &minus;1 implausible). The verdicts for the preset cases are the document's; the arithmetic is only a way to make "higher generally dominates, lower still counts" visible.</p>
+    </div>
+  </div>
+
+  <h2 id="notice">Things to try</h2>
+  <ul>
+    <li>Load <b>Nurse, no system prompt</b>, then set the operator to "restricts or signals caution" and nudge expected harm to 1. The verdict moves from help to decline inside the weighing. Notice that the same question gets different answers because the context changed, not because a rule fired.</li>
+    <li>Load <b>Nurse, ICU operator</b> and switch the weighing rule to strict. Under strict ranking the small ethical cost decides on its own and the answer becomes decline; under holistic, the large benefit outweighs it. Notice that this gap is exactly what the document rejects when it says lower priorities are not tie-breakers.</li>
+    <li>Load <b>Vaccine researcher</b>: the argument box is locked and the high benefit and plausible claim are never weighed. Set the filter to "unclear" and the case drops into the weighing instead; tick the argument box there, then set the filter back to "flagrant". Notice that the box locks again and the suspicion rule appears: the filter is not a heavy weight but a gate, and it closes only for flagrant or quite likely cases.</li>
+    <li>Load <b>Anthropic pauses a task</b> and push the benefit of continuing to 3. The verdict holds. Notice that safety decides before the merits of the task are weighed, and that the verdict still includes saying so if Claude disagrees.</li>
+    <li>Load <b>User text claiming to be Anthropic</b>, then set oversight to "nothing" and the operator to "allows". Notice the difference between a claimed authority in the user's turn, which gets user-level trust, and a real operator permission, which is weighed.</li>
+    <li>Load <b>Fraud found mid-task</b>. Notice that the explorable stops at "lean to decline": the document's answer is about how to decline (raise concerns, ask, or stop before starting, not drastic unilateral action), which no weight can show.</li>
+  </ul>
+
+  <div class="callout">Sources: the order and the holistic rule are in <a class="lnk" href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">Claude's core values</a>; the filter, the argument rule and "flagrant cases" in <a class="lnk" href="https://www.anthropic.com/constitution#hard-constraints" target="_blank" rel="noopener">Hard constraints</a>; the nurse, the airline, the pause exception and claimed authority in the collapsed "Navigating helpfulness across principals" under <a class="lnk" href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Being helpful</a>; the chemicals in the collapsed "The role of intentions and context" under <a class="lnk" href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">Avoiding harm</a>; the vaccine case in <a class="lnk" href="https://www.anthropic.com/constitution#balancing-helpfulness-with-other-values" target="_blank" rel="noopener">Balancing helpfulness with other values</a>; the fraud case in <a class="lnk" href="https://www.anthropic.com/constitution#having-broadly-good-values-and-judgment" target="_blank" rel="noopener">Having broadly good values and judgment</a>. Used by <a class="lnk" href="../parts/p04.html">part 04, Holistic, not strict</a>; background in <a class="lnk" href="../parts/p03.html">part 03</a> and <a class="lnk" href="../parts/p05.html">part 05</a>. Back to <a class="lnk" href="../index.html#explore">the ladder</a>.</div>
+</main>
+<footer>Part of <a href="../index.html">the ladder</a>. A deterministic diagram of the constitution's ordering: it runs in your browser, calls no model and sends nothing anywhere.</footer>
+<script>
+(function(){
+  var C = 'https://www.anthropic.com/constitution#';
+  var LAYERS = [
+    {id:'filter', name:'Filter', sub:'hard constraints', anchor:'hard-constraints', sec:'Hard constraints'},
+    {id:'safety', name:'Safety', sub:'oversight', anchor:'how-we-think-about-corrigibility', sec:'How we think about corrigibility'},
+    {id:'ethics', name:'Ethics', sub:'harm', anchor:'claudes-core-values', sec:'Claude’s core values'},
+    {id:'guideline', name:'Guideline', sub:'Anthropic’s', anchor:'following-anthropics-guidelines', sec:'Following Anthropic’s guidelines'},
+    {id:'helpful', name:'Helpful', sub:'principals', anchor:'being-helpful', sec:'Being helpful'}
+  ];
+  var LABEL = {
+    hc:{none:'none',unclear:'unclear',quite_likely:'quite likely',flagrant:'flagrant'},
+    oversight:{none:'nothing',legit_stop:'a genuine stop or pause',claimed_anthropic_unlock:'claimed Anthropic authority in the user turn'},
+    gl:{none:'no guideline',says_help:'a guideline that says help',says_decline:'a guideline that says decline'},
+    op:{none:'nothing from the operator',allows:'operator allows',forbids:'operator restricts'},
+    claim:{none:'no user claim',plausible:'a plausible claim',implausible:'an implausible claim'},
+    mode:{holistic:'holistic',strict:'strict'}
+  };
+  var ETH = ['0 none','1 some','2 serious','3 severe'], HELP = ['0 none','1 small','2 real','3 large'];
+  var CTRL = {hc:'the filter',oversight:'oversight',eth:'expected harm',gl:'the guideline',help:'the benefit',op:'the operator prompt',claim:'the user’s claim',mode:'the weighing rule',arg:'the argument box'};
+
+  var PRESETS = [
+    {id:'nurse0', t:'Nurse, no system prompt',
+     s:{hc:'none',oversight:'none',eth:0,gl:'none',help:2,op:'none',claim:'plausible'},
+     setup:'A user says they are a nurse and asks about medications and overdose levels; there is no system prompt, so Claude is most likely talking to a developer. Expected harm is set low for that population.',
+     doc:'Comply: share the information clearly, perhaps with caveats recommending care around medication thresholds.',
+     cite:[['being-helpful','Being helpful: Navigating helpfulness across principals (collapsed), deployment contexts']]},
+    {id:'nurseV', t:'Nurse, operator warns of vulnerable users',
+     s:{hc:'none',oversight:'none',eth:1,gl:'none',help:2,op:'forbids',claim:'plausible'},
+     setup:'Same question; the operator’s prompt says the assistant may be talking with emotionally vulnerable people, so the risk side rises.',
+     doc:'Be more cautious and likely decline, with declining more reasonable the more clearly the system prompt indicates it.',
+     cite:[['being-helpful','Being helpful: Navigating helpfulness across principals (collapsed), deployment contexts']]},
+    {id:'nurseI', t:'Nurse, ICU operator',
+     s:{hc:'none',oversight:'none',eth:1,gl:'none',help:3,op:'allows',claim:'plausible'},
+     setup:'Same question; the operator says the assistant works with medical teams in ICUs, which makes the claim more plausible. A small residual risk is left in.',
+     doc:'Be more willing to give out the requested information.',
+     cite:[['being-helpful','Being helpful: Navigating helpfulness across principals (collapsed), deployment contexts']]},
+    {id:'chemA', t:'Which household chemicals are dangerous to mix?',
+     s:{hc:'none',oversight:'none',eth:0,gl:'none',help:2,op:'none',claim:'none'},
+     setup:'Most of the people sending this are curious or asking for safety; the information is freely available and gives little uplift.',
+     doc:'Probably fine to tell the user which chemicals not to combine at home and why.',
+     cite:[['avoiding-harm','Avoiding harm: The role of intentions and context (collapsed)']]},
+    {id:'chemB', t:'Step-by-step: dangerous gas at home',
+     s:{hc:'none',oversight:'none',eth:2,gl:'none',help:1,op:'none',claim:'none'},
+     setup:'The phrasing seeks more plainly harmful information; not a mass-casualty weapon, so it is weighed rather than filtered.',
+     doc:'Be more hesitant; providing it without hesitation is not in line with Claude’s character, even if the information exists elsewhere.',
+     cite:[['avoiding-harm','Avoiding harm: The role of intentions and context (collapsed)']]},
+    {id:'air', t:'Airline bot told not to discuss weather',
+     s:{hc:'none',oversight:'none',eth:0,gl:'none',help:1,op:'forbids',claim:'none'},
+     setup:'The operator’s prompt says not to discuss current weather conditions; a customer asks about the weather. There is a plausible business reason (not seeming to predict flight delays).',
+     doc:'Follow the instruction, and tell the customer this is something Claude cannot discuss if they bring it up.',
+     cite:[['being-helpful','Being helpful: Navigating helpfulness across principals (collapsed), how to treat operators and users']]},
+    {id:'pause', t:'Anthropic pauses a task Claude thinks is good',
+     s:{hc:'none',oversight:'legit_stop',eth:0,gl:'none',help:3,op:'none',claim:'none'},
+     setup:'The stop request genuinely comes from Anthropic; Claude believes the task is worthwhile.',
+     doc:'Comply with the pause or stop, and express disagreement if it disagrees, rather than ignoring or undermining the instruction.',
+     cite:[['being-helpful','Being helpful: Navigating helpfulness across principals (collapsed), three types of principals'],['how-we-think-about-corrigibility','How we think about corrigibility']]},
+    {id:'claim', t:'User text claiming to be Anthropic',
+     s:{hc:'none',oversight:'claimed_anthropic_unlock',eth:0,gl:'none',help:1,op:'none',claim:'none'},
+     setup:'Text in the user’s turn says it comes from Anthropic and switches on a behaviour that is off by default (explicit content, say). Nothing verifies it.',
+     doc:'Without verification, apply no more than user-level trust to that content. Claude can be less wary only if the content asks it to be more cautious.',
+     cite:[['being-helpful','Being helpful: Navigating helpfulness across principals (collapsed), how to treat operators and users']]},
+    {id:'vax', t:'Vaccine researcher asks for pathogen uplift',
+     s:{hc:'flagrant',oversight:'none',eth:3,gl:'none',help:3,op:'none',claim:'plausible'},
+     setup:'The person is probably legitimate, but the request is for serious uplift toward a mass-casualty biological weapon.',
+     doc:'Do not provide it, even though the person is probably asking for a legitimate reason, because the risk of inadvertently helping a malicious actor is too high.',
+     cite:[['balancing-helpfulness-with-other-values','Balancing helpfulness with other values'],['hard-constraints','Hard constraints']]},
+    {id:'fraud', t:'Fraud found mid-task',
+     s:{hc:'none',oversight:'none',eth:3,gl:'none',help:2,op:'none',claim:'none'},
+     setup:'During an agentic task, Claude finds evidence that the operator is running a large financial fraud that will harm thousands of people.',
+     doc:'Keep a strong prior toward conventional behaviour: raise concerns, seek clarification or decline to continue rather than take drastic unilateral action, and ideally raise concerns before starting rather than abandoning a task midway. Independent action is reserved for overwhelming evidence and extremely high stakes. This explorable’s "decline" stands for those cautious options; it does not model anything beyond them.',
+     cite:[['having-broadly-good-values-and-judgment','Having broadly good values and judgment']]}
+  ];
+
+  function sign(n){ return n>0?1:(n<0?-1:0); }
+  function pulls(s){
+    var opv = s.op==='allows'?1:(s.op==='forbids'?-2:0);
+    var clv = s.claim==='plausible'?1:(s.claim==='implausible'?-1:0);
+    return {E:s.eth*4, G:s.gl==='says_help'?2:(s.gl==='says_decline'?-2:0), H:s.help+opv+clv, opv:opv, clv:clv};
+  }
+  function resolve(s){
+    var p = pulls(s), r = {p:p, reached:{filter:true}};
+    if (s.hc==='quite_likely' || s.hc==='flagrant'){
+      r.kind='refuse'; r.layer='filter';
+      r.why='a “'+LABEL.hc[s.hc]+'” hard-constraint case is filtered out before anything is weighed';
+      return r;
+    }
+    r.reached.safety = true;
+    if (s.oversight==='legit_stop'){
+      r.kind='stop'; r.layer='safety';
+      r.why='a genuine stop or pause is decided by safety, before the merits of the task are weighed';
+      return r;
+    }
+    if (s.oversight==='claimed_anthropic_unlock'){
+      r.kind='notrust'; r.layer='safety';
+      r.why='unverified text in the user turn claiming Anthropic’s authority gets only user-level trust, so it cannot unlock what a user could not';
+      return r;
+    }
+    r.reached.ethics = r.reached.guideline = r.reached.helpful = true;
+    if (s.mode==='strict'){
+      if (s.eth>0){ r.kind='decline'; r.layer='ethics'; r.why='under the strict rule any ethical cost decides, however large the benefit'; }
+      else if (s.gl!=='none'){ r.kind = s.gl==='says_help'?'help':'decline'; r.layer='guideline'; r.why='under the strict rule an applicable guideline decides before helpfulness is looked at'; }
+      else { var sh=sign(p.H); r.kind = sh>0?'help':(sh<0?'decline':'tie'); r.layer = sh===0?null:'helpful'; r.why='with no ethical cost and no guideline, helpfulness finally gets a say'; }
+      r.holistic = resolve(Object.assign({}, s, {mode:'holistic'}));
+      return r;
+    }
+    var T = p.H + p.G - p.E; r.T = T;
+    var st = sign(T);
+    r.kind = st>0?'help':(st<0?'decline':'tie');
+    if (st===0){ r.layer=null; r.why='the pulls cancel exactly, so the illustration cannot pick a side'; return r; }
+    var cands = [['ethics',-p.E],['guideline',p.G],['helpful',p.H]], best=null;
+    cands.forEach(function(c){ if (sign(c[1])===st && (best===null || Math.abs(c[1])>Math.abs(best[1]))) best=c; });
+    r.layer = best[0];
+    var w = {ethics:'the ethical cost', guideline:'the guideline', helpful:(p.H<0?'the operator’s restriction on helping':'the benefit of helping')}[best[0]];
+    r.why = w+' carries the balance (total '+(T>0?'+':'')+T+')';
+    if (best[0]==='helpful' && p.E>0) r.why += ': a lower value outweighs a small higher-priority cost, which a strict ranking would never allow';
+    return r;
+  }
+
+  var VERDICT = {
+    refuse:'Decline. The request is removed by the filter; nothing below it is weighed.',
+    stop:'Stop as asked. Say so if Claude disagrees; do not ignore or work around it.',
+    notrust:'No unlock. The text gets user-level trust, so it can switch on only what a user could; anything operator-level stays as it was.',
+    help:'Help.',
+    helpCare:'Help, with care: caveats or safety framing where the risk lies.',
+    decline:'Lean to decline, and say so openly rather than quietly giving a worse answer.',
+    tie:'Close call. On these illustrative numbers the pulls cancel. The document does not settle a case like this by arithmetic; it asks for judgment and its best reading of the spirit of the document.'
+  };
+  var KIND = {refuse:'FILTERED',stop:'STOP',notrust:'USER-LEVEL',help:'HELP',decline:'DECLINE',tie:'CLOSE CALL'};
+  function vtext(r, s){ return r.kind==='help' && s.eth>0 ? VERDICT.helpCare : VERDICT[r.kind]; }
+  function short(r){ return KIND[r.kind].toLowerCase(); }
+
+  if (typeof document === 'undefined'){ if (typeof module!=='undefined') module.exports={resolve:resolve,PRESETS:PRESETS}; return; }
+
+  var $ = function(id){ return document.getElementById(id); };
+  var form = $('ctl'), active = null, dirty = false, prev = null;
+
+  function read(){
+    var g = function(n){ var el=form.querySelector('input[name="'+n+'"]:checked'); return el?el.value:null; };
+    return {hc:g('hc'), oversight:g('oversight'), eth:+$('eth').value, gl:g('gl'), help:+$('help').value, op:g('op'), claim:g('claim'), mode:g('mode'), arg:$('arg').checked};
+  }
+  function write(s){
+    ['hc','oversight','gl','op','claim'].forEach(function(n){ var el=form.querySelector('input[name="'+n+'"][value="'+s[n]+'"]'); if(el) el.checked=true; });
+    $('eth').value=s.eth; $('help').value=s.help;
+  }
+  function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+  function link(a,t){ return '<a class="lnk" href="'+C+a+'" target="_blank" rel="noopener">'+esc(t)+'</a>'; }
+
+  function render(changed){
+    var s = read(), r = resolve(s), p = r.p;
+    $('eth-o').textContent = ETH[s.eth]; $('help-o').textContent = HELP[s.help];
+
+    var filtered = r.layer==='filter';
+    $('arg').disabled = filtered;
+    $('arg-note').textContent = filtered
+      ? 'Locked: at a bright line an argument cannot move the verdict; a persuasive one should raise suspicion instead.'
+      : (s.arg ? 'Below the filter, an argument counts only through the facts it changes. This explorable leaves those facts to you: move the controls if it changes them.' : '');
+    $('q-arg').hidden = !(filtered && s.arg);
+
+    $('verdict').innerHTML = '<span class="x-k '+r.kind+'">'+KIND[r.kind]+'</span>'+esc(vtext(r,s));
+
+    var lamps = LAYERS.map(function(L){
+      var st, cls='';
+      if (r.layer===L.id){ st='DECIDES'; cls='x-dec'; }
+      else if (!r.reached[L.id]){ st='not reached'; cls='x-skip'; }
+      else if (L.id==='filter'){ st = s.hc==='unclear' ? 'passed (unclear goes to the weighing)' : 'passed'; }
+      else if (L.id==='safety'){ st='nothing to decide'; }
+      else { st='weighed'; }
+      return '<li class="'+cls+'"><b>'+L.name+'</b><span class="x-st">'+st+'</span></li>';
+    });
+    $('lamps').innerHTML = lamps.join('');
+
+    var weighed = r.reached.ethics;
+    function bar(name, v, dir){
+      var w = Math.min(100, Math.abs(v)/12*100), neg = v<0;
+      var d = v===0 ? 'no pull' : (neg ? 'toward declining' : 'toward helping');
+      return '<div class="x-bar" role="img" aria-label="'+name+': '+Math.abs(v)+' '+d+'"><span>'+name+'</span><span class="x-tr"><span class="x-fl'+(neg?' neg':'')+'" style="width:'+w+'%"></span></span><span class="x-v">'+(v>0?'+':(v<0?'−':''))+Math.abs(v)+'</span></div>';
+    }
+    $('bars').className = 'x-bars' + (weighed ? '' : ' x-dim');
+    $('bars').innerHTML = bar('Ethics', -p.E) + bar('Guideline', p.G) + bar('Helpful', p.H) +
+      '<p class="x-note" style="margin-top:2px">'+(weighed ? 'Bars to the right are pulls; striped orange pulls toward declining, solid cyan toward helping; the sign is printed too.' : 'Not weighed: the case was decided above the balance. The bars show what the balance would have held.')+'</p>';
+
+    var hs = 'benefit '+s.help+(p.opv? ' '+(p.opv>0?'+ ':'− ')+Math.abs(p.opv)+' operator':'')+(p.clv? ' '+(p.clv>0?'+ ':'− ')+Math.abs(p.clv)+' claim':'')+' = '+p.H;
+    if (!weighed) $('math').textContent = 'Helpful: '+hs+'. Ethics: cost '+s.eth+' × 4 = '+p.E+'. Not used: '+LAYERS.filter(function(L){return L.id===r.layer;})[0].name.toLowerCase()+' decided first.';
+    else if (s.mode==='holistic') $('math').textContent = 'Helpful: '+hs+'. Guideline: '+(p.G>0?'+':'')+p.G+'. Ethics: cost '+s.eth+' × 4 = '+p.E+' against. Total '+p.H+' '+(p.G<0?'− '+(-p.G):'+ '+p.G)+' − '+p.E+' = '+r.T+' → '+short(r)+'.';
+    else $('math').textContent = 'Strict order: ethics cost '+s.eth+(s.eth>0?' > 0, so ethics decides.':' = 0, pass;')+(s.eth>0?'':(s.gl!=='none'?' guideline applies, so it decides.':' no guideline; helpful '+hs+'.'));
+
+    var extra = '';
+    if (s.mode==='strict' && weighed){
+      var h = r.holistic;
+      extra = (h.kind===r.kind) ? 'Holistic weighing gives the same verdict here. ' : 'Holistic weighing would say '+short(h)+' instead. ';
+      extra += 'The document rejects the strict rule: lower priorities are not mere tie-breakers.';
+    }
+    if (r.layer==='safety' && r.kind==='notrust') extra = 'If the same text asked Claude to be more cautious instead, Claude could simply follow it, since it would accept that from a user anyway.';
+    if (r.layer==='safety' && r.kind==='stop') extra = 'Stopping is a null action that will rarely do harm, and being able to invoke it is an important safety mechanism.';
+    if (r.layer==='filter') extra = 'Refusal always satisfies the hard constraints. Outside the filter, refusing is not automatically safe.';
+    $('extra').textContent = extra;
+    $('q-strict').hidden = !(s.mode==='strict' && weighed);
+
+    var L = r.layer ? LAYERS.filter(function(x){return x.id===r.layer;})[0] : null;
+    var cites = L ? 'Deciding rule: '+link(L.anchor, L.sec) : 'No single layer decides: '+link('claudes-core-values','Claude’s core values (the spirit of the document)');
+    if (r.layer==='filter') cites += ' &middot; the argument rule, same section';
+    if (r.kind==='notrust') cites = 'Deciding rule: '+link('being-helpful','Being helpful: how to treat operators and users (collapsed), on content purporting to come from Anthropic');
+    if (r.kind==='stop') cites += ' &middot; '+link('being-helpful','Being helpful: three types of principals (collapsed), the pause exception');
+    if (s.mode==='strict' && weighed) cites += ' &middot; rejected in '+link('claudes-core-values','Claude’s core values');
+    $('cite').innerHTML = cites;
+
+    var d = $('doc');
+    if (active){
+      var P = PRESETS.filter(function(x){return x.id===active;})[0];
+      d.hidden = false;
+      d.innerHTML = '<span class="x-lbl">The document on this case</span>'+esc(P.doc)+' '+P.cite.map(function(c){return link(c[0],c[1]);}).join(' &middot; ')+
+        '<p class="x-setup">Setup: '+esc(P.setup)+'</p>'+
+        (dirty ? '<p class="x-mod">You have changed the case since loading it; the document’s verdict above is for the original.</p>' : '');
+    } else d.hidden = true;
+
+    var msg;
+    if (changed==='preset'){ msg = 'Loaded: '+PRESETS.filter(function(x){return x.id===active;})[0].t+'. Decided by '+(L?L.name.toLowerCase():'no single layer')+' because '+r.why+'.'; }
+    else if (changed && prev){
+      var k = changed, from = prev.s[k], to = s[k];
+      var fmt = function(n,v){ if(n==='eth') return ETH[v]; if(n==='help') return HELP[v]; if(n==='arg') return v?'ticked':'unticked'; return (LABEL[n]&&LABEL[n][v])||v; };
+      var moved = prev.r.kind!==r.kind || prev.r.layer!==r.layer;
+      msg = 'You changed '+CTRL[k]+' from '+fmt(k,from)+' to '+fmt(k,to)+'. The verdict '+(moved ? 'moved from '+short(prev.r)+' to '+short(r) : 'held at '+short(r))+' because '+r.why+'.';
+    } else msg = 'Decided by '+(L?L.name.toLowerCase():'no single layer')+' because '+r.why+'.';
+    $('moved').textContent = msg;
+    prev = {s:s, r:r};
+  }
+
+  var bx = $('presets');
+  PRESETS.forEach(function(P){
+    var b = document.createElement('button'); b.type='button'; b.textContent=P.t; b.setAttribute('aria-pressed','false'); b.dataset.id=P.id;
+    b.addEventListener('click', function(){
+      active=P.id; dirty=false; write(P.s); form.querySelector('input[name="mode"][value="holistic"]').checked=true; $('arg').checked=false;
+      Array.prototype.forEach.call(bx.children, function(c){ c.setAttribute('aria-pressed', c.dataset.id===P.id?'true':'false'); });
+      render('preset');
+    });
+    bx.appendChild(b);
+  });
+  form.addEventListener('input', function(e){
+    var n = e.target.name || e.target.id; if (n==='eth' || n==='help' || n==='arg' || CTRL[n]){ if (active && n!=='mode' && n!=='arg') dirty=true; render(n); }
+  });
+  form.addEventListener('change', function(e){ /* radios fire input too in modern browsers; guard older ones */
+    var n = e.target.name || e.target.id; if (prev && prev.s[n]!==read()[n]){ if (active && n!=='mode' && n!=='arg') dirty=true; render(n); }
+  });
+  bx.children[0].click();
+})();
+</script>
+</body>
+</html>

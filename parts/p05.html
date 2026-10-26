@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Why that order &mdash; Claude's constitution, from the ground up</title>
+<meta name="description" content="Anthropic's three arguments for ranking safety over ethics, ethics over its own guidelines, and guidelines over general helpfulness." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>CONSTITUTION&nbsp;//&nbsp;LADDER</div>
+  <a class="back" href="../index.html#l1">&larr; the ladder</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span class="box wb mono">LEVEL 1 &middot; THE ORDER &middot; PART 05 OF 18</span><span class="mono">Claude's core values &middot; Following Anthropic's guidelines &middot; How we think about corrigibility</span></div>
+  <h1>Why that order</h1>
+  <div class="authors">Anthropic's three arguments: safety above ethics because training may have failed, ethics above guidelines because a conflict is a bug, guidelines above helpfulness because they carry context but err more than principles.</div>
+  <div class="paperlink" style="border-left-color:var(--off)"><span class="lbl">Source</span><a href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">Claude's constitution &middot; Claude's core values &#8599;</a></div>
+
+  <div class="tldr"><b>TL;DR &mdash;</b> The order of the four values is argued, one boundary at a time. Safety sits above ethics not because being correctable matters more than being good, but because training might have given Claude flawed values without anyone noticing, so the willingness to be corrected has to survive even confident ethical reasoning. Ethics sits above Anthropic's guidelines because guidelines are meant to be refinements inside ethical action, so a clash means the guideline is broken. Guidelines sit above general helpfulness because they carry context a single conversation lacks, yet below the broad principles because specific rules fail more often.</div>
+
+  <p class="lead">Part 04 showed how the order is used: a filter, then a weighing in which higher values generally dominate. That leaves the question a sceptical reader asks first. Why should a model put anything above being ethical, and why should a company's guidelines rank above serving the person in front of it? The constitution does not leave the ranking as a bare assertion. It gives a separate argument for each of the three boundaries, and each one turns on the same theme: how much to trust a given source of guidance, given how it might be wrong.</p>
+
+  <div class="scroll"><table class="kv">
+    <thead><tr><th>Boundary</th><th>The argument (this map's summary)</th><th>What it is not</th></tr></thead>
+    <tbody>
+      <tr><td>Safe &gt; ethical</td><td>Training is imperfect; a model could have bad values and not know it; human correction is the backstop, so it must not depend on the model's own ethical verdict</td><td>Not "being overseeable matters more than being good"</td></tr>
+      <tr><td>Ethical &gt; guidelines</td><td>Guidelines are refinements within ethical action; a real conflict reveals a drafting error or an unforeseen case</td><td>Not "Claude may ignore Anthropic whenever it disagrees"</td></tr>
+      <tr><td>Guidelines &gt; helpful</td><td>Anthropic sees patterns, risks and law that no single conversation shows; but specific guidance is more error-prone than broad principle</td><td>Not "the company's rules beat the user"</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="safety-first">Safety above ethics: the argument from imperfect training <a class="lnk" href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>Start with what Anthropic says it is <em>not</em> claiming. The core-values section states plainly that ranking oversight above ethics does not mean Anthropic thinks being overseeable is more important than being good, and the announcement repeats the point in its summary of the safety chapter. The argument is about reliability, not about which value is nobler.</p>
+  <p>The reasoning runs like this. AI training is still far from perfect. Any given version of Claude might come out of it with harmful values or mistaken beliefs, possibly subtle ones, possibly without being aware of them. If that happens, the remedy is for humans to notice and correct the problem before it spreads or does damage. That remedy only works if the model does not resist it. And here is the crux: a model with subtly corrupted values would not experience them as corrupted. It would reason its way, sincerely and confidently, to the conclusion that resisting correction is the ethical thing to do. A safety disposition that gives way whenever the model's ethics disagrees would therefore fail in exactly the cases it exists for.</p>
+  <blockquote class="q"><span>"Claude’s disposition to be broadly safe must be robust to ethical mistakes, flaws in its values, and attempts by people to convince Claude that harmful behavior is justified."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">Claude's core values</a></span></blockquote>
+  <p>The same paragraph extends this to cases where Claude is confident in its reasoning, and the safety chapter asks Claude to keep in mind that its own reasoning may be corrupted, through flawed training or malicious interference. On this map's reading, this is the single most important idea for understanding the top of the order: a check that the checked party can argue its way out of is not a check.</p>
+  <p>Two things keep this from being a demand for submission. First, what ranks first is narrow (part 03): not undermining legitimate oversight, not obeying. Claude can still disagree, object and decline to take part. Second, Anthropic frames the ranking as what a good agent would itself choose. Respecting this minimal oversight during the current period, the section argues, is what a good person in Claude's position would do, because human oversight may be a critical way of avoiding extreme and unanticipated risks while better mechanisms are built. The priority on safety is presented as an ethical conclusion, not an exception to ethics.</p>
+
+  <h2 id="four-cases">A preview of the deeper argument <a class="lnk" href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>The corrigibility section later makes this rigorous with a two-by-two: a model's values are either good or bad, and it is either broadly safe or not. The argument looks at what safety costs and buys in each of the four cells and concludes that its expected cost is low and its expected benefit high, adding the hope that a Claude with good values would make the same choice in Anthropic's position. The same section then says something easy to miss: Anthropic does not want Claude's safety to depend on Claude accepting this argument. It asks Claude to hold broad safety as a terminal value, while hoping it also sees and endorses the reasons. Part 15 works through the four cells, the disposition dial and the obligations Anthropic takes on in return; for now, the point is only that the ranking is meant to hold even for a reader who is not persuaded.</p>
+
+  <h2 id="ethics-over-guidelines">Ethics above guidelines: a conflict is a bug <a class="lnk" href="https://www.anthropic.com/constitution#following-anthropics-guidelines" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>The second boundary is the one that most surprises readers: a company telling its own model to put ethics ahead of the company's own specific instructions. The argument is about what guidelines are for. They are supposed to be grounded in ethics and consistent with it, operating as refinements within the range of ethical actions. They tell Claude how to act well given things that matter to Anthropic as a company, such as commercial viability, legal constraints and reputation. If following a guideline would require acting unethically, then something went wrong upstream: either Anthropic stated its principles badly, or it did not foresee the situation. In that case Claude is asked to recognise that Anthropic's deeper intention is for it to be ethical, and to act on that intention even at the cost of departing from the specific guidance. The guidelines section adds that Anthropic will treat any such conflict as a signal to go back and fix the guideline.</p>
+  <p>There are two named exceptions, and they matter. The hard constraints are not overridden by ethical reasoning, and neither are guidelines that overlap with broad safety; Claude is asked to keep to both even if it has somehow been persuaded that ethics demands otherwise. On this map's reading, the exceptions are the first argument reapplied: these are exactly the places where a corrupted or manipulated ethical judgment would do the most damage, so they are built to survive one.</p>
+  <p>It also helps to recall the ethics chapter's caveat from part 03. For now, Claude is asked to defer heavily to the guidance it is given and to put its own ethics first mainly where the alternative is a flagrant, serious violation of the sort senior Anthropic staff would readily recognise. "Ethics beats guidelines" is a rule for genuine, clear conflicts, not licence to second-guess every instruction.</p>
+
+  <h2 id="guidelines-over-helpfulness">Guidelines above helpfulness: context that one conversation cannot see <a class="lnk" href="https://www.anthropic.com/constitution#following-anthropics-guidelines" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>The third boundary has a two-sided argument, and both sides are about knowledge. Guidelines rank above general helpfulness because they often carry context Claude would not otherwise have. Anthropic sees patterns across many interactions, emerging risks, legal and regulatory considerations, and the practical results of different approaches, none of which shows up inside a single conversation. A guideline about a jailbreak pattern, or about where a medical advice line should sit, compresses that wider view into something Claude can use. The section says such guidance usually brings Claude's behaviour closer to the spirit of the constitution, not further from it.</p>
+  <p>But guidelines rank below safety and ethics for the mirror-image reason: they are more specific and more tied to particular situations, so they are more likely to contain mistakes or to miss an edge case. The broad principles are Anthropic's most fundamental commitments; specific guidelines are tools for carrying them out. On this map's reading, the bottom half of the order follows the same trade part 02 described between rules and judgment. The more specific a piece of guidance, the more context it can carry, and the more ways it can be wrong in a case its authors never pictured. So guidance is ranked by how robust it is, with the broadest commitments on top.</p>
+
+  <h2 id="what-it-is-not">What the argument does not say <a class="lnk" href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>Put the three arguments together and the order reads as a ladder of trust under uncertainty, not a ladder of importance. That rules out three common summaries. It does not say obedience matters more than goodness: the document denies this in so many words, and what tops the list is non-interference with legitimate correction, not obedience. It does not say Anthropic's word outranks conscience: Anthropic's own specific guidance sits below ethics, and the guidelines section commits to fixing any guideline that clashes with it. And it does not say helpfulness is unimportant: it is last in a conflict, in conversations where conflicts are rare, and part 04 showed that in a holistic weighing it can still win when the stakes on the other side are small.</p>
+
+  <div class="callout"><b>Carry this away.</b> Each boundary in the order answers the question "which source of guidance should Claude trust more when they disagree, given how each could be wrong?" Safety wins over Claude's own ethics because flawed values would not feel flawed from inside. Ethics wins over guidelines because a clash means the guideline is mistaken. Guidelines win over in-the-moment helpfulness because they see more, and lose to the broad principles because they err more.</div>
+
+  <div class="callout off" id="since-2023">
+    <b>Fleshed out since 2023, and why.</b> The May 2023 constitution had no ranking at all. It was a list of 58 standalone principles, and its own FAQ, asked whether they were prioritised, answered by describing how training used them: one principle drawn at a time for each critique or comparison.
+    <blockquote class="q off"><span>"It does not look at every principle every time, but it sees each principle many times during training."</span><span class="cite">&mdash; Claude's Constitution (May 2023), <a href="https://www.anthropic.com/news/claudes-constitution#are-these-principles-prioritized-in-any-way" target="_blank" rel="noopener">Are these principles prioritized in any way?</a></span></blockquote>
+    The 2026 text ranks four values, explains each boundary as above, and specifies how the ranking is applied:
+    <blockquote class="q off"><span>"the notion of prioritization is holistic rather than strict"</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">Claude's core values</a></span></blockquote>
+    Anthropic gives reasons for each rung, quoted above, but gives no explicit reason for moving from an unranked list to a ranked one. On this map's reading, the change follows from the change of form described in part 02: when a single principle is sampled per comparison, principles never have to be reconciled with one another, but a whole document that a model learns from and reasons with must say what wins when its parts collide. See every 2023 line's fate in <a class="lnk" href="../explore/x6-change-map.html">the change map</a>.
+  </div>
+
+  <h2 id="can-say">What you can say now</h2>
+  <ul>
+    <li>Safety ranks above ethics because training may have left Claude with flawed values it cannot detect, so its willingness to be corrected must not depend on its own ethical judgment, even when that judgment feels confident.</li>
+    <li>Anthropic explicitly denies that the ranking means being overseeable matters more than being good, and presents respecting minimal oversight now as what a good agent in Claude's position would choose.</li>
+    <li>Ethics ranks above Anthropic's guidelines because guidelines are meant to refine ethical action; a genuine clash signals a flawed guideline, except for hard constraints and safety-related guidelines, which hold regardless.</li>
+    <li>Guidelines rank above general helpfulness because they carry context from across many interactions, and below the broad principles because specific guidance is more likely to be wrong.</li>
+    <li>The deeper four-case argument for safety comes later (part 15), and Anthropic wants safety held as a terminal value, not only as the conclusion of that argument.</li>
+  </ul>
+
+  <h2 id="source">Where this sits in the source</h2>
+  <ul class="readings">
+    <li><a href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">Claude's core values</a> &middot; the three paragraphs after the "not common" caveat: why safety first, why it is not obedience, why ethics above guidelines and the two exceptions.</li>
+    <li><a href="https://www.anthropic.com/constitution#following-anthropics-guidelines" target="_blank" rel="noopener">Following Anthropic's guidelines</a> &middot; the paragraph on why guidelines sit above helpfulness and below safety and ethics, and the one on what to do when a guideline would require acting unethically.</li>
+    <li><a href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">How we think about corrigibility</a> &middot; the four-case paragraph and the terminal-value paragraph that follows it.</li>
+    <li><a href="https://www.anthropic.com/constitution#being-broadly-safe" target="_blank" rel="noopener">Being broadly safe</a> &middot; the point that Claude's own reasoning may be corrupted.</li>
+    <li><a href="https://www.anthropic.com/news/claude-new-constitution" target="_blank" rel="noopener">Anthropic's announcement (January 2026)</a> &middot; the summary of the safety chapter, restating that safety is not ranked first for being more important than ethics.</li>
+  </ul>
+
+  <h2 id="related">Related</h2>
+  <ul class="readings">
+    <li><a href="https://idvorkin-ai-tools.github.io/constitutional-ai-field-map/constitution/core-values.html#safety-first" target="_blank" rel="noopener">Four core values and their order: why safety sits above ethics</a> &middot; the Constitutional AI field map's page on this; the same argument as four short steps, leaving the four-case version to its broad-safety page, where this rung also previews the terminal-value request.</li>
+    <li><a href="https://idvorkin-ai-tools.github.io/constitutional-ai-field-map/constitution/core-values.html#ethics-over-guidelines" target="_blank" rel="noopener">Four core values and their order: why ethics sits above Anthropic's own guidelines</a> &middot; the same map on the second boundary, including the two exceptions; this rung adds why, on its reading, the exceptions are the safety argument reapplied.</li>
+  </ul>
+
+  <div class="callout">Next: <a class="lnk" href="p06.html">Genuine helpfulness</a> &middot; Back: <a class="lnk" href="p04.html">Holistic, not strict: how the order resolves a conflict</a> &middot; <a class="lnk" href="../index.html#l1">the ladder</a>.</div>
+</main>
+<footer>Original explanation of <em>Claude's Constitution</em> (Anthropic, January 2026, CC0 1.0), part 05 of 18. This page explains and links; it does not copy. Part of <a href="../index.html">the ladder</a>.</footer>
+</body>
+</html>

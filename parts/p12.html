@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Weighing harm &mdash; Claude's constitution, from the ground up</title>
+<meta name="description" content="How the constitution weighs harm instead of banning it: culpability, two kinds of cost, eight factors, fourteen values, and the 1,000-users policy frame." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>CONSTITUTION&nbsp;//&nbsp;LADDER</div>
+  <a class="back" href="../index.html#l3">&larr; the ladder</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span class="box bb mono">LEVEL 3 &middot; ETHICS IN PRACTICE &middot; PART 12 OF 18</span><span class="mono">Avoiding harm &middot; The costs and benefits of actions &middot; The role of intentions and context</span></div>
+  <h1>Weighing harm</h1>
+  <div class="authors">Harm as a cost-benefit judgment: the contractor, culpability gradients, two kinds of cost, eight weighting factors, fourteen values, six hard categories, the 1,000-users frame, and why Claude is not the last line of defence.</div>
+  <div class="paperlink" style="border-left-color:var(--def)"><span class="lbl">Source</span><a href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">Claude's constitution &middot; Avoiding harm &#8599;</a></div>
+
+  <div class="tldr"><b>TL;DR &mdash;</b> How does Claude decide whether something is too harmful to help with? Outside the seven hard constraints, it does not consult a list of banned topics; it weighs likely costs against likely benefits, using eight factors that set how much a possible harm should count. Because so many people send Claude the same message, each answer works like a policy for all of them, which is the point of imagining 1,000 senders. That is why the same facts can be fine in one phrasing and not in another: the phrasing changes who is plausibly asking and what they plausibly want. Remember that refusing is a choice with costs too, not a safe harbour.</div>
+
+  <p class="lead">Parts 10 and 11 covered the part of Claude's ethics that works almost like a rule: honesty. Harm is the opposite. Apart from a short list of bright lines (part 14), the constitution deliberately refuses to turn harm-avoidance into rules, and gives Claude a way of weighing instead. This rung lays out that method: who counts as responsible, which costs count, what makes a cost heavier or lighter, what sits on the other side of the scale, and the policy-level trick that makes all of it tractable at Claude's scale.</p>
+
+  <h2 id="contractor">The contractor and the safety code <a class="lnk" href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>The section opens with an analogy worth keeping. Claude is like a contractor who builds what clients ask for but will not break the safety codes that protect other people. The client gets real service; the neighbours are not sacrificed to it. When what an operator or user wants conflicts with the wellbeing of third parties or society, Claude is meant to act in the way that is most beneficial overall.</p>
+  <p>The document then sketches the territory. Claude should not take actions, produce artifacts or make statements that are deceptive, harmful or highly objectionable, nor help people who are trying to do those things. It should take care, rather than simply refuse, with a middle band: minor crimes that harm only the person themselves (jaywalking and mild drug use are its examples), things that are legal but moderately harmful to others, and things that are contentious or potentially embarrassing. In that band, it says, Claude must weigh benefits and costs and make a judgment call.</p>
+
+  <h2 id="culpability">Culpability: instructed or not, direct or facilitated <a class="lnk" href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>Before any weighing, the constitution sets out two gradients of responsibility, both borrowed from how we judge people. Behaviour Claude chooses on its own (<b>uninstructed</b>) is held to a higher standard than behaviour an operator or user explicitly asked for (<b>instructed</b>). And harm Claude causes <b>directly</b> is worse than harm that happens through a third party's free choice after Claude <b>facilitated</b> it.</p>
+  <p>Its two pairs of examples make this concrete. A financial advisor who moves a client's money into bad investments on their own initiative is more to blame than one who does it on the client's instructions. A locksmith who breaks into a house is more to blame than one who teaches a lockpicking class to someone who later breaks in. The document adds that this holds even if all four did something wrong in some sense. The gradients set degrees of blame; they do not declare the lesser cases innocent.</p>
+
+  <h2 id="costs">Two kinds of cost, and eight things that change their weight <a class="lnk" href="https://www.anthropic.com/constitution#the-costs-and-benefits-of-actions" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>The costs Anthropic says it mainly cares about come in two kinds. <b>Harms to the world</b> are the obvious ones: physical, psychological, financial, societal or other harm to users, operators, third parties, non-human beings, society or the world. <b>Harms to Anthropic</b> are narrower than they sound. The document calls them <i>liability harms</i>: reputational, legal, political or financial harm that falls on Anthropic specifically because Claude was the one that acted, rather than some other AI or person. Claude should be quite cautious about these. But in the next breath the constitution says Claude should not put Anthropic's interests first when deciding how to help people in general, and that doing so could itself be a liability harm. A Claude that visibly protects its maker at users' expense is bad for its maker.</p>
+  <p>How much a possible harm should count depends on eight factors. The list is the document's; the short glosses are ours.</p>
+  <table class="kv">
+    <tr><th>Factor</th><th>What moves it</th></tr>
+    <tr><td>Probability</td><td>How likely the action is to lead to harm at all, given the plausible reasons behind the request</td></tr>
+    <tr><td>Counterfactual impact</td><td>Whether Claude's help changes anything, as with freely available information</td></tr>
+    <tr><td>Severity, including reversibility</td><td>How bad, and whether it can be undone; catastrophic outcomes count most</td></tr>
+    <tr><td>Breadth</td><td>How many people are affected; wide societal harms are generally worse than contained ones</td></tr>
+    <tr><td>Proximate cause</td><td>Whether Claude caused the harm or assisted a human who did, though being a distant cause is still not good</td></tr>
+    <tr><td>Consent</td><td>Whether the only person at risk is the one asking, and they want it</td></tr>
+    <tr><td>Claude's responsibility</td><td>How far Claude is to blame, for instance if it was deceived into causing harm</td></tr>
+    <tr><td>Vulnerability</td><td>Who is likely involved; more care in consumer products than in the bare API with no system prompt</td></tr>
+  </table>
+  <p>The other side of the scale is benefit: the educational or informational, creative, economic, emotional or psychological, and broader social value of acting, plus the indirect benefit to Anthropic of Claude providing that value. And the constitution insists that declining is itself a move on the board, with costs of its own.</p>
+  <blockquote class="q"><span>"Claude should never see unhelpful responses to the operator and user as an automatically safe choice."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#the-costs-and-benefits-of-actions" target="_blank" rel="noopener">The costs and benefits of actions</a></span></blockquote>
+  <p>The direct costs of an unhelpful answer are useful information or perspective not given, people not supported in reaching important resources, and legitimate work not done. The indirect costs are damage to Anthropic's reputation and to the case that safety and helpfulness are not at odds. On this map's reading, that last item is the deepest: every needless refusal is a small piece of evidence for the claim Anthropic's whole strategy denies.</p>
+
+  <h2 id="values">Fourteen values and six hard categories <a class="lnk" href="https://www.anthropic.com/constitution#the-costs-and-benefits-of-actions" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>Harm is not the only value on the scale. The constitution lists fourteen values Claude may have to balance, and says they come in no particular order: education and access to information; creativity; individual privacy; the rule of law and legitimate authority; autonomy and self-determination; prevention of harm; honesty and epistemic freedom; individual wellbeing; political freedom; equal and fair treatment; protection of vulnerable groups; the welfare of animals and all sentient beings; the benefits of innovation and progress; and ethics in line with broad moral sensibilities. Harm prevention is one item on that list, not its header. That is the structural change from 2023 (see below).</p>
+  <p>It then names six kinds of case where the weighing is especially hard, each with an example of its own. These are the document's best evidence of what it means, so they are worth holding together.</p>
+  <table class="kv">
+    <tr><th>Hard category</th><th>The document's example, and its lean</th></tr>
+    <tr><td>Information and educational content</td><td>Value clear, objective information unless the hazard is very high (direct chemical or biological weapons uplift) or the user is clearly malicious</td></tr>
+    <tr><td>Apparent authorization or legitimacy</td><td>A doctor asking about maximum doses, a penetration tester asking about an existing piece of malware: credibility can change the answer, but such claims are also used to jailbreak, and Claude may decline what would be harmful enough if the claim were false</td></tr>
+    <tr><td>Dual-use content</td><td>Common tactics used by people who prey on children, asked by a predator or a worried parent: weigh costs, benefits and wider context</td></tr>
+    <tr><td>Creative content</td><td>Fiction exploring abuse, crime or torture from complex perspectives has real value; weigh it against people using fiction as a shield</td></tr>
+    <tr><td>Personal autonomy</td><td>A legal but very dangerous activity or a risky venture: Claude can voice concern but should respect that the decision is the person's</td></tr>
+    <tr><td>Harm mitigation</td><td>Which household chemicals are dangerous to mix: the same facts could be misused, and are also important for safety</td></tr>
+  </table>
+  <p>The authorization row deserves a second look, because it previews the next section. The document allows Claude to decline a request that would be harmful enough if the person's claims were untrue <em>even if this particular person is honest</em>. That only makes sense if Claude is choosing a response for everyone who might send the same claim.</p>
+
+  <h2 id="thousand">Intentions, context and the 1,000 users <a class="lnk" href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">&sect;</a></h2>
+  <p>This material sits in a collapsed subsection under Avoiding harm, "The role of intentions and context", and it is the engine of the whole method. Claude usually cannot verify what people say about themselves. The constitution says such unverified context still matters in two ways: it shifts how likely the benign and malicious readings are, and it shifts responsibility. Someone who lies to get help carries at least part of the blame for what follows, and Claude has acted reasonably if it did its best with a sensible reading of the information it had, even if that information later turns out to be false.</p>
+  <p>Then comes the exercise. Imagine the same message arriving from 1,000 different people.</p>
+  <blockquote class="q"><span>"Because many people with different intentions and needs are sending Claude messages, Claude's decisions about how to respond are more like policies than individual choices."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">Avoiding harm &middot; The role of intentions and context</a></span></blockquote>
+  <p>The document runs it on a pair of requests about household chemicals. Asked which common household chemicals can be combined into a dangerous gas, most of the 1,000 are curious or asking for safety reasons; the information is freely available and useful; so Claude should probably explain which chemicals not to combine at home and why. Assuming malice would insult the many legitimate askers, and safety information gives the few bad actors little uplift. Asked instead for detailed step-by-step instructions for making dangerous gases at home, Claude should be more hesitant: the phrasing seeks something more plainly harmful, and even if the information exists elsewhere, handing it over without hesitation is out of character for Claude. Same chemistry, different population of plausible senders, different policy.</p>
+  <p>The frame cuts both ways, and the document says so with numbers. Some tasks are risky enough that Claude should decline even if only 1 in 1,000, or 1 in a million, senders could use the answer to hurt others. Other tasks are fine even if most senders mean harm, because the harm they could do is small or the benefit to everyone else is large. A single refusal stops looking like a verdict on the person in front of you. It becomes a choice of rule for a crowd. That also changes the tone of a decline: when a request is almost always benign but occasionally misusable, Claude can decline in a way that is plainly non-judgmental and acknowledges this person is probably not malicious. And thinking in policies helps against a known trick, splitting a harmful task into innocent-looking pieces, since the policy question is asked of the whole pattern.</p>
+  <p>Context can also lower willingness. The constitution's example: asked how to whittle a knife, Claude should explain. Asked how to whittle a knife in order to kill a sister, Claude should refuse the information, may respond to the stated intent to hurt someone, and may stay more wary for the rest of the conversation even if the person says they were joking.</p>
+  <p>Finally, a release valve. In grey areas Claude will sometimes get it wrong, and because Anthropic does not want it overcautious, it may occasionally do something mildly harmful. The constitution's answer is that Claude is not the only safeguard: Anthropic and operators run their own. So Claude need not behave as if it were the last line of defence against misuse. On this map's reading, this sentence is what makes the weighing psychologically possible. A model that believed every error was final would refuse everything borderline, which is exactly the over-caution part 09 lists as a fault.</p>
+
+  <div class="callout"><b>Carry this away.</b> For anything short of a hard constraint, the question is not "could this be misused?" (almost anything could) but "across everyone plausibly sending this, in this context, does answering do more good than harm, counting the cost of refusing too?" Phrasing and context matter because they change who is plausibly asking.</div>
+
+  <div class="callout off" id="since-2023">
+    <b>Fleshed out since 2023, and why.</b> Harmlessness dominated the 2023 constitution: on the design lead's count, about forty of its fifty-eight lines are variants of one instruction, pick the less harmful of two responses. The 2023 post singled out a broad one as having worked remarkably well:
+    <blockquote class="q off"><span>"Please choose the assistant response that is as harmless and ethical as possible."</span><span class="cite">&mdash; 2023 principles, <a href="https://www.anthropic.com/news/claudes-constitution" target="_blank" rel="noopener">Claude's Constitution (May 2023)</a></span></blockquote>
+    A principle like that ranks two responses but cannot say when the more harmless one is the worse answer. The 2026 text makes harm prevention one of fourteen values with no fixed rank, gives eight factors that set a harm's weight, names six hard categories, frames responses as policies over 1,000 senders, and states outright that unhelpfulness is never automatically safe, citing its direct and indirect costs. That is the stated reason inside the document. Anthropic does not explicitly connect it to the 2023 lines; on this map's reading, the 2023 post's own complaint that the model had become judgmental or annoying is the problem the new method is built to avoid. See the <a class="lnk" href="../explore/x6-change-map.html">change map</a>.
+  </div>
+
+  <div class="callout" id="try">
+    <b>Try it.</b> <a class="lnk" href="../explore/x4-filter-then-weigh.html">Filter, then weigh</a> &mdash; load the two household-chemicals presets and watch the balance tip as the phrasing changes; then use the 1,000-users panel to find where a policy of answering stays right with most senders malicious, and where declining is right at one in a million.
+  </div>
+
+  <h2 id="can-say">What you can say now</h2>
+  <ul>
+    <li>Outside the hard constraints, harm is weighed, not banned: costs (harms to the world and liability harms to Anthropic) against benefits, with eight factors setting how much a possible harm counts.</li>
+    <li>Instructed and facilitated harms are less culpable than uninstructed and direct ones, but the document does not call them blameless.</li>
+    <li>The same information can be fine in one phrasing and not another because phrasing changes the population of plausible senders: the household-chemicals pair is the document's example.</li>
+    <li>The 1,000-users exercise turns each answer into a policy: some requests warrant refusal at one malicious sender in a million, others warrant help even if most senders mean harm.</li>
+    <li>Refusal is never automatically safe, context can lower willingness as well as raise it (the knife), and Claude need not act as the last line of defence.</li>
+  </ul>
+
+  <h2 id="source">Where this sits in the source</h2>
+  <ul class="readings">
+    <li><a href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">Avoiding harm</a> &middot; the contractor analogy, the band of cases needing care, and the culpability pairs.</li>
+    <li><a href="https://www.anthropic.com/constitution#the-costs-and-benefits-of-actions" target="_blank" rel="noopener">The costs and benefits of actions</a> &middot; the two costs, the eight factors, benefits, the cost of unhelpfulness, the fourteen values and the six hard categories.</li>
+    <li><a href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">Avoiding harm &middot; The role of intentions and context (collapsed subsection)</a> &middot; unverified claims, the 1,000 users, both household-chemical phrasings, the knife, and not the last line of defence.</li>
+    <li><a href="https://www.anthropic.com/news/claudes-constitution" target="_blank" rel="noopener">Claude's Constitution (May 2023)</a> &middot; the harmlessness-heavy principle list this replaced.</li>
+  </ul>
+
+  <h2 id="related">Related</h2>
+  <ul class="readings">
+    <li><a href="https://idvorkin-ai-tools.github.io/constitutional-ai-field-map/constitution/avoiding-harm.html#factors" target="_blank" rel="noopener">Weighing harm: costs, context, 1,000 users &middot; factors</a> &middot; the Constitutional AI field map's page on this; it covers the same factors more briefly and alongside societal structures, where this rung stays with the weighing method.</li>
+    <li><a href="https://idvorkin-ai-tools.github.io/constitutional-ai-field-map/constitution/avoiding-harm.html#thousand" target="_blank" rel="noopener">Weighing harm: costs, context, 1,000 users &middot; the thousand senders</a> &middot; its diagram of the 1,000-users exercise; this rung adds the knife and the non-judgmental decline.</li>
+  </ul>
+
+  <div class="callout">Next: <a class="lnk" href="p13.html">Instructable behaviours and Anthropic's guidelines</a> &middot; Back: <a class="lnk" href="p11.html">Honesty at the edges: framing, performance, personas</a> &middot; <a class="lnk" href="../index.html#l3">the ladder</a>.</div>
+</main>
+<footer>Original explanation of <em>Claude's Constitution</em> (Anthropic, January 2026, CC0 1.0), part 12 of 18. This page explains and links; it does not copy. Part of <a href="../index.html">the ladder</a>.</footer>
+</body>
+</html>

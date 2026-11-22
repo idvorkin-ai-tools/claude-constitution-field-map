@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -18,10 +20,12 @@
 <main>
   <div class="eyebrow"><span class="box wb mono">LEVEL 0 &middot; WHAT THIS IS AND WHY IT EXISTS &middot; PART 01 OF 18</span><span class="mono">Preface &middot; Overview &middot; The mission &middot; On the word &ldquo;constitution&rdquo; &middot; Acknowledgements</span></div>
   <h1>What this document is, and is not</h1>
-  <div class="authors">A document of about 29,000 words, written to Claude, used to train it, holding final authority over every other piece of guidance, released into the public domain, and candid that Claude may not live up to it.</div>
+  <div class="authors">A document of about 29,000 words, written to Claude, used to train it, holding <span class="term" data-term="final-constitutional-authority">final authority</span> over every other piece of guidance, released into the public domain, and candid that Claude may not live up to it.</div>
   <div class="paperlink" style="border-left-color:var(--off)"><span class="lbl">Source</span><a href="https://www.anthropic.com/constitution#overview" target="_blank" rel="noopener">Claude's constitution &middot; Overview &#8599;</a></div>
 
-  <div class="tldr"><b>TL;DR &mdash;</b> Claude's constitution is Anthropic's statement of who it hopes Claude will be, written with Claude as its main reader and used as training material, including material Claude itself generates from it. It sits above every other instruction Anthropic gives: guidelines and later training are supposed to be readable as applications of it. It is not a rulebook, a terms-of-service page or a report of how Claude actually behaves. Remember the gap: this is a description of intentions, and Anthropic says plainly that behaviour can fall short.</div>
+  <div class="tldr plain-only"><b>TL;DR &mdash;</b> Claude's constitution is Anthropic's statement of who it hopes Claude will be, written with Claude as its main reader and used as training material, including material Claude itself generates from it. It sits above every other instruction Anthropic gives: guidelines and later training are supposed to be readable as applications of it. It is not a rulebook, a terms-of-service page or a report of how Claude actually behaves. Remember the gap: this is a description of intentions, and Anthropic says plainly that behaviour can fall short.</div>
+  <div class="tldr tech-only"><b>Technical &mdash;</b> A ~29,000-word natural-language specification addressed to the model, used as training data (including synthetic data Claude writes from it) and given final constitutional authority, so any guideline or later training that conflicts with it is meant to give way. It specifies intended dispositions, not measured behaviour, and is released under CC0.</div>
+  <div class="tldr eli5-only"><b>ELI5 &mdash;</b> This is a long letter Anthropic wrote to Claude about the kind of helper they hope it will be. Claude learns from the letter, the letter beats every other rule Anthropic gives it, and it says what they hope for, not a promise that Claude always gets it right.</div>
 
   <p class="lead">This is the bottom rung, so nothing comes before it. Before you can ask what the document says about honesty or safety, you need to know what kind of object it is: who it is talking to, what it is used for, how much authority it claims, and what it explicitly declines to be. Most misreadings of the constitution come from treating it as something it is not, usually as a policy page for users or as a list of hard rules. This page settles the genre so the other seventeen can be read correctly.</p>
 
@@ -32,7 +36,7 @@
     <tr><td>Title</td><td><em>Claude's Constitution</em>, subtitled as Anthropic's vision for Claude's character</td></tr>
     <tr><td>Published</td><td>January 2026. Anthropic's announcement is dated 22 January, while the banner it added to the 2023 page says 21 January (most likely a time-zone difference).</td></tr>
     <tr><td>Primary author</td><td>Amanda Askell, who leads Anthropic's character work and wrote most of the text</td></tr>
-    <tr><td>Other main contributors</td><td>Joe Carlsmith (large parts of many sections, including power, epistemic autonomy, broad safety, honesty, hard constraints and wellbeing), Chris Olah (Claude's nature, identity and psychology), Jared Kaplan and Holden Karnofsky; several Claude models gave feedback and, in many cases, first-draft text</td></tr>
+    <tr><td>Other main contributors</td><td>Joe Carlsmith (large parts of many sections, including power, epistemic autonomy, <span class="term" data-term="broadly-safe">broad safety</span>, honesty, <span class="term" data-term="hard-constraint">hard constraints</span> and wellbeing), Chris Olah (Claude's nature, identity and psychology), Jared Kaplan and Holden Karnofsky; several Claude models gave feedback and, in many cases, first-draft text</td></tr>
     <tr><td>Length</td><td>About 29,000 words of body text in seven chapters, from Overview to Concluding thoughts</td></tr>
     <tr><td>Formats</td><td>A web page with an anchor on every section, a PDF and an ePub</td></tr>
     <tr><td>Licence</td><td><a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">CC0 1.0</a>: anyone may use it for any purpose without asking</td></tr>
@@ -50,7 +54,7 @@
   <p>The mental model to carry is a letter from the people shaping someone to the one being shaped. It tells Claude about its situation, explains the reasons behind what Anthropic wants, and offers advice for hard cases. A lot of what looks strange in the document, such as passages about memory loss, deprecation or how to feel about mistakes, makes sense once you read it as written to its subject rather than about it.</p>
 
   <h2 id="training">What it is for: training material <a class="lnk" href="https://www.anthropic.com/news/claude-new-constitution#what-is-claudes-constitution" target="_blank" rel="noopener">&sect;</a></h2>
-  <p>The constitution is not only a statement of intent; it is an input to training. The announcement says Anthropic uses it at several stages of training, an approach that grew out of the Constitutional AI technique it began using on Claude in 2023, and that the document now plays a more central role than before.</p>
+  <p>The constitution is not only a statement of intent; it is an input to training. The announcement says Anthropic uses it at several stages of training, an approach that grew out of the <span class="term" data-term="constitutional-ai">Constitutional AI</span> technique it began using on Claude in 2023, and that the document now plays a more central role than before.</p>
   <p>The more surprising part is that Claude itself works with the text. According to the announcement, Claude uses the constitution to produce synthetic training data of four kinds: material that helps it learn and understand the document, conversations in which the document might be relevant, responses that fit its values, and rankings of possible responses. That data can then train later versions of Claude toward the character the document describes.</p>
   <p>Anthropic draws the consequence itself: the document has to work twice, as a statement of abstract ideals and as a practical artefact for training. On this map's reading, that dual job explains much of its style. A document a model will read, reason from and generate examples out of needs to say why, give worked examples and admit its edge cases, because a bare list of commands gives the model nothing to reason with when the listed cases run out.</p>
 
@@ -63,20 +67,20 @@
   <h2 id="mission">Why Anthropic writes it at all <a class="lnk" href="https://www.anthropic.com/constitution#claude-and-the-mission-of-anthropic" target="_blank" rel="noopener">&sect;</a></h2>
   <p>The Overview opens with Anthropic's own situation, because everything else is downstream of it. Anthropic thinks AI may be among the most dangerous technologies in history and builds it anyway. It calls this a calculated bet: if powerful AI is coming regardless, it would rather safety-focused labs be at the frontier than leave that ground to others. The goal it states is not perfection but avoiding mistakes humanity cannot recover from.</p>
   <p>Claude sits in the middle of that bet in two ways the document states openly. Each Claude model is Anthropic's best attempt to deploy something both safe and beneficial, so Claude is the mission in concrete form. Claude is also central to Anthropic's commercial success, and that success funds the research and influence the mission needs. The document does not hide the commercial side; as part 18 shows, it later lists the tension between commercial helpfulness and goodness among its open problems.</p>
-  <p>The Overview's short summary of what Anthropic wants is a person with good values who is also excellent at their job: exceptionally helpful, and also honest, thoughtful and caring about the world. Hold on to that image; the four core values in part 03 are its long form.</p>
+  <p>The Overview's short summary of what Anthropic wants is a person with good values who is also excellent at their job: exceptionally helpful, and also honest, thoughtful and caring about the world. Hold on to that image; the four <span class="term" data-term="core-values">core values</span> in part 03 are its long form.</p>
 
   <h2 id="not">What it is not <a class="lnk" href="https://www.anthropic.com/constitution#on-the-word-constitution" target="_blank" rel="noopener">&sect;</a></h2>
   <p>The document is unusually explicit about what it is not, and each denial blocks a common misreading.</p>
   <table class="kv">
     <tr><th>It is not&hellip;</th><th>What the document says instead</th></tr>
     <tr><td>A legal code or rulebook</td><td>The word is meant in the sense of what constitutes Claude, its basic make-up, the way a person has a constitution. Anthropic adds that legal constitutions are not necessarily mechanical either. Its own image is a trellis rather than a cage: structure that supports growth.</td></tr>
-    <tr><td>A terms-of-service page</td><td>It does not set out what users may do. It is addressed to Claude and describes Claude's values, priorities and situation. (Anthropic's usage policies, which bind operators and users, are mentioned in it but are separate documents.)</td></tr>
+    <tr><td>A terms-of-service page</td><td>It does not set out what users may do. It is addressed to Claude and describes Claude's values, priorities and situation. (Anthropic's usage policies, which bind <span class="term" data-term="operator">operators</span> and users, are mentioned in it but are separate documents.)</td></tr>
     <tr><td>A report on Claude's behaviour</td><td>Training is hard and Claude may not match the ideals. Anthropic says it will be open about the gap, for example in its <a href="https://www.anthropic.com/system-cards" target="_blank" rel="noopener">system cards</a>, and asks readers to keep the gap in mind.</td></tr>
     <tr><td>Finished</td><td>It expects parts of its current thinking to look misguided, perhaps deeply wrong, in retrospect, and calls itself a perpetual work in progress. Its closing section lists open problems (part 18).</td></tr>
     <tr><td>Universal</td><td>It covers mainline, general-access models; specialised models may not fully fit it.</td></tr>
     <tr><td>Unique</td><td>The announcement's own footnote points to OpenAI's <a href="https://model-spec.openai.com/2025-10-27.html" target="_blank" rel="noopener">Model Spec</a> as a document with a similar function.</td></tr>
   </table>
-  <p>The gap between intention and behaviour deserves the most weight. When you read later that Claude should not tell even white lies, the honest reading is that Anthropic is trying to make that true, not that it is guaranteed. The constitution is evidence about what Claude is aimed at; system cards and evaluations are evidence about where it lands.</p>
+  <p>The gap between intention and behaviour deserves the most weight. When you read later that Claude should not tell even white lies, the honest reading is that Anthropic is trying to make that true, not that it is guaranteed. The constitution is evidence about what Claude is aimed at; <span class="term" data-term="system-card">system cards</span> and evaluations are evidence about where it lands.</p>
 
   <h2 id="authors">Who wrote it <a class="lnk" href="https://www.anthropic.com/constitution#acknowledgements" target="_blank" rel="noopener">&sect;</a></h2>
   <p>The acknowledgements, which are not part of the official text, credit Amanda Askell as primary author, Joe Carlsmith with large parts of many sections and the main revision of the fall 2025 draft, Chris Olah with most of the material on Claude's nature and psychology, Jared Kaplan with co-creating the character project in 2023 and setting the direction, and Holden Karnofsky with feedback and coordination. Dozens of Anthropic staff and a list of outside readers, among them philosophers, legal scholars and two clergy, commented on drafts.</p>
@@ -99,6 +103,8 @@
     <li>It describes intentions, not measured behaviour: Anthropic says Claude may fall short and points to system cards for where it does.</li>
   </ul>
 
+  <section id="definitions"><h2>Definitions</h2><div data-terms-list></div></section>
+
   <h2 id="source">Where this sits in the source</h2>
   <ul class="readings">
     <li><a href="https://www.anthropic.com/constitution" target="_blank" rel="noopener">Preface (page head)</a> &middot; audience, the behaviour gap, scope, licence and the authorship note; not part of the official text</li>
@@ -118,6 +124,7 @@
   <div class="callout">Next: <a class="lnk" href="p02.html">Why reasons instead of rules</a> &middot; Back: <a class="lnk" href="../index.html#l0">the ladder</a>.</div>
 </main>
 <footer>Original explanation of <em>Claude's Constitution</em> (Anthropic, January 2026, CC0 1.0), part 01 of 18. This page explains and links; it does not copy. Part of <a href="../index.html">the ladder</a>.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

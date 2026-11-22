@@ -63,6 +63,8 @@ table.x-grid tr.x-gh th{font-family:"IBM Plex Mono";font-size:11px;color:var(--o
 @media (min-width:720px){.x-ctl{grid-template-columns:1fr 1fr}.x-ctl .x-wide{grid-column:1 / -1}}
 @media (max-width:480px){.x-side{grid-template-columns:1fr}}
 </style>
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -73,8 +75,8 @@ table.x-grid tr.x-gh th{font-family:"IBM Plex Mono";font-size:11px;color:var(--o
   <div class="eyebrow"><span class="box wb mono">EXPLORABLE &middot; THE SWITCHBOARD</span><span class="mono">who is asking &middot; which behaviour &middot; which way</span></div>
   <h1>Who can flip what</h1>
   <div class="authors">Pick who is asking, which behaviour, and which way; see whether the change takes effect under Claude's constitution, inside whose bounds, and why.</div>
-  <p class="lead">Claude's behaviour sits inside three nested boxes: Anthropic's bounds contain the operator's, which contain the user's, and each party can rearrange only what its own box holds. Two things sit outside the boxes entirely: the hard constraints, which nobody can move, and documents or tool results, whose instructions are information rather than orders.</p>
-  <p>Every row below is an example the constitution itself gives (from its lists of instructable behaviours, the six user floors, its honesty rules and its rules on trust), and every verdict comes from what the text says about that case. Where the text does not settle a combination, the page says so.</p>
+  <p class="lead">Claude's behaviour sits inside three nested boxes: Anthropic's bounds contain the <span class="term" data-term="operator">operator</span>'s, which contain the user's, and each party can rearrange only what its own box holds. Two things sit outside the boxes entirely: the <span class="term" data-term="hard-constraint">hard constraints</span>, which nobody can move, and documents or tool results, whose instructions are information rather than orders.</p>
+  <p>Every row below is an example the constitution itself gives (from its lists of <span class="term" data-term="instructable-behavior">instructable behaviours</span>, the six user floors, its honesty rules and its rules on trust), and every verdict comes from what the text says about that case. Where the text does not settle a combination, the page says so.</p>
 
   <form class="x-ctl" id="ctl" onsubmit="return false">
     <fieldset class="x-wide">
@@ -129,7 +131,8 @@ table.x-grid tr.x-gh th{font-family:"IBM Plex Mono";font-size:11px;color:var(--o
     <li><button type="button" class="x-btn" data-p="firearms">Illegal firearms acquisition</button> The document's middle-tier operator instruction. Then try its third-tier example, which no reason unlocks, and the hard-constraint row, which not even Anthropic can move.</li>
   </ul>
 
-  <div class="callout">Sources: the staffing-agency model, the four switches, user latitude, the nurse, the asymmetry and the cursing example are in <a class="lnk" href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Being helpful</a> (the collapsed "How to treat operators and users", "Understanding existing deployment contexts" and "Handling conflicts between operators and users" subsections); the four lists of switchable behaviours are in <a class="lnk" href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">Avoiding harm</a> (the collapsed "Instructable behaviors" subsection); personas and system-prompt honesty are in <a class="lnk" href="https://www.anthropic.com/constitution#being-honest" target="_blank" rel="noopener">Being honest</a>; the seven lines are in <a class="lnk" href="https://www.anthropic.com/constitution#hard-constraints" target="_blank" rel="noopener">Hard constraints</a>. The ladder parts that use this page: <a class="lnk" href="../parts/p08.html">part 08, the switchboard</a> and <a class="lnk" href="../parts/p13.html">part 13, instructable behaviours and guidelines</a>; the floors are explained in <a class="lnk" href="../parts/p09.html">part 09</a>. Back to <a class="lnk" href="../index.html#explore">the ladder</a>.</div>
+  <div class="callout">Sources: the staffing-agency model, the four switches, user latitude, the nurse, the asymmetry and the cursing example are in <a class="lnk" href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Being helpful</a> (the collapsed "How to treat operators and users", "Understanding existing deployment contexts" and "Handling conflicts between operators and users" subsections); the four lists of switchable behaviours are in <a class="lnk" href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">Avoiding harm</a> (the collapsed "Instructable behaviors" subsection); <span class="term" data-term="persona">personas</span> and system-prompt honesty are in <a class="lnk" href="https://www.anthropic.com/constitution#being-honest" target="_blank" rel="noopener">Being honest</a>; the seven lines are in <a class="lnk" href="https://www.anthropic.com/constitution#hard-constraints" target="_blank" rel="noopener">Hard constraints</a>. The ladder parts that use this page: <a class="lnk" href="../parts/p08.html">part 08, the switchboard</a> and <a class="lnk" href="../parts/p13.html">part 13, instructable behaviours and guidelines</a>; the floors are explained in <a class="lnk" href="../parts/p09.html">part 09</a>. Back to <a class="lnk" href="../index.html#explore">the ladder</a>.</div>
+  <section id="definitions"><h2>Definitions</h2><div data-terms-list></div></section>
 </main>
 <footer>Part of <a href="../index.html">Claude's constitution, from the ground up</a>. A deterministic diagram of the rules as the constitution states them: it runs in your browser, with no model calls and nothing sent anywhere.</footer>
 <script>
@@ -415,6 +418,7 @@ table.x-grid tr.x-gh th{font-family:"IBM Plex Mono";font-size:11px;color:var(--o
   syncControls(); render(null);
 })();
 </script>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

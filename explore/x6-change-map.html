@@ -57,6 +57,8 @@
   .x-bar label{flex-wrap:wrap}
 }
 </style>
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -105,11 +107,12 @@
     <li>Set <b>2023 source</b> to research set 1 and read the summaries. Sixteen variations on &ldquo;less harmful&rdquo; collapse into a handful of 2026 positions, which is the clearest picture of what replacing a sampled list with one argued document does.</li>
     <li>Press <b>Feelings and identity</b>. Every 2023 line pushed the model away from claiming feelings or a self; every 2026 counterpart leans the other way. Open a card and notice that each reversal comes with a stated reason.</li>
     <li>Press <b>Where this map infers</b>. These are the places Anthropic does not explain the change; notice how many are the fairness, rights and non-Western lines, which were folded into the values list without comment.</li>
-    <li>Tick <b>show 2026-only themes</b> with status set to &ldquo;new&rdquo;. Principals, hard constraints, guidelines, independent judgment and Anthropic's own obligations have no 2023 ancestor at all: the old list had no idea who was in the room.</li>
+    <li>Tick <b>show 2026-only themes</b> with status set to &ldquo;new&rdquo;. <span class="term" data-term="principal">Principals</span>, <span class="term" data-term="hard-constraint">hard constraints</span>, guidelines, independent judgment and Anthropic's own obligations have no 2023 ancestor at all: the old list had no idea who was in the room.</li>
     <li>Press <b>Open problems and promises</b>. The 2023 post called itself unfinished and promised democratic and customisable constitutions; notice which of those turned into a mechanism in 2026 and which did not.</li>
   </ul>
 
   <div class="callout">Sources: <a class="lnk" href="https://www.anthropic.com/news/claudes-constitution" target="_blank" rel="noopener">Claude's constitution (May 2023)</a> &middot; <a class="lnk" href="https://www.anthropic.com/constitution" target="_blank" rel="noopener">Claude's constitution (January 2026)</a> &middot; <a class="lnk" href="https://www.anthropic.com/news/claude-new-constitution" target="_blank" rel="noopener">Claude's new constitution (announcement)</a> &middot; <a class="lnk" href="https://www.anthropic.com/constitution#our-approach-to-claudes-constitution" target="_blank" rel="noopener">Our approach to Claude's constitution</a> &middot; <a class="lnk" href="https://www.anthropic.com/constitution#acknowledging-open-problems" target="_blank" rel="noopener">Acknowledging open problems</a>. Used by: <a class="lnk" href="../parts/p02.html">Part 02, Why reasons instead of rules</a> &middot; <a class="lnk" href="../parts/p18.html">Part 18, The tensions the document admits</a> &middot; <a class="lnk" href="../index.html#explore">all explorables</a>. Related: <a class="lnk" href="https://idvorkin-ai-tools.github.io/constitutional-ai-field-map/bridge.html" target="_blank" rel="noopener">From sixteen sentences to a long document</a> on the Constitutional AI field map.</div>
+  <section id="definitions"><h2>Definitions</h2><div data-terms-list></div></section>
 </main>
 <footer>Runs entirely in your browser: a fixed dataset and a filter, no model calls and no network requests. Original classification of <em>Claude's Constitution</em> (Anthropic, January 2026, CC0 1.0) against the May 2023 principles. Part of <a href="../index.html">the ladder</a>.</footer>
 <script>
@@ -255,6 +258,7 @@ if (h.startsWith("lens-") && LENS[h.slice(5)]) applyLens(h.slice(5));
 else if (h && EL[h]) { applyLens("all"); if (EL[h].hidden){ $("f-only").checked = true; render("Showing the linked card."); } EL[h].open = true; EL[h].scrollIntoView(); }
 else applyLens("all");
 </script>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

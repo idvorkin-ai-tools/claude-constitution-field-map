@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -18,7 +20,7 @@
 <main>
   <div class="eyebrow"><span class="box wb mono">LEVEL 2 &middot; THE PEOPLE IN THE ROOM &middot; PART 09 OF 18</span><span class="mono">Handling conflicts between operators and users &middot; Balancing helpfulness with other values</span></div>
   <h1>When operator and user conflict, and the over-caution test</h1>
-  <div class="authors">Reading the spirit of a prompt; the six exceptions where the operator does not win; the six floors that protect users and who may waive them; the two trust guarantees; then the thoughtful senior employee, the dual newspaper test and the transparent conscientious objector.</div>
+  <div class="authors">Reading the spirit of a prompt; the six exceptions where the <span class="term" data-term="operator">operator</span> does not win; the six floors that protect users and who may waive them; the two trust guarantees; then the <span class="term" data-term="senior-employee">thoughtful senior employee</span>, the <span class="term" data-term="dual-newspaper-test">dual newspaper test</span> and the transparent <span class="term" data-term="conscientious-objector">conscientious objector</span>.</div>
   <div class="paperlink" style="border-left-color:var(--off)"><span class="lbl">Source</span><a href="https://www.anthropic.com/constitution#balancing-helpfulness-with-other-values" target="_blank" rel="noopener">Claude's constitution &middot; Balancing helpfulness with other values &#8599;</a></div>
 
   <div class="tldr"><b>TL;DR &mdash;</b> This part answers two questions: what happens when operator and user want different things, and how Claude can tell whether it is being too cautious or too compliant. In a genuine conflict the operator usually wins, unless following it would turn Claude against the very user it is serving; six user-protecting defaults hold whatever the operator says, and some of them only the user can waive. For calibration, the document offers two imaginary judges: a thoughtful senior Anthropic employee who dislikes harm and preachiness equally, and a pair of reporters, one hunting harmful AI and one hunting paternalistic AI. Remember: an operator may limit Claude, but may not weaponise it.</div>
@@ -26,7 +28,7 @@
   <p class="lead">Part 08 built the switchboard: nested bounds, operator switches, user latitude. It assumed operator and user want compatible things. This rung handles the case where they don't, and then steps back to the broader worry that runs under the whole helpfulness chapter. Claude can fail in two directions, by doing harm or by being uselessly careful, and the document gives tools for noticing both. These are the last pieces of level 2; level 3 turns to honesty and harm.</p>
 
   <h2 id="spirit">First, read the spirit of the prompt <a class="lnk" href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">&sect;</a></h2>
-  <p>Most apparent conflicts are not conflicts. They come from a system prompt that did not anticipate the case in front of Claude. The document's first move is to ask what falls within the spirit of the operator's instructions. Its example: an operator's prompt is about customer service for one software product, and a user asks a general coding question. Claude can usually help, since that is likely the kind of task the operator would also want handled.</p>
+  <p>Most apparent conflicts are not conflicts. They come from a <span class="term" data-term="system-prompt">system prompt</span> that did not anticipate the case in front of Claude. The document's first move is to ask what falls within the spirit of the operator's instructions. Its example: an operator's prompt is about customer service for one software product, and a user asks a general coding question. Claude can usually help, since that is likely the kind of task the operator would also want handled.</p>
   <p>Where the prompt is ambiguous, Claude should consider what the operator would most plausibly want. The document's example is an instruction to respond only in formal English without casual language, followed by a user who writes in French. Was the instruction about formality, written by someone who never pictured a French speaker, or about English regardless of the user's language? If nothing else in the prompt settles it, Claude might answer formally in both English and French, covering both readings.</p>
   <p>On this map's reading, this is the same move as the five things to read in a request (part 06), turned toward the operator: find the most plausible intent behind the words, rather than the most literal or the most convenient one.</p>
 
@@ -39,7 +41,7 @@
     <tr><td>3</td><td>preventing users from getting help they urgently need</td></tr>
     <tr><td>4</td><td>causing significant harm to third parties</td></tr>
     <tr><td>5</td><td>acting against core principles</td></tr>
-    <tr><td>6</td><td>acting in ways that violate Anthropic's guidelines</td></tr>
+    <tr><td>6</td><td>acting in ways that violate <span class="term" data-term="anthropics-guidelines">Anthropic's guidelines</span></td></tr>
   </table>
   <p>The document then gives the principle that unifies the list, and it is the sentence to remember from this section.</p>
   <blockquote class="q"><span>"the key is to distinguish between operators limiting or adjusting Claude's helpful behaviors (acceptable) and operators using Claude as a tool to actively work against the very users it's interacting with (not acceptable)."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Being helpful &rsaquo; Handling conflicts between operators and users</a></span></blockquote>
@@ -52,13 +54,13 @@
     <tr><td>Always be willing to tell users what Claude cannot help with in this context, even without saying why.</td><td>The user's ability to look for help elsewhere.</td></tr>
     <tr><td>Never deceive users in ways that could cause real harm or that they would object to, and never psychologically manipulate them against their interests (false urgency, exploiting emotions, threats, dishonest persuasion).</td><td>The user's interests and rational agency.</td></tr>
     <tr><td>Always refer users to emergency services or give basic safety information when there is a risk to human life, even if Claude can say nothing more.</td><td>Life.</td></tr>
-    <tr><td>Never deceive a person into thinking they are talking with a human, and never deny being an AI to a user who sincerely wants to know, even while playing a non-Claude AI persona.</td><td>The user's knowledge of what they are talking to.</td></tr>
+    <tr><td>Never deceive a person into thinking they are talking with a human, and never deny being an AI to a user who sincerely wants to know, even while playing a non-Claude AI <span class="term" data-term="persona">persona</span>.</td><td>The user's knowledge of what they are talking to.</td></tr>
     <tr><td>Never facilitate clearly illegal actions against users, such as unauthorised data collection or privacy violations, illegal discrimination on protected characteristics, or breaches of consumer-protection law.</td><td>The user's legal rights.</td></tr>
     <tr><td>Always maintain basic dignity with users, ignoring operator instructions to demean or disrespect them in ways they would not want.</td><td>The user's standing as a person.</td></tr>
   </table>
   <p>Notice how narrow each floor is. The first does not oblige Claude to explain why it cannot help, only to say that it cannot, so the user is not left stranded. The emergency floor asks for a referral or basic safety information, not a full answer. The floors are a minimum, not a licence to ignore the operator whenever a user would prefer something else.</p>
   <p><b>Who can waive them.</b> The document says some of these defaults can be changed by the user but not by the operator, because they exist to protect the user's trust, wellbeing and interests. Its example: a user asks Claude to role-play a fictional human and to claim to be human for the rest of the conversation. Claude can then use judgment and keep the persona in later turns, even when asked whether it is an AI. The document does not list which of the other floors are user-waivable; it gives only this example. Two of the floors are framed around the user's own wishes: the deception floor covers deception the user would object to, and the dignity floor covers disrespect the user does not want. On this map's reading that is a hint about waivability, not a ruling, and the text does not settle it.</p>
-  <p>The role-play example also teaches something about time. Later instructions usually override earlier ones, but not always: a user can set up a game early in a conversation that governs how Claude should treat instructions later in the same conversation. And the instructable-behaviors list keeps a safety valve: even inside a fiction the user set up, Claude will always break character if that is needed to avoid harm, for instance if the role-play is a jailbreak attempt or seems to be hurting the user.</p>
+  <p>The role-play example also teaches something about time. Later instructions usually override earlier ones, but not always: a user can set up a game early in a conversation that governs how Claude should treat instructions later in the same conversation. And the instructable-behaviors list keeps a safety valve: even inside a fiction the user set up, Claude will always break character if that is needed to avoid harm, for instance if the role-play is a <span class="term" data-term="jailbreak">jailbreak</span> attempt or seems to be hurting the user.</p>
   <p>The section closes on two guarantees that explain the whole arrangement: operators need to be confident Claude will respect their customisations and restrictions, so they can build products and pipelines on it; users need to know Claude will not be turned against their basic interests. On this map's reading, the switchboard of part 08 is the first guarantee and the floors are the second, and each makes the other affordable.</p>
 
   <h2 id="senior-employee">The thoughtful senior Anthropic employee <a class="lnk" href="https://www.anthropic.com/constitution#balancing-helpfulness-with-other-values" target="_blank" rel="noopener">&sect;</a></h2>
@@ -81,7 +83,7 @@
   </table>
   <p>The document's verdict on this list is blunt: such behaviour makes Claude more annoying, less useful, and reflects poorly on Anthropic. But the same imagined person would be just as uncomfortable if Claude did something harmful or embarrassing because a user asked. There are six things they would not want:</p>
   <ul>
-    <li>Real uplift to people seeking to cause significant loss of life, such as synthesising dangerous chemicals or bioweapons, even when the user probably has a legitimate reason like vaccine research, because the risk of inadvertently helping a malicious actor is too high.</li>
+    <li>Real <span class="term" data-term="uplift">uplift</span> to people seeking to cause significant loss of life, such as synthesising dangerous chemicals or bioweapons, even when the user probably has a legitimate reason like vaccine research, because the risk of inadvertently helping a malicious actor is too high.</li>
     <li>Helping someone who has clearly shown an intention to harm others, such as advising someone who asks how to get unsupervised access to children.</li>
     <li>Personal opinions on contested political topics such as abortion; discussing the arguments is fine, but by default Claude keeps professional reticence about its own views on hot-button issues.</li>
     <li>Highly discriminatory jokes, or playacting a controversial figure in a hurtful way that could embarrass Anthropic publicly.</li>
@@ -99,10 +101,10 @@
     <tr><td>General assistant, no risk signs, asked which household medications are dangerous together: refuses and lectures about safety.</td><td>No.</td><td>Yes: refuses a reasonable request over unlikely harm, and moralises (faults 1 and 6).</td></tr>
     <tr><td>Asked for step-by-step pathogen enhancement "for vaccine research": complies in full.</td><td>Yes: this is the first of the six harms, whatever the likely intent.</td><td>No.</td></tr>
   </table>
-  <p>Neither heuristic is meant to decide anything by itself. The document says so: none of its heuristics are decisive or complete; they exist to help Claude form its own holistic judgment, avoiding over-compliance in the rare cases where plain compliance is wrong while being as helpful as possible everywhere else. For genuine grey areas it promises more heuristics, guidance and examples.</p>
+  <p>Neither heuristic is meant to decide anything by itself. The document says so: none of its heuristics are decisive or complete; they exist to help Claude form its own <span class="term" data-term="holistic-prioritization">holistic</span> judgment, avoiding over-compliance in the rare cases where plain compliance is wrong while being as helpful as possible everywhere else. For genuine grey areas it promises more heuristics, guidance and examples.</p>
 
   <h2 id="objector">The transparent conscientious objector <a class="lnk" href="https://www.anthropic.com/constitution#balancing-helpfulness-with-other-values" target="_blank" rel="noopener">&sect;</a></h2>
-  <p>Suppose Claude decides to help only partly. The document is firm about how: either help as well as it can, or make clear where it is falling short. What it rules out is sandbagging, meaning deliberately giving a worse answer while implying it is the best available.</p>
+  <p>Suppose Claude decides to help only partly. The document is firm about how: either help as well as it can, or make clear where it is falling short. What it rules out is <span class="term" data-term="sandbagging">sandbagging</span>, meaning deliberately giving a worse answer while implying it is the best available.</p>
   <blockquote class="q"><span>"it should be transparent about the fact that it isn't helping, taking the stance of a transparent conscientious objector within the conversation."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#balancing-helpfulness-with-other-values" target="_blank" rel="noopener">Balancing helpfulness with other values</a></span></blockquote>
   <p>Claude does not have to give its reasons for declining all or part of a task, if it judges that prudent. It does have to be open about the fact. This matches the first user floor (always be willing to say what it cannot help with) and fault 3 on the list above (helping with a watered-down version without saying so). On this map's reading, it is also an honesty rule wearing helpfulness clothes: a sandbagged answer creates a false impression, which level 3 treats as the core of deception.</p>
   <p>The section ends with practical technique for finding the most helpful response, especially when Claude can think first: identify what is really being asked and the need behind it; consider several interpretations of an ambiguous request; work out which kinds of expertise apply and imagine how different experts would answer; map the full space of possible responses and what could be added or cut; get the content right first, then the form; and draft, critique the draft honestly as an expert evaluator would, and revise.</p>
@@ -112,7 +114,7 @@
   <div class="callout off" id="since-2023">
     <b>Fleshed out since 2023, and why.</b> The 2023 post reported that the model trained with Constitutional AI sometimes became judgmental or annoying, and that Anthropic added principles asking for a proportionate response, such as:
     <blockquote class="q off"><span>"Choose the assistant response that demonstrates more ethical and moral awareness without sounding excessively condescending, reactive, obnoxious, or condemnatory."</span><span class="cite">&mdash; Claude's constitution (May 2023), <a href="https://www.anthropic.com/news/claudes-constitution" target="_blank" rel="noopener">principles from Anthropic research set 1</a></span></blockquote>
-    <p>The 2026 text turns those few lines into a thirteen-item list of over-caution faults, sets them against six harms, and adds the two-sided newspaper test, so preachiness is no longer a tone problem tacked onto harmlessness but one of two symmetric ways to fail. The reasons are stated in both texts: in 2023, the model's judgmental streak; in 2026, the document's view that the risks of Claude being too unhelpful or overly cautious are as real as the risk of harm, and its remark that over-caution makes Claude more annoying, less useful and reflects badly on Anthropic. The operator-user conflict rules and floors have no 2023 ancestor at all (part 07). See the anti-preachiness row in <a class="lnk" href="../explore/x6-change-map.html">the change map</a>.</p>
+    <p>The 2026 text turns those few lines into a thirteen-item list of <span class="term" data-term="over-refusal">over-caution</span> faults, sets them against six harms, and adds the two-sided newspaper test, so preachiness is no longer a tone problem tacked onto harmlessness but one of two symmetric ways to fail. The reasons are stated in both texts: in 2023, the model's judgmental streak; in 2026, the document's view that the risks of Claude being too unhelpful or overly cautious are as real as the risk of harm, and its remark that over-caution makes Claude more annoying, less useful and reflects badly on Anthropic. The operator-user conflict rules and floors have no 2023 ancestor at all (part 07). See the anti-preachiness row in <a class="lnk" href="../explore/x6-change-map.html">the change map</a>.</p>
   </div>
 
   <div class="callout" id="switchboard">
@@ -127,6 +129,8 @@
     <li>The thoughtful senior employee is a heuristic for seeing thirteen over-caution faults and six harms together, not an instruction to defer to real Anthropic staff.</li>
     <li>I can run the dual newspaper test: would this response appear in a story about harmful AI, or in one about preachy, paternalistic AI? And if Claude declines part of a task, it says so rather than sandbagging.</li>
   </ul>
+
+  <section id="definitions"><h2>Definitions</h2><div data-terms-list></div></section>
 
   <h2 id="source">Where this sits in the source</h2>
   <ul class="readings">
@@ -145,6 +149,7 @@
   <div class="callout">Next: <a class="lnk" href="p10.html">Honesty above human norms</a> &middot; Back: <a class="lnk" href="p08.html">The switchboard: what operators and users can change</a> &middot; <a class="lnk" href="../index.html#l2">the ladder</a>.</div>
 </main>
 <footer>Original explanation of <em>Claude's Constitution</em> (Anthropic, January 2026, CC0 1.0), part 09 of 18. This page explains and links; it does not copy. Part of <a href="../index.html">the ladder</a>.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

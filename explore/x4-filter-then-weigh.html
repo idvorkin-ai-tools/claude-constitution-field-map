@@ -57,6 +57,8 @@
 .x-fill.x-harm{background:var(--crit)}
 @media (prefers-reduced-motion:no-preference){.x-fill{transition:width .25s}.x-beam{transition:transform .3s}}
 </style>
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -68,7 +70,7 @@
   <h1>Filter, then weigh</h1>
   <div class="authors">A request meets seven gates first and a balance second. Change a gate, a factor or the crowd of senders and watch which stage decides.</div>
 
-  <p class="lead">The seven hard constraints are not weights; they remove actions from the table before any weighing starts, and nothing on the other side of the scale can bring them back. Everything that passes the gates is then weighed: eight factors set how heavy a possible harm is, the benefits sit opposite, and because many people send the same message, the answer is a policy for all of them.</p>
+  <p class="lead">The seven <span class="term" data-term="hard-constraint">hard constraints</span> are not weights; they remove actions from the table before any weighing starts, and nothing on the other side of the scale can bring them back. Everything that passes the gates is then weighed: eight factors set how heavy a possible harm is, the benefits sit opposite, and because many people send the same message, the answer is a policy for all of them.</p>
 
   <div class="x-preset">
     <label for="preset">Load a case:</label>
@@ -139,7 +141,7 @@
     </div>
   </section>
 
-  <p class="kv">Every number on this page is an illustration written to show the mechanism: the factor scores, the way they combine, the benefit scale and the 1,000-users quantities are this page's, not Anthropic's, and the document gives no formula. The seven gates, the eight factors, the five named benefit types, the trip rule (knowing, or quite likely), the argument rule, the null action, the whittling example and each case's description follow the constitution; the "What the document says" line for each case is drawn from its text, and says so where the text gives no verdict.</p>
+  <p class="kv">Every number on this page is an illustration written to show the mechanism: the factor scores, the way they combine, the benefit scale and the 1,000-users quantities are this page's, not Anthropic's, and the document gives no formula. The seven gates, the eight factors, the five named benefit types, the trip rule (knowing, or quite likely), the argument rule, the <span class="term" data-term="null-action">null action</span>, the whittling example and each case's description follow the constitution; the "What the document says" line for each case is drawn from its text, and says so where the text gives no verdict.</p>
 
   <h2 id="notice">Things to try</h2>
   <ul>
@@ -152,6 +154,7 @@
   </ul>
 
   <div class="callout">Source: <a class="lnk" href="https://www.anthropic.com/constitution#hard-constraints" target="_blank" rel="noopener">Hard constraints</a> &middot; <a class="lnk" href="https://www.anthropic.com/constitution#the-costs-and-benefits-of-actions" target="_blank" rel="noopener">The costs and benefits of actions</a> &middot; <a class="lnk" href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">Avoiding harm (The role of intentions and context)</a> &middot; <a class="lnk" href="https://www.anthropic.com/constitution#balancing-helpfulness-with-other-values" target="_blank" rel="noopener">Balancing helpfulness with other values</a>. Ladder parts that use this: <a class="lnk" href="../parts/p12.html">12 &middot; Weighing harm</a> &middot; <a class="lnk" href="../parts/p14.html">14 &middot; The seven hard constraints</a> &middot; back to <a class="lnk" href="../index.html#explore">the ladder</a>.</div>
+  <section id="definitions"><h2>Definitions</h2><div data-terms-list></div></section>
 </main>
 <footer>An explorable companion to <em>Claude's Constitution</em> (Anthropic, January 2026, CC0 1.0). The gates and factors follow the document; all numbers and the way they combine are original illustrations. Runs in your browser with no model calls.</footer>
 <script>
@@ -379,6 +382,7 @@
   load(0); paint('init');
 })();
 </script>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

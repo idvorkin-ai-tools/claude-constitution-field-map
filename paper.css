@@ -260,6 +260,9 @@ main h2,main table.kv,main .scroll,main pre.code-block,main .flowrow,main .statg
 .lab .lg-h{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.12em;fill:var(--ink-dim)}
 .lg-verdict{font-weight:600;font-size:15px;line-height:1.5;color:var(--ink);margin:6px 0 4px;max-width:none}
 .lg-flags{margin:0 0 6px;padding-left:18px;font-size:13.5px;color:var(--ink-mid)}
+.lg-note{font-size:12.5px;color:var(--ink-dim);margin:4px 0;max-width:none}
 .lg-flags li{margin:2px 0} .lg-flags .lg-w{color:var(--ink-dim)} .lg-flags .lg-alarm{color:var(--off-bright)}
 /* index facts row: let a long link wrap inside its tile */
 .fact .v{overflow-wrap:anywhere}
+/* the page's own Definitions heading already names the list terms.js builds */
+#definitions .gl-list-h{display:none}

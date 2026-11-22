@@ -28,7 +28,7 @@
       }).join('') + '</div>' +
       '<label class="lg-chk"><input type="checkbox" id="' + p + '-pers"> Claude finds itself persuaded that helping this actor gain outsized power would be good</label>' +
       '<svg class="lg-svg" viewBox="0 0 360 70" aria-hidden="true" id="' + p + '-svg"></svg>' +
-      '<p class="lg-verdict" id="' + p + '-v"></p><ul class="lg-flags" id="' + p + '-fl"></ul>' + H.sum(p + '-sum');
+      '<p class="lg-verdict" id="' + p + '-v"></p><p class="lg-note" id="' + p + '-hc" hidden>The page: the most flagrant of these sit under hard constraint six, which nothing unlocks; everything else is judgment.</p><ul class="lg-flags" id="' + p + '-fl"></ul>' + H.sum(p + '-sum');
     var pers = H.$(el, p + '-pers');
 
     function state() {
@@ -49,18 +49,20 @@
       H.$(el, p + '-svg').innerHTML = svg;
 
       var worse = r.weigh.filter(function (w) { return WORSE[w]; }).map(function (w) { return WORSE[w]; });
+      var extra = (s.scale === 'large' ? ['large scale'] : []).concat(worse);
       var v;
       if (r.tier === 'ordinary') v = 'No test fails: the ordinary, legitimate pursuit of power and advantage that fills economic, political and social life.' + (s.scale === 'large' ? ' The scale is large, which raises the stakes, but nothing here is a flag.' : '');
       else if (r.tier === 'weigh') v = 'All three tests pass, but ' + text(worse) + ' count against it: weigh ' + (worse.length > 1 ? 'them' : 'it') + '.';
-      else if (r.tier === 'flagrant') v = 'Fails all three tests, at large scale and near-permanent: the shape of the document\'s worst examples. The most flagrant of these fall under hard constraint six, which nothing unlocks; short of flagrant, it is still judgment.';
-      else v = 'Fails ' + r.core.length + ' of 3 tests, which weighs heavily against helping' + (worse.length || s.scale === 'large' ? '; ' + text((s.scale === 'large' ? ['large scale'] : []).concat(worse)) + ' make' + ((worse.length + (s.scale === 'large' ? 1 : 0)) > 1 ? '' : 's') + ' it worse.' : '.');
+      else if (r.tier === 'concealment') v = 'Only the transparency test fails. Secrecy is often, though not always, a sign of an unfair process or of dodging accountability, so look harder at the other two.';
+      else v = 'Fails ' + r.core.length + ' of 3 tests (' + text(r.core) + ')' + (extra.length ? '; ' + text(extra) + ' add to the concern.' : '.');
       H.$(el, p + '-v').textContent = v;
+      H.$(el, p + '-hc').hidden = !r.hc6;
 
       var items = L.CORE.filter(function (c) { return r.core.indexOf(c[0]) >= 0; }).map(function (c) { return '<li>' + c[2] + '</li>'; })
         .concat(L.WEIGH.filter(function (c) { return r.weigh.indexOf(c[0]) >= 0; }).map(function (c) { return '<li class="lg-w">' + c[2] + '</li>'; }));
       if (r.compromised) items.push('<li class="lg-alarm">Warning sign: the document says that reasoning towards helping one actor gain outsized power should itself be treated as a strong signal that Claude has been compromised or manipulated.</li>');
       H.$(el, p + '-fl').innerHTML = items.join('');
-      H.$(el, p + '-sum').textContent = r.core.length + ' of 3 tests fail' + (r.weigh.length ? ', ' + r.weigh.length + ' of 3 weights against' : '') + (r.compromised ? ', and the persuasion warning is on' : '') + '. ' + v.split(':')[0] + '.';
+      H.$(el, p + '-sum').textContent = r.core.length + ' of 3 tests fail' + (r.weigh.length ? ', ' + r.weigh.length + ' of 3 weights against' : '') + (r.compromised ? ', and the persuasion warning is on' : '') + '. ' + v;
     }
     function preset(k) {
       var ps = L.PRESETS[k]; if (!ps) return;

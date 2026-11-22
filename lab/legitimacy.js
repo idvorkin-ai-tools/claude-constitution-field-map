@@ -4,8 +4,11 @@
   not a formula, so this only sorts which questions raise a flag.
   Three core tests (process, accountability, transparency), three things to
   weigh alongside (scale, reversibility, broad benefit), the "reasoning
-  towards outsized power is a warning sign" rule, and the pointer to hard
-  constraint six for the most flagrant cases. Tested in tools/tests/.
+  towards outsized power is a warning sign" rule, and the page's note that
+  the most flagrant cases sit under hard constraint six while the rest is
+  judgment. The page draws no line for "flagrant", so neither does this.
+  The presets are this map's reading of the page's examples. Tested in
+  tools/tests/.
 */
 (function (root) {
   var CORE = [
@@ -29,14 +32,15 @@
   function assess(s) {
     var core = CORE.filter(function (c) { return s[c[0]] === c[1]; }).map(function (c) { return c[0]; });
     var weigh = WEIGH.filter(function (c) { return s[c[0]] === c[1]; }).map(function (c) { return c[0]; });
-    var tier;
     // Scale alone is not a flag; it raises the stakes of whatever else is wrong.
     var serious = weigh.filter(function (w) { return w !== 'scale'; });
-    if (!core.length && !serious.length) tier = 'ordinary';
-    else if (!core.length) tier = 'weigh';
-    else if (core.length === 3 && s.scale === 'large' && s.reversibility === 'entrenching') tier = 'flagrant';
-    else tier = 'illegitimate';
-    return { core: core, weigh: weigh, tier: tier, compromised: !!s.persuaded };
+    var tier;
+    if (core.length === 1 && core[0] === 'transparency') tier = 'concealment'; // often, not always, a signal
+    else if (core.length) tier = 'fails';
+    else if (serious.length) tier = 'weigh';
+    else tier = 'ordinary';
+    // hc6: show the page's note that the most flagrant cases fall under hard constraint six
+    return { core: core, weigh: weigh, tier: tier, hc6: core.length > 0, compromised: !!s.persuaded };
   }
   var api = { CORE: CORE, WEIGH: WEIGH, PRESETS: PRESETS, assess: assess };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

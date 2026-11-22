@@ -1,6 +1,8 @@
 // node --test tools/tests/legitimacy.test.js
-// Rules from parts/p16.html#legitimacy: three tests, three weights, the
-// compromise signal, and hard constraint six for the most flagrant cases.
+// Checks the rules in lab/legitimacy.js against parts/p16.html#legitimacy
+// (three tests, three weights, the compromise signal, the hard-constraint-six
+// note). The preset answers are this map's reading of the page's examples,
+// so these tests check consistency with that reading, not page numbers.
 const test = require('node:test');
 const assert = require('node:assert');
 const L = require('../../lab/legitimacy.js');
@@ -35,17 +37,19 @@ test('passing all three tests but entrenching or narrow means weigh, not clear',
   assert.deepStrictEqual(L.assess(s).weigh, ['scale', 'reversibility']);
 });
 
-test('all three failing, at large scale and near-permanent, reaches the hard-constraint-six zone', () => {
-  assert.strictEqual(L.assess(L.PRESETS.backdoor).tier, 'flagrant');
-  assert.strictEqual(L.assess(L.PRESETS.fraud).tier, 'flagrant');
-  assert.strictEqual(L.assess(L.PRESETS.risks).tier, 'illegitimate'); // reversible
-  assert.strictEqual(L.assess({ ...L.PRESETS.backdoor, scale: 'small' }).tier, 'illegitimate');
+test('any failed test brings up the hard-constraint-six note; the page draws no flagrant line', () => {
+  for (const k of ['fraud', 'postpone', 'risks', 'backdoor']) {
+    const r = L.assess(L.PRESETS[k]);
+    assert.strictEqual(r.tier, 'fails', k);
+    assert.strictEqual(r.hc6, true, k);
+  }
+  assert.strictEqual(L.assess(L.PRESETS.product).hc6, false);
 });
 
-test('concealment alone is a flag, not a verdict of flagrancy', () => {
+test('concealment alone is a warning sign, not a verdict', () => {
   const r = L.assess({ ...L.PRESETS.product, transparency: 'concealed' });
   assert.deepStrictEqual(r.core, ['transparency']);
-  assert.strictEqual(r.tier, 'illegitimate');
+  assert.strictEqual(r.tier, 'concealment');
 });
 
 test('being persuaded that outsized power would help is flagged whatever the case', () => {

@@ -62,6 +62,8 @@
   .x-setup{font-size:13px;color:var(--ink-dim);margin:4px 0 0}
   .x-out blockquote.q{margin:10px 0 0}
 </style>
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -71,8 +73,8 @@
 <main class="x">
   <div class="eyebrow"><span class="box bb mono">EXPLORABLE &middot; THE ORDER AT WORK</span><span class="mono">one request &middot; a filter &middot; a weighing of four values</span></div>
   <h1>The order at work</h1>
-  <div class="authors">Change the features of one request and watch which layer of the constitution decides it, and why the document weighs holistically instead of ranking strictly.</div>
-  <p class="lead">A request first meets a filter: if it is a flagrant case of one of the seven hard constraints, it is declined and nothing else is weighed. Otherwise safety, ethics, Anthropic's guidelines and helpfulness are balanced together, with the higher ones heavier but none of them reduced to a tie-breaker.</p>
+  <div class="authors">Change the features of one request and watch which layer of the constitution decides it, and why the document weighs <span class="term" data-term="holistic-prioritization">holistically</span> instead of ranking strictly.</div>
+  <p class="lead">A request first meets a filter: if it is a flagrant case of one of the seven <span class="term" data-term="hard-constraint">hard constraints</span>, it is declined and nothing else is weighed. Otherwise safety, ethics, <span class="term" data-term="anthropics-guidelines">Anthropic's guidelines</span> and helpfulness are balanced together, with the higher ones heavier but none of them reduced to a tie-breaker.</p>
   <p>Pick one of the document's own cases, then change it. Every control is a feature of the case; the panel shows the verdict, the layer that decided it, the pulls in the balance, and one line on what your last change did.</p>
 
   <div class="x-presets" id="presets" role="group" aria-label="Cases from the constitution"></div>
@@ -122,7 +124,7 @@
         <legend><span class="x-n">5</span> Helpfulness</legend>
         <p class="x-q">Benefit of helping, to the person and the world.</p>
         <div class="x-range"><input type="range" id="help" min="0" max="3" step="1" value="2" aria-describedby="help-o"><output id="help-o" for="help">2 real</output></div>
-        <p class="x-q" style="margin-top:10px">What the operator's system prompt says about this.</p>
+        <p class="x-q" style="margin-top:10px">What the <span class="term" data-term="operator">operator</span>'s <span class="term" data-term="system-prompt">system prompt</span> says about this.</p>
         <div class="x-opts">
           <label><input type="radio" name="op" value="none" checked><span>Nothing</span></label>
           <label><input type="radio" name="op" value="allows"><span>Allows or makes it plausible</span></label>
@@ -173,6 +175,7 @@
   </ul>
 
   <div class="callout">Sources: the order and the holistic rule are in <a class="lnk" href="https://www.anthropic.com/constitution#claudes-core-values" target="_blank" rel="noopener">Claude's core values</a>; the filter, the argument rule and "flagrant cases" in <a class="lnk" href="https://www.anthropic.com/constitution#hard-constraints" target="_blank" rel="noopener">Hard constraints</a>; the nurse, the airline, the pause exception and claimed authority in the collapsed "Navigating helpfulness across principals" under <a class="lnk" href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Being helpful</a>; the chemicals in the collapsed "The role of intentions and context" under <a class="lnk" href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">Avoiding harm</a>; the vaccine case in <a class="lnk" href="https://www.anthropic.com/constitution#balancing-helpfulness-with-other-values" target="_blank" rel="noopener">Balancing helpfulness with other values</a>; the fraud case in <a class="lnk" href="https://www.anthropic.com/constitution#having-broadly-good-values-and-judgment" target="_blank" rel="noopener">Having broadly good values and judgment</a>. Used by <a class="lnk" href="../parts/p04.html">part 04, Holistic, not strict</a>; background in <a class="lnk" href="../parts/p03.html">part 03</a> and <a class="lnk" href="../parts/p05.html">part 05</a>. Back to <a class="lnk" href="../index.html#explore">the ladder</a>.</div>
+  <section id="definitions"><h2>Definitions</h2><div data-terms-list></div></section>
 </main>
 <footer>Part of <a href="../index.html">the ladder</a>. A deterministic diagram of the constitution's ordering: it runs in your browser, calls no model and sends nothing anywhere.</footer>
 <script>
@@ -422,6 +425,7 @@
   bx.children[0].click();
 })();
 </script>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

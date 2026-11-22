@@ -244,3 +244,25 @@ main h2,main table.kv,main .scroll,main pre.code-block,main .flowrow,main .statg
 .bar-row{display:grid;grid-template-columns:18px 1fr 40px;gap:8px;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ink-mid);margin-top:8px}
 .bar-row .track{height:12px;border-radius:6px;background:var(--bg);border:1px solid var(--line-soft);overflow:hidden}
 .bar-row .fill{display:block;height:100%;background:var(--def);transition:width .3s}
+
+/* power-grab checker, widgets/legitimacy.js (part 16) */
+.lg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:6px 0 4px}
+@media (min-width:700px){.lg-grid{grid-template-columns:repeat(3,1fr)}}
+.lab svg.lg-svg{max-width:420px;margin:8px auto 4px}
+.lg-f{border:1px solid var(--line);border-radius:8px;padding:4px 10px 6px;margin:0;min-width:0}
+.lg-f legend{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);padding:0 4px}
+.lg-f label,.lg-chk{display:flex;gap:8px;align-items:center;font-size:13.5px;line-height:1.3;color:var(--ink-mid);min-height:32px;cursor:pointer}
+.lg-f input,.lg-chk input{accent-color:var(--def);margin:0;flex:none;width:16px;height:16px}
+.lg-chk{margin:6px 0 0}
+.lab .lg-ok{fill:var(--def)} .lab .lg-warn{fill:var(--off)} .lab .lg-bad{fill:var(--crit)}
+.lab .lg-sep{stroke:var(--line);stroke-width:1}
+.lab .lg-t{font-family:'IBM Plex Mono',monospace;font-size:11px;fill:var(--ink-mid)}
+.lab .lg-h{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.12em;fill:var(--ink-dim)}
+.lg-verdict{font-weight:600;font-size:15px;line-height:1.5;color:var(--ink);margin:6px 0 4px;max-width:none}
+.lg-flags{margin:0 0 6px;padding-left:18px;font-size:13.5px;color:var(--ink-mid)}
+.lg-note{font-size:12.5px;color:var(--ink-dim);margin:4px 0;max-width:none}
+.lg-flags li{margin:2px 0} .lg-flags .lg-w{color:var(--ink-dim)} .lg-flags .lg-alarm{color:var(--off-bright)}
+/* index facts row: let a long link wrap inside its tile */
+.fact .v{overflow-wrap:anywhere}
+/* the page's own Definitions heading already names the list terms.js builds */
+#definitions .gl-list-h{display:none}

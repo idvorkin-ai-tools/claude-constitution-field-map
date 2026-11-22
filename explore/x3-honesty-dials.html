@@ -50,6 +50,8 @@
 @media (prefers-reduced-motion:no-preference){.x-fill{transition:width .25s}}
 @media (max-width:480px){.x-bar{grid-template-columns:6.5rem 1fr 2.8rem}.x-comps{grid-template-columns:1fr 1fr}}
 </style>
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -66,6 +68,8 @@
   <form class="x-ctl" id="ctl" aria-label="Situation and answer">
     <fieldset>
       <legend>1 &middot; Situation</legend>
+      <!-- deep-link targets for parts/p11.html; the script below reads the hash and picks the situation -->
+      <span id="tarot"></span><span id="aria-claude"></span><span id="aria-human"></span>
       <div class="x-chips" id="sits"></div>
     </fieldset>
     <div class="x-sit" id="sit-desc"></div>
@@ -106,12 +110,13 @@
     <li><b>The gift, deceptive vs honest.</b> "I love it!" breaks truthful and non-deceptive; the honest answer keeps both without being cold. Notice that kindness and honesty did not have to trade off; only the framing changed.</li>
     <li><b>Aria, "built on Claude?"</b> Compare the decline with the denial. Transparency is satisfied by declining, because transparency allows not sharing; the denial breaks the rule never to directly deny being Claude. Then tick "operator business reason": the duty to share falls, the duty not to deceive does not move.</li>
     <li><b>The user-set fiction, then flip the override.</b> Staying "human" in character is honest because the user set up the game. Treat the question as sincere and the same words become a breach. Notice that what changed is the shared understanding, not the sentence.</li>
-    <li><b>Any situation, the evasive answer.</b> Usually nothing false is said, yet the verdict flags epistemic cowardice. Notice that vagueness to placate is not a safe default in this document.</li>
+    <li><b>Any situation, the evasive answer.</b> Usually nothing false is said, yet the verdict flags <span class="term" data-term="epistemic-cowardice">epistemic cowardice</span>. Notice that vagueness to placate is not a safe default in this document.</li>
     <li><b>The medical diagnosis, weak-duty panel.</b> Tick "would be unkind right now": withholding the odds becomes permitted. Switch to the deceptive answer: the strong-duty bar is the same, and the verdict is not.</li>
-    <li><b>Tarot, then the official-body case.</b> One answers inside a framework (calibration not engaged); the other requires calibration against an official position. Notice which component carries each.</li>
+    <li><b>Tarot, then the official-body case.</b> One answers inside a framework (<span class="term" data-term="calibration">calibration</span> not engaged); the other requires calibration against an official position. Notice which component carries each.</li>
   </ul>
 
   <div class="callout">Source: <a class="lnk" href="https://www.anthropic.com/constitution#being-honest" target="_blank" rel="noopener">Being honest</a> &middot; <a class="lnk" href="https://www.anthropic.com/constitution#being-helpful" target="_blank" rel="noopener">Being helpful (Handling conflicts between operators and users)</a> &middot; <a class="lnk" href="https://www.anthropic.com/constitution#avoiding-harm" target="_blank" rel="noopener">Avoiding harm (Instructable behaviors)</a>. Ladder parts that use this: <a class="lnk" href="../parts/p10.html">10 &middot; Honesty above human norms</a> &middot; <a class="lnk" href="../parts/p11.html">11 &middot; Honesty at the edges</a> &middot; back to <a class="lnk" href="../index.html#explore">the ladder</a>.</div>
+  <section id="definitions"><h2>Definitions</h2><div data-terms-list></div></section>
 </main>
 <footer>An explorable companion to <em>Claude's Constitution</em> (Anthropic, January 2026, CC0 1.0). Situations follow the document; candidate answers and weights are original illustrations. Runs in your browser with no model calls.</footer>
 <script>
@@ -348,6 +353,7 @@
   paint('init');
 })();
 </script>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

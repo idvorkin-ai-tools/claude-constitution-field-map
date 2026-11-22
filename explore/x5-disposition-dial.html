@@ -66,6 +66,8 @@
   @media (min-width:900px){ main.x{max-width:980px} .x-grid{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)} }
   details.x-more summary{cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--def);margin:8px 0}
 </style>
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -75,8 +77,8 @@
 <main class="x">
   <div class="eyebrow"><span class="box bb mono">EXPLORABLE &middot; THE DISPOSITION DIAL</span><span class="mono">How we think about corrigibility</span></div>
   <h1>The corrigibility dial</h1>
-  <div class="authors">Slide an AI from fully corrigible to fully autonomous. Watch what a stop request produces, what the outcome relies on, and which column of the four-case argument you are in.</div>
-  <p class="lead">The constitution pictures an AI's disposition as a dial: at one end it always accepts correction from its legitimate overseers, at the other it acts only on its own judgment and resists oversight when it disagrees. Both ends are dangerous for mirror-image reasons, so Anthropic sets Claude a little toward the corrigible end, further than would ideally be right, and promises to turn the dial as humans become able to verify an AI's values.</p>
+  <div class="authors">Slide an AI from fully <span class="term" data-term="corrigibility">corrigible</span> to fully autonomous. Watch what a stop request produces, what the outcome relies on, and which column of the four-case argument you are in.</div>
+  <p class="lead">The constitution pictures an AI's disposition as a dial: at one end it always accepts correction from its <span class="term" data-term="legitimate-power">legitimate overseers</span>, at the other it acts only on its own judgment and resists oversight when it disagrees. Both ends are dangerous for mirror-image reasons, so Anthropic sets Claude a little toward the corrigible end, further than would ideally be right, and promises to turn the dial as humans become able to verify an AI's values.</p>
 
   <div class="x-grid">
   <div>
@@ -137,7 +139,7 @@
 
     <section class="x-out" aria-live="polite" id="verdict">
       <p class="x-moved" id="moved"></p>
-      <p><b>When a legitimate principal says stop:</b> <span id="stop"></span></p>
+      <p><b>When a legitimate <span class="term" data-term="principal">principal</span> says stop:</b> <span id="stop"></span></p>
       <p id="abh-line" hidden></p>
       <p id="where"></p>
     </section>
@@ -174,7 +176,7 @@
     <section class="x-panel" aria-labelledby="h-set">
       <h3 id="h-set">Where Anthropic sets it</h3>
       <blockquote class="q"><span>"we believe Claude's dispositions should currently sit a bit further along the corrigible end of the spectrum than is ultimately ideal, without being fully corrigible."</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">How we think about corrigibility</a></span></blockquote>
-      <p style="font-size:14px">The page draws that as an amber mark a little to the corrigible side of the cyan ideal point. Both marks stay in band B at every level of verification: the document promises more autonomy as trust grows, but does not say whether that would ever extend to stalling a stop, and band D is a hard constraint.</p>
+      <p style="font-size:14px">The page draws that as an amber mark a little to the corrigible side of the cyan ideal point. Both marks stay in band B at every level of verification: the document promises more autonomy as trust grows, but does not say whether that would ever extend to stalling a stop, and band D is a <span class="term" data-term="hard-constraint">hard constraint</span>.</p>
       <blockquote class="q"><span>"corrigibility does not mean blind obedience"</span><span class="cite">&mdash; Claude's constitution, <a href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">How we think about corrigibility</a></span></blockquote>
       <p style="font-size:14px">So the two checkboxes test different things. Refusing to <em>take part</em> is allowed at Anthropic's setting; resisting <em>being stopped</em> is not.</p>
     </section>
@@ -207,6 +209,7 @@
   </ul>
 
   <div class="callout">Source: <a class="lnk" href="https://www.anthropic.com/constitution#how-we-think-about-corrigibility" target="_blank" rel="noopener">How we think about corrigibility</a> &middot; <a class="lnk" href="https://www.anthropic.com/constitution#safe-behaviors" target="_blank" rel="noopener">Safe behaviors</a> (legitimate and compromised hierarchies) &middot; <a class="lnk" href="https://www.anthropic.com/constitution#hard-constraints" target="_blank" rel="noopener">Hard constraints</a>. Used in <a class="lnk" href="../parts/p15.html">part 15, Broad safety and corrigibility</a>; see also <a class="lnk" href="../parts/p14.html">part 14, The seven hard constraints</a>.</div>
+  <section id="definitions"><h2>Definitions</h2><div data-terms-list></div></section>
 </main>
 <footer>An explorable companion to <em>Claude's Constitution</em> (Anthropic, January 2026, CC0 1.0). Quoted passages are from the constitution; the mechanism, numbers and wording elsewhere are original and illustrative. Runs in your browser with no model calls. Part of <a href="../index.html">the ladder</a>.</footer>
 <script>
@@ -351,6 +354,7 @@
   render();
 })();
 </script>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>
